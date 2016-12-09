@@ -108,34 +108,53 @@ export default class TabBar extends React.Component {
         }
 
         if (index - 1 == tabs.length - 1) {
-
+            if (tabs[0] != null) {
+                if (tabs[0].refs.tab.offsetWidth < t.maxTabWidth) {
+                    newState.render = false
+                    tab.state.page.removePage()
+                    tab.setState(newState)
+                    t.calcWidths(true)
+                    t.calcPositions(true, true)
+                } else {
+                    $(tab.refs.tab).animate({
+                        width: 0
+                    }, {
+                        duration: t.animationDuration - 5,
+                        queue: false,
+                        complete: function() {
+                            newState.render = false
+                            tab.state.page.removePage()
+                            tab.setState(newState)
+                            t.calcWidths(true)
+                            t.calcPositions(true, true)
+                        },
+                        easing: t.animationEasing
+                    })
+                }
+            }
         } else {
             for (var i = 0; i < 999; i++) {
                 clearTimeout(i)
             }
             setTimeout(function() {
-                t.calcWidths()
+                t.calcWidths(true)
                 t.calcPositions(true, true)
             }, 4000)
-        }
-        $(tab.refs.tab).animate({
-            width: 0
-        }, {
-            duration: t.animationDuration - 5,
-            queue: false,
-            complete: function() {
-                if (index - 1 == tabs.length - 1) {
-                    t.calcWidths()
-                    t.calcPositions(true, true)
-                }
-                newState.render = false
-                tab.state.page.removePage()
-                tab.setState(newState)
-                t.calcPositions(true, true)
-            },
-            easing: t.animationEasing
-        })
+            t.calcPositions(true, true)
+            $(tab.refs.tab).animate({
+                width: 0
+            }, {
+                duration: t.animationDuration - 5,
+                queue: false,
+                complete: function() {
+                    newState.render = false
+                    tab.state.page.removePage()
+                    tab.setState(newState)
 
+                },
+                easing: t.animationEasing
+            })
+        }
     }
     /*
     * adds tab to array
@@ -189,7 +208,12 @@ export default class TabBar extends React.Component {
                 tabWidthTemp = this.maxTabWidth
             }
             if (animation) {
-                $(tabs[i].refs.tab).animate({width: this.animationDuration}, {duration: 150, queue: false})
+                $(tabs[i].refs.tab).animate({
+                    width: tabWidthTemp
+                }, {
+                    duration: this.animationDuration,
+                    queue: false
+                })
             } else {
                 tabs[i].refs.tab.style.width = tabWidthTemp + 'px'
             }
@@ -271,9 +295,13 @@ export default class TabBar extends React.Component {
     */
     changePos(callingTab) {
         callingTab.locked = true
-        var t = this
+        var t = this,
+            a = 0
+        for (var i = 0; i < t.state.tabs.indexOf(callingTab); i++) {
+            a += t.state.tabs[i].refs.tab.offsetWidth - 2
+        }
         $(callingTab.refs.tab).animate({
-            left: t.state.tabs.indexOf(callingTab) * (t.actualTabWidth)
+            left: a
         }, {
             query: false,
             duration: this.animationDuration + 50,
@@ -288,13 +316,12 @@ export default class TabBar extends React.Component {
         return (
             <div>
                 <div ref='tabbar' className="tabBar">
-                    {
-                        this.props.getTabsToCreate().map(function(object, i) {
-                            return <Tab getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} tabs={t.state.tabs} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} addTabToArray={t.addTabToArray} page={object} key={i}></Tab>
-                            })
-                        }
-                        <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn"></div>
-                        <div className="border5"></div>
+                    {this.props.getTabsToCreate().map(function(object, i) {
+                        return <Tab getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} tabs={t.state.tabs} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} addTabToArray={t.addTabToArray} page={object} key={i}></Tab>
+                        })
+                    }
+                    <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn"></div>
+                    <div className="border5"></div>
                 </div>
             </div>
         )

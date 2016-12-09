@@ -29,8 +29,8 @@ export default class Tab extends React.Component {
         this.state.page.associateTab(pass)
         this.props.addTabToArray(this)
         this.props.selectTab(this)
-        this.props.calcWidths()
-        this.props.calcPositions(false, true)
+        this.props.calcWidths(true)
+        this.props.calcPositions(true, true)
         this.makeDraggable(this)
         var t = this
         this.props.getWidths(function(width) {
@@ -40,8 +40,8 @@ export default class Tab extends React.Component {
                 duration: t.animationDuration,
                 queue: false,
                 complete: function() {
-                    t.props.calcWidths()
-                    t.props.calcPositions(false, true)
+                    t.props.calcWidths(true)
+                    t.props.calcPositions(true, true)
                 },
                 easing: 'cubic-bezier'
             })
@@ -86,8 +86,6 @@ export default class Tab extends React.Component {
             tabs = self.props.tabs
         function handle_mousedown(e) {
             if (e.target != self.refs.closeBtn) {
-                e.preventDefault()
-                e.stopPropagation()
                 window.my_dragging = {};
                 my_dragging.pageX0 = e.pageX;
                 my_dragging.pageY0 = e.pageY;
@@ -104,7 +102,7 @@ export default class Tab extends React.Component {
                 }
                 function handle_mouseup(e) {
                     $(window).off('mousemove', handle_dragging).off('mouseup', handle_mouseup);
-                    self.props.changePos(self)
+                    self.props.calcPositions(true, true)
                 }
                 $(window).on('mouseup', handle_mouseup).on('mousemove', handle_dragging);
             }
