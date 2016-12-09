@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebExpress</title>
+    <Main></Main>
+    <script>
+        // install babel hooks in the renderer process
+        require('babel-register');
+        require('./app/app.jsx');
+    </script>
+    <style>
+        @font-face {
+            font-family: Roboto;
+            src: url('fonts/Roboto.ttf');
+        }
+
+        @font-face {
+            font-family: Roboto-Medium;
+            src: url('fonts/Roboto-Medium.ttf');
+        }
+
+        @font-face {
+            font-family: Roboto-Light;
+            src: url('fonts/Roboto-Light.ttf');
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto'
+        }
+
+        .tabBar {
+            width: 100%;
+            height: 32px;
+            background-color: #eee;
+            position: relative;
+        }
+
+        .tabTitle {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            width: calc(100% - 32px);
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            -webkit-user-select: none;
+            cursor: default;
+        }
+        .border5 {
+            width: 100%;
+            background-color: #E0E0E0;
+            height: 1px;
+            position: absolute;
+            bottom: 0;
+            z-index: 1;
+        }
+        .tab {
+            width: 196px;
+            height: 32px;
+            background-color: white;
+            display: inline-block;
+            color: #212121;
+            position: absolute;
+            border-left: 1px solid #E0E0E0;
+            border-right: 1px solid #E0E0E0;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            left: 0;
+            z-index: 1;
+        }
+
+        .addBtn {
+            display: inline-block;
+            background-color: #BDBDBD;
+            opacity: 0.6;
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            z-index: 0;
+            left: 0;
+        }
+
+        .addBtn:hover {
+            opacity: 1;
+        }
+
+        .closeBtn {
+            float: right;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            opacity: 0.6;
+            background-color: #BDBDBD;
+        }
+
+        .closeBtn:hover {
+            opacity: 1;
+        }
+    </style>
+    <div id="app"></div>
+    <script src="lib/zepto.min.js"></script>
+    <script>
+        require(`electron-connect`).client.create()
+    </script>
+</body>
+
+</html>
