@@ -34,10 +34,9 @@
 .tabTitle {
     position: absolute;
     left: 50%;
-    margin-left: -8px;
     top: 50%;
     transform: translate(-50%, -50%);
-    max-width: calc(100% - 64px);
+    max-width: calc(100% - 72px);
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
@@ -120,4 +119,15 @@
 
 .closeBtn:hover {
     opacity: 1;
+}
+
+.favicon {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px;
+    background-size: contain;
+    background-position: center;
 }

@@ -7,6 +7,7 @@ export default class Tab extends React.Component {
         //binds
         this.changeTitle = this.changeTitle.bind(this)
         this.setPage = this.setPage.bind(this)
+        this.changeFavicon = this.changeFavicon.bind(this)
         //global properties
         this.locked = false
         this.animationDuration = 150
@@ -24,7 +25,8 @@ export default class Tab extends React.Component {
         this.setPage(this.props.page)
         var pass = {
             changeTitle: this.changeTitle,
-            setPage: this.setPage
+            setPage: this.setPage,
+            changeFavicon: this.changeFavicon
         }
         this.state.page.associateTab(pass)
         this.props.addTabToArray(this)
@@ -65,6 +67,13 @@ export default class Tab extends React.Component {
         var state = this.state
         state.title = newTitle
         this.setState(state)
+    }
+    /*
+    * changes favicon
+    * favicon - string
+    */
+    changeFavicon(favicon) {
+        $(this.refs.favicon).css({backgroundImage: `url(${favicon})`})
     }
     /*
     events
@@ -137,6 +146,7 @@ export default class Tab extends React.Component {
             return (
                 <div ref="tab" className="tab draggable">
                     <div className="content">
+                        <div ref="favicon" className="favicon"></div>
                         <div className="tabTitle">{this.state.title}</div>
                         <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}>
                             <i className="material-icons">close</i>

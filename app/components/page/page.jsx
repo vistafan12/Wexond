@@ -49,6 +49,9 @@ export default class Page extends React.Component {
         webview.addEventListener('did-frame-finish-load', function() {
             $(bar.refs.searchInput).val(webview.getURL())
         })
+        webview.addEventListener('page-favicon-updated', function(favicons) {
+            t.tab.changeFavicon(favicons.favicons[0])
+        })
     }
     /*
     * disables page render
