@@ -1,9 +1,9 @@
 {
-  "name": "Browser",
+  "name": "Wexond",
   "version": "0.0.1",
   "main": "bootstrapper.js",
   "license": "MIT",
-  "repository": "sential/webexpress",
+  "repository": "sential/wexond",
   "scripts": {
     "start": "electron ."
   },

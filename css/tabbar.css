@@ -1,0 +1,123 @@
+.tabBar {
+    height: 100%;
+    position: relative;
+    -webkit-app-region: no-drag;
+    /*left: 50%;
+    transform: translateX(-50%);*/
+}
+
+.draggable {
+    -webkit-app-region: drag;
+    height: 29px;
+    width: 100%;
+    position: absolute;
+    top: 3px;
+}
+
+.tabBarContainer {
+    width: calc(100%);
+    background-color: #D0D0D0;
+    height: 32px;
+    z-index: 9999;
+    position: relative;
+    /*
+    position: absolute;
+    bottom: 0;
+    */
+}
+
+
+/*.tabBarContainer .border5 {
+    top: 0;
+}*/
+
+.tabTitle {
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 64px);
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.border5 {
+    width: 100%;
+    background-color: #E0E0E0;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    z-index: 999999;
+}
+
+.tab {
+    width: 196px;
+    height: calc(100%);
+    background-color: white;
+    display: inline-block;
+    color: #212121;
+    position: absolute;
+    border-left: 1px solid #BDBDBD;
+    border-right: 1px solid #BDBDBD;
+    top: 0px;
+    left: 4px;
+    -webkit-app-region: no-drag;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    z-index: 1;
+}
+
+.addBtn {
+    display: inline-block;
+    opacity: 0.6;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    z-index: 0;
+    left: 0;
+    -webkit-user-select: none;
+    cursor: default;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.addBtn i {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.addBtn:hover {
+    opacity: 1;
+}
+
+.closeBtn {
+    float: right;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    opacity: 0.6;
+}
+
+.closeBtn i {
+    font-size: 18px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.closeBtn:hover {
+    opacity: 1;
+}

@@ -9,7 +9,7 @@ export default class Tab extends React.Component {
         this.setPage = this.setPage.bind(this)
         //global properties
         this.locked = false
-        this.animationDuration = 125
+        this.animationDuration = 150
         //state
         this.state = {
             title: "New tab",
@@ -34,8 +34,16 @@ export default class Tab extends React.Component {
         this.makeDraggable(this)
         var t = this
         this.props.getWidths(function(width) {
-            $(t.refs.tab).css({width: 0}).animate({
-                width: width
+            if (width < t.props.maxTabWidth) {
+                console.log(width)
+                console.log(t.props.maxTabWidth)
+                $(t.refs.tab).css({width: 0, marginLeft: width})
+            } else {
+                $(t.refs.tab).css({width: 0})
+            }
+            $(t.refs.tab).animate({
+                width: width,
+                marginLeft: 0
             }, {
                 duration: t.animationDuration,
                 queue: false,
@@ -43,8 +51,9 @@ export default class Tab extends React.Component {
                     t.props.calcWidths(true)
                     t.props.calcPositions(true, true)
                 },
-                easing: 'cubic-bezier'
+                easing: 'easeOutQuint'
             })
+
         })
 
     }
@@ -60,9 +69,7 @@ export default class Tab extends React.Component {
     /*
     events
     */
-    handleMouseDown(self, e) {
-        self.props.selectTab(self)
-    }
+
     closeBtnClick(self, e) {
         e.stopPropagation()
         e.preventDefault()
@@ -85,7 +92,8 @@ export default class Tab extends React.Component {
         var tabRef = self.refs.tab,
             tabs = self.props.tabs
         function handle_mousedown(e) {
-            if (e.target != self.refs.closeBtn) {
+            if (e.target.tagName != 'I') {
+                self.props.selectTab(self)
                 window.my_dragging = {};
                 my_dragging.pageX0 = e.pageX;
                 my_dragging.pageY0 = e.pageY;
@@ -127,9 +135,13 @@ export default class Tab extends React.Component {
     render() {
         if (this.state.render) {
             return (
-                <div ref="tab" onMouseDown={(e) => this.handleMouseDown(this, e)} className="tab draggable">
-                    <div className="tabTitle">{this.state.title}</div>
-                    <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}></div>
+                <div ref="tab" className="tab draggable">
+                    <div className="content">
+                        <div className="tabTitle">{this.state.title}</div>
+                        <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}>
+                            <i className="material-icons">close</i>
+                        </div>
+                    </div>
                 </div>
             )
         }

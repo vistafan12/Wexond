@@ -1,5 +1,7 @@
 'use babel';
 import React from 'react';
+import Bar from '../bar.jsx'
+import Suggestions from '../suggestions.jsx'
 
 export default class Page extends React.Component {
     constructor() {
@@ -24,21 +26,26 @@ export default class Page extends React.Component {
         this.tab.setPage(this)
     }
     componentDidMount() {
-        var t = this
-        var pageObj = {
-            getPage: this.getPage,
-            getWebView: this.getWebView,
-            associateTab: this.associateTab,
-            removePage: this.removePage,
-            resize: this.resize
-        }
+        var t = this,
+            pageObj = {
+                getPage: this.getPage,
+                getWebView: this.getWebView,
+                associateTab: this.associateTab,
+                removePage: this.removePage,
+                resize: this.resize
+            },
+            webview = this.refs.webview,
+            bar = this.refs.bar
         this.props.addTab(pageObj)
         this.resize()
         window.addEventListener('resize', function() {
             t.resize()
         })
-        this.refs.webview.addEventListener('page-title-updated', function(title) {
+        webview.addEventListener('page-title-updated', function(title) {
             t.tab.changeTitle(title.title)
+        })
+        webview.addEventListener('did-frame-finish-load', function() {
+            $(bar.refs.searchInput).val(webview.getURL())
         })
     }
     /*
@@ -71,18 +78,40 @@ export default class Page extends React.Component {
         this.tab = tab
     }
     /*
+    * gets search input
+    * returns ref of search input
+    */
+    getSearchInput() {
+        return this.refs.bar.refs.searchInput
+    }
+    /*
+    * gets suggestions
+    * returns ref of suggestions
+    */
+    getSuggestions() {
+        return this.refs.suggestions
+    }
+    /*
     * resizes WebView to match parent width and height
     */
     resize() {
-        this.refs.webview.style.height = window.innerHeight - 32 + 'px'
-        this.refs.webview.style.width = window.innerWidth + 'px'
+        var barHeight = 42,
+            tabsHeight = 32,
+            result = barHeight + tabsHeight
+        if (this.refs.webview != null) {
+            this.refs.webview.style.height = window.innerHeight - result + 'px'
+            this.refs.webview.style.width = window.innerWidth + 'px'
+        }
     }
     render() {
-        var el = (
-            <div ref="page">
-                <webview ref="webview" src={this.props.url}></webview>
-            </div>
-        )
+        var t = this,
+            el = (
+                <div className="page" ref="page">
+                    <Bar ref="bar" getSuggestions={t.getSuggestions} getWebView={t.getWebView}></Bar>
+                    <Suggestions ref="suggestions" getSearchInput={t.getSearchInput}></Suggestions>
+                    <webview className="webview" ref="webview" src={this.props.url}></webview>
+                </div>
+            )
         if (this.state.render) {
             return el
         }

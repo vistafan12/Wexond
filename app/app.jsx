@@ -52,11 +52,15 @@ class App extends React.Component {
         var t = this
         return (
             <div>
+                <div className="draggable">
+                </div>
                 <TabBar addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()}></TabBar>
                 {this.state.pagesToCreate.map(function(object, i) {
                     return <Page index={i} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
                 }
+
+
             </div>
         )
     }

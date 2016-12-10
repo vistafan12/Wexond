@@ -1,0 +1,8 @@
+.suggestions-window {
+    height: calc(100vh - 42px);
+    width: 100vw;
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    top: 42px;
+    z-index: 99999;
+}

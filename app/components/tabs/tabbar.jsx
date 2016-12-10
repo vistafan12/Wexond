@@ -16,10 +16,10 @@ export default class TabBar extends React.Component {
         this.replaceTabs = this.replaceTabs.bind(this)
         this.getWidths = this.getWidths.bind(this)
         //global properties
-        this.maxTabWidth = 200
+        this.maxTabWidth = 190
         this.actualTabWidth = this.maxTabWidth
         this.animationDuration = 150
-        this.animationEasing = 'cubic-bezier'
+        this.animationEasing = 'easeOutCirc'
         //state
         this.state = {
             tabs: []
@@ -51,8 +51,8 @@ export default class TabBar extends React.Component {
         if (tab != null && page != null) {
             page.resize()
             tab.refs.tab.style.zIndex = 9999
-            $(page.getPage()).css({position: 'relative', opacity: 1, visibility: 'visible'})
-            $(tab.refs.tab).css('background-color', 'white')
+            $(page.getPage()).css({position: 'relative', opacity: 1, marginLeft: 0})
+            $(tab.refs.tab).css({backgroundColor: 'white'})
         }
     }
     /*
@@ -64,8 +64,9 @@ export default class TabBar extends React.Component {
         var page = tab.state.page
         if (tab != null && page != null) {
             tab.refs.tab.style.zIndex = 1
-            $(page.getPage()).css({position: 'absolute', opacity: 0, visibility: 'hidden', height: 0})
-            $(tab.refs.tab).css('background-color', '#eee')
+            $(page.getPage()).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
+            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color')})
+
         }
     }
     /*
@@ -123,13 +124,13 @@ export default class TabBar extends React.Component {
                         queue: false,
                         complete: function() {
                             newState.render = false
-                            tab.state.page.removePage()
                             tab.setState(newState)
-                            t.calcWidths(true)
-                            t.calcPositions(true, true)
                         },
                         easing: t.animationEasing
                     })
+                    tab.state.page.removePage()
+                    t.calcWidths(true)
+                    t.calcPositions(true, true)
                 }
             }
         } else {
@@ -148,12 +149,11 @@ export default class TabBar extends React.Component {
                 queue: false,
                 complete: function() {
                     newState.render = false
-                    tab.state.page.removePage()
                     tab.setState(newState)
-
                 },
                 easing: t.animationEasing
             })
+            tab.state.page.removePage()
         }
     }
     /*
@@ -199,11 +199,13 @@ export default class TabBar extends React.Component {
     * sets widths for all tabs
     */
     calcWidths(animation = false) {
-        var tabbar = this.refs.tabbar,
+        var tabbarwidth = $(this.refs.tabBarContainer).width(),
+            tabbar = this.refs.tabbar,
             addbtn = this.refs.addbtn,
-            tabs = this.state.tabs
+            tabs = this.state.tabs,
+            a = 0
         for (var i = 0; i < tabs.length; i++) {
-            var tabWidthTemp = (tabbar.offsetWidth - addbtn.offsetWidth - 2) / tabs.length
+            var tabWidthTemp = (tabbarwidth - addbtn.offsetWidth - 2) / tabs.length
             if (tabWidthTemp > this.maxTabWidth) {
                 tabWidthTemp = this.maxTabWidth
             }
@@ -217,27 +219,31 @@ export default class TabBar extends React.Component {
             } else {
                 tabs[i].refs.tab.style.width = tabWidthTemp + 'px'
             }
-
+            tabs[i].offsetWidth = tabWidthTemp
             this.actualTabWidth = tabWidthTemp
         }
+        for (var i = 0; i < tabs.length; i++) {
+            a += tabs[i].offsetWidth
+        }
+        $(tabbar).animate({width: a + addbtn.offsetWidth + 1}, {duration: this.animationDuration, easing: this.animationEasing, queue: false})
     }
     /*
     * only calculates widths for all tabs
     * callback function
     */
     getWidths(callback = null) {
-        var tabbar = this.refs.tabbar,
+        var tabbarwidth = $(this.refs.tabBarContainer).width(),
             addbtn = this.refs.addbtn,
             tabs = this.state.tabs
         for (var i = 0; i < tabs.length; i++) {
-            var tabWidthTemp = (tabbar.offsetWidth - addbtn.offsetWidth - 2) / tabs.length
+            var tabWidthTemp = (tabbarwidth - addbtn.offsetWidth - 2) / tabs.length
             if (tabWidthTemp > this.maxTabWidth) {
                 tabWidthTemp = this.maxTabWidth
             }
             this.actualTabWidth = tabWidthTemp
-            if (typeof(callback) === 'function') {
-                callback(tabWidthTemp)
-            }
+        }
+        if (typeof(callback) === 'function') {
+            callback(tabWidthTemp)
         }
     }
     /*
@@ -248,31 +254,39 @@ export default class TabBar extends React.Component {
     calcPositions(animateTabs = false, animateAddButton = false) {
         var tabCountTemp = 0,
             tabs = this.state.tabs,
-            addbtn = this.refs.addbtn
+            addbtn = this.refs.addbtn,
+            lefts = [],
+            a = 0
+
+        for (var i = 0; i < tabs.length; i++) {
+            lefts.push(a)
+            a += tabs[i].offsetWidth
+        }
+
         for (var i = 0; i < tabs.length; i++) {
             if (animateTabs) {
                 $(tabs[i].refs.tab).animate({
-                    left: tabCountTemp * (this.actualTabWidth)
+                    left: lefts[i]
                 }, {
                     duration: this.animationDuration,
                     queue: false,
                     easing: this.animationEasing
                 })
             } else {
-                tabs[i].refs.tab.style.left = tabCountTemp * (this.actualTabWidth) + 'px'
+                tabs[i].refs.tab.style.left = lefts[i] + 'px'
             }
             tabCountTemp += 1
         }
         if (animateAddButton) {
             $(addbtn).animate({
-                left: (tabCountTemp * (this.actualTabWidth)) + 2
+                left: a
             }, {
                 duration: this.animationDuration,
                 queue: false,
                 easing: this.animationEasing
             })
         } else {
-            addbtn.style.left = (tabCountTemp * (this.actualTabWidth)) + 2 + 'px'
+            addbtn.style.left = a + 'px'
         }
     }
     /*
@@ -314,15 +328,19 @@ export default class TabBar extends React.Component {
     render() {
         var t = this
         return (
-            <div>
+            <div ref="tabBarContainer" className="tabBarContainer">
                 <div ref='tabbar' className="tabBar">
+
                     {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} tabs={t.state.tabs} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} addTabToArray={t.addTabToArray} page={object} key={i}></Tab>
+                        return <Tab maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} tabs={t.state.tabs} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} addTabToArray={t.addTabToArray} page={object} key={i}></Tab>
                         })
                     }
-                    <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn"></div>
-                    <div className="border5"></div>
-                </div>
+                        <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
+                            <i className="material-icons">add</i>
+                        </div>
+
+                    </div>
+
             </div>
         )
     }
