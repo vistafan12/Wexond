@@ -11,6 +11,8 @@ export default class Page extends React.Component {
         this.getPage = this.getPage.bind(this)
         this.getWebView = this.getWebView.bind(this)
         this.removePage = this.removePage.bind(this)
+        this.getSearchInput = this.getSearchInput.bind(this)
+        this.getSuggestions = this.getSuggestions.bind(this)
         this.resize = this.resize.bind(this)
         //global properties
         this.tab = null
@@ -108,7 +110,7 @@ export default class Page extends React.Component {
             el = (
                 <div className="page" ref="page">
                     <Bar ref="bar" getSuggestions={t.getSuggestions} getWebView={t.getWebView}></Bar>
-                    <Suggestions ref="suggestions" getSearchInput={t.getSearchInput}></Suggestions>
+                    <Suggestions ref="suggestions" getWebView={t.getWebView} getSearchInput={t.getSearchInput}></Suggestions>
                     <webview className="webview" ref="webview" src={this.props.url}></webview>
                 </div>
             )

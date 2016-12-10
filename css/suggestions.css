@@ -1,8 +1,38 @@
 .suggestions-window {
     height: calc(100vh - 42px);
     width: 100vw;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
     position: absolute;
     top: 42px;
     z-index: 99999;
+    display: none;
+}
+
+.suggestions {
+    max-width: 768px;
+    width: calc(100% - 128px);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top: 32px;
+    left: 50%;
+    margin-left: -24px;
+    transform: translateX(-50%);
+    list-style: none;
+}
+.suggestions li {
+    width: calc(100%);
+    padding: 8px;
+    margin: 0;
+    padding-left: 32px;
+    -webkit-user-select: none;
+    cursor: default;
+}
+.selected {
+    background-color: rgba(189, 189, 189, 0.5);
+    border-radius: 3px;
+}
+
+.link {
+    color: #1976D2;
 }

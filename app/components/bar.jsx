@@ -5,16 +5,25 @@ export default class Bar extends React.Component {
     constructor() {
         super()
     }
+    /*
+    lifecycle
+    */
     componentDidMount() {
         var t = this,
         searchInput = this.refs.searchInput
         $(searchInput).focusin(function() {
             this.setSelectionRange(0, this.value.length)
         })
+        $(searchInput).on("input", function (e) {
+            var suggestions = t.props.getSuggestions()
+            suggestions.show()
+        })
         $(searchInput).keypress(function (e) {
-            var webview = t.props.getWebView()
-                 //if enter key was pressed
+            var webview = t.props.getWebView(),
+                suggestions = t.props.getSuggestions()
+                //if enter key was pressed
              if (e.which == 13) {
+                 suggestions.hide()
                  if (!$(this).val().startsWith("webexpress://")) {
                      if (isURL($(this).val())) {
                          if ($(this).val().startsWith("http://") || $(this).val().startsWith("https://") || $(this).val().startsWith("file://")) {
@@ -34,6 +43,7 @@ export default class Bar extends React.Component {
              }
          });
     }
+
     render() {
         return (
             <div className="bar">
