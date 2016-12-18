@@ -145,6 +145,7 @@ export default class Tab extends React.Component {
         if (this.state.render) {
             return (
                 <div ref="tab" className="tab draggable">
+                  <div className="border-horizontal"></div>
                     <div className="content">
                         <div ref="favicon" className="favicon"></div>
                         <div className="tabTitle">{this.state.title}</div>

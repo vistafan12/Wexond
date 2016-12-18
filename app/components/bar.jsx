@@ -12,7 +12,6 @@ export default class Bar extends React.Component {
     lifecycle
     */
     componentDidMount() {
-
     }
     /*
     events
@@ -51,11 +50,12 @@ export default class Bar extends React.Component {
 
     render() {
         return (
+
             <div className="bar">
                 <i className="material-icons">arrow_back</i>
                 <i className="material-icons">arrow_forward</i>
                 <i className="material-icons">refresh</i>
-                <div className="searchBox">
+                <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e)=>this.handleKeyPress(e)} onFocus={(e)=>this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
                 <i className="material-icons">menu</i>

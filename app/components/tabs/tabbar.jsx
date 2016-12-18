@@ -52,7 +52,7 @@ export default class TabBar extends React.Component {
             page.resize()
             tab.refs.tab.style.zIndex = 9999
             $(page.getPage()).css({position: 'relative', opacity: 1, marginLeft: 0})
-            $(tab.refs.tab).css({backgroundColor: 'white'})
+            $(tab.refs.tab).css({backgroundColor: '#3F51B5', 'color': '#fff'})
         }
     }
     /*
@@ -65,7 +65,7 @@ export default class TabBar extends React.Component {
         if (tab != null && page != null) {
             tab.refs.tab.style.zIndex = 1
             $(page.getPage()).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
-            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color')})
+            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': '#fff'})
 
         }
     }
@@ -337,10 +337,10 @@ export default class TabBar extends React.Component {
                     }
                         <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
                             <i className="material-icons">add</i>
+                            <div className="border-horizontal2"></div>
                         </div>
 
                     </div>
-
             </div>
         )
     }

@@ -102,10 +102,11 @@ export default class Page extends React.Component {
     resize() {
         var barHeight = 42,
             tabsHeight = 32,
-            result = barHeight + tabsHeight
+            height = barHeight + tabsHeight,
+            width = 2
         if (this.refs.webview != null) {
-            this.refs.webview.style.height = window.innerHeight - result + 'px'
-            this.refs.webview.style.width = window.innerWidth + 'px'
+            this.refs.webview.style.height = window.innerHeight - height + 'px'
+            this.refs.webview.style.width = window.innerWidth - width + 'px'
         }
     }
     render() {
