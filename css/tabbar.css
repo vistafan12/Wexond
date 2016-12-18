@@ -10,7 +10,7 @@
 }
 .tabBarContainer {
     width: 100%;
-    background-color: #303F9F;
+    background-color: #1976D2;
     height: 32px;
     z-index: 9999;
     position: relative;
@@ -58,7 +58,7 @@
     height: calc(100%);
     background-color: white;
     display: inline-block;
-    color: #212121;
+    color: #fff;
     position: absolute;
     top: 0px;
     left: 4px;
@@ -75,7 +75,7 @@
     position: absolute;
     width: 1px;
     height: 100%;
-    background-color: #000;
+    background-color: #fff;
     left: 0px;
     opacity: 0.15;
 }
@@ -83,7 +83,7 @@
     position: absolute;
     width: 1px;
     height: 100%;
-    background-color: #000;
+    background-color: #fff;
     opacity: 0.2;
     top: 0;
     left: 0px;

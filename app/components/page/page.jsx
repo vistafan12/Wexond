@@ -2,6 +2,7 @@
 import React from 'react';
 import Bar from '../bar.jsx'
 import Suggestions from '../suggestions.jsx'
+import Storage from '../../classes/storage.js'
 
 export default class Page extends React.Component {
     constructor() {
@@ -20,6 +21,7 @@ export default class Page extends React.Component {
         this.state = {
             render: true
         }
+        checkFiles()
     }
     /*
     * lifecycle
@@ -45,6 +47,7 @@ export default class Page extends React.Component {
         })
         webview.addEventListener('page-title-updated', function(title) {
             t.tab.changeTitle(title.title)
+            Storage.saveHistory(webview.getTitle(), webview.getURL())
         })
         webview.addEventListener('did-frame-finish-load', function() {
             $(bar.refs.searchInput).val(webview.getURL())
@@ -109,6 +112,7 @@ export default class Page extends React.Component {
             this.refs.webview.style.width = window.innerWidth - width + 'px'
         }
     }
+
     render() {
         var t = this,
             el = (

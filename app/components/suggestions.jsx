@@ -138,7 +138,7 @@ export default class Suggestions extends React.Component {
                                 //get important part of link ex. webexpress.tk for better suggestions
                                 newLink = newLink.substr(0, newLink.indexOf('/'));
                                 if (oldLink != newLink) {
-                                    links.push(newLink);
+                                    links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
                                 }
                                 //sort links by length
                                 links.sort(function(a, b) {
@@ -286,7 +286,7 @@ export default class Suggestions extends React.Component {
                                     }
                                     //change each item content to new link from array
                                     $('.internet').each(function(i) {
-                                        $(this).html(uniqueLinks[i]);
+                                        $(this).html('<span class="title">' + uniqueLinks[i] + '</span>');
                                         $(this).attr('link', uniqueLinks[i]);
                                     })
 
