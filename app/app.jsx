@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TabBar from './components/tabs/tabbar.jsx'
 import Page from './components/page/page.jsx'
-import Extensions from './components/extensions.jsx'
 
 class App extends React.Component {
     constructor() {
@@ -12,7 +11,6 @@ class App extends React.Component {
         this.addTab = this.addTab.bind(this)
         this.addPage = this.addPage.bind(this)
         this.getTabsToCreate = this.getTabsToCreate.bind(this)
-        this.getExtensions = this.getExtensions.bind(this)
         //state
         this.state = {
             pagesToCreate: [],
@@ -49,13 +47,6 @@ class App extends React.Component {
     getTabsToCreate() {
         return this.state.tabsToCreate
     }
-    /*
-    * gets extensions instance
-    * returns object
-    */
-    getExtensions() {
-        return this.refs.extensions
-    }
 
     render() {
         var t = this
@@ -64,10 +55,9 @@ class App extends React.Component {
                 <div className="draggable"></div>
                 <TabBar addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()}></TabBar>
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page getExtensions={t.getExtensions} index={i} addTab={t.addTab} key={i} url={object.url}></Page>
+                    return <Page index={i} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
                 }
-                <Extensions ref="extensions"></Extensions>
             </div>
         )
     }

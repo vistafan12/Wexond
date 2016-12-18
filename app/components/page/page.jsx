@@ -17,6 +17,7 @@ export default class Page extends React.Component {
         this.getSuggestions = this.getSuggestions.bind(this)
         this.resize = this.resize.bind(this)
         this.reloadExtensions = this.reloadExtensions.bind(this)
+        this.getExtensions = this.getExtensions.bind(this)
         //global properties
         this.tab = null
         this.extensions = null
@@ -40,12 +41,12 @@ export default class Page extends React.Component {
                 associateTab: this.associateTab,
                 removePage: this.removePage,
                 resize: this.resize,
-                getExtensions: this.props.getExtensions
+                getExtensions: this.getExtensions
             },
             webview = this.refs.webview,
             bar = this.refs.bar
         this.props.addTab(pageObj)
-        this.extensions = new Extensions
+        this.extensions = new Extensions()
         this.resize()
         window.addEventListener('resize', function() {
             t.resize()
@@ -74,6 +75,13 @@ export default class Page extends React.Component {
     */
     reloadExtensions() {
 
+    }
+    /*
+    * gets extensions
+    * returns object
+    */
+    getExtensions() {
+        return this.extensions
     }
     /*
     * gets page ref

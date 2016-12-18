@@ -74,6 +74,6 @@
     top: calc(42px);
 }
 
-.extensions-iframe {
+#extensions-iframe {
     display: none;
 }

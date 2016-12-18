@@ -8,6 +8,7 @@ export default class Tab extends React.Component {
         this.changeTitle = this.changeTitle.bind(this)
         this.setPage = this.setPage.bind(this)
         this.changeFavicon = this.changeFavicon.bind(this)
+        this.getIndex = this.getIndex.bind(this)
         //global properties
         this.locked = false
         this.animationDuration = 150
@@ -27,7 +28,8 @@ export default class Tab extends React.Component {
             changeTitle: this.changeTitle,
             setPage: this.setPage,
             changeFavicon: this.changeFavicon,
-            refs: this.refs
+            refs: this.refs,
+            getIndex: this.getIndex
         }
         this.state.page.associateTab(pass)
         window.tabs.push(this)
@@ -58,7 +60,15 @@ export default class Tab extends React.Component {
             })
 
         })
+        this.state.page.getExtensions().loadExtensions(this.getIndex())
 
+    }
+    /*
+    * gets index of current tab
+    * returns int
+    */
+    getIndex() {
+        return tabs.indexOf(this)
     }
     /*
     * changes tab's title
