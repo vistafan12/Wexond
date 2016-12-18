@@ -48,6 +48,7 @@ export default class TabBar extends React.Component {
             tab.refs.tab.style.zIndex = 9999
             $(page.getPage()).css({position: 'relative', opacity: 1, marginLeft: 0})
             $(tab.refs.tab).css({backgroundColor: '#2196F3', 'color': '#fff'})
+            tab.isSelected = true
         }
     }
     /*
@@ -61,7 +62,7 @@ export default class TabBar extends React.Component {
             tab.refs.tab.style.zIndex = 1
             $(page.getPage()).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
             $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': '#fff'})
-
+            tab.isSelected = false
         }
     }
     /*
@@ -94,13 +95,15 @@ export default class TabBar extends React.Component {
             newState2 = this.state
 
         tabs.splice(index, 1)
-
-        var prevTab = tabs[index - 1]
-        if (prevTab == null) {
-            this.selectTab(tabs[0])
-        } else {
-            this.selectTab(prevTab)
+        if (tab.isSelected) {
+            var prevTab = tabs[index - 1]
+            if (prevTab == null) {
+                this.selectTab(tabs[0])
+            } else {
+                this.selectTab(prevTab)
+            }
         }
+
 
         if (index - 1 == tabs.length - 1) {
             if (tabs[0] != null) {
