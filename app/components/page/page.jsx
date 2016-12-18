@@ -3,6 +3,7 @@ import React from 'react';
 import Bar from '../bar.jsx'
 import Suggestions from '../suggestions.jsx'
 import Storage from '../../classes/storage.js'
+import Extensions from '../../classes/extensions.js'
 
 export default class Page extends React.Component {
     constructor() {
@@ -15,8 +16,10 @@ export default class Page extends React.Component {
         this.getSearchInput = this.getSearchInput.bind(this)
         this.getSuggestions = this.getSuggestions.bind(this)
         this.resize = this.resize.bind(this)
+        this.reloadExtensions = this.reloadExtensions.bind(this)
         //global properties
         this.tab = null
+        this.extensions = null
         //state
         this.state = {
             render: true
@@ -36,11 +39,13 @@ export default class Page extends React.Component {
                 getWebView: this.getWebView,
                 associateTab: this.associateTab,
                 removePage: this.removePage,
-                resize: this.resize
+                resize: this.resize,
+                getExtensions: this.props.getExtensions
             },
             webview = this.refs.webview,
             bar = this.refs.bar
         this.props.addTab(pageObj)
+        this.extensions = new Extensions
         this.resize()
         window.addEventListener('resize', function() {
             t.resize()
@@ -63,6 +68,12 @@ export default class Page extends React.Component {
         var newState = this.state
         newState.render = false
         this.setState(newState)
+    }
+    /*
+    * reloads only extensions that are related to current page
+    */
+    reloadExtensions() {
+
     }
     /*
     * gets page ref

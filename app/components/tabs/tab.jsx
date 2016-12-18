@@ -1,6 +1,6 @@
 'use babel';
 import React from 'react';
-
+require('../../../js/main.js')
 export default class Tab extends React.Component {
     constructor() {
         super()
@@ -26,10 +26,11 @@ export default class Tab extends React.Component {
         var pass = {
             changeTitle: this.changeTitle,
             setPage: this.setPage,
-            changeFavicon: this.changeFavicon
+            changeFavicon: this.changeFavicon,
+            refs: this.refs
         }
         this.state.page.associateTab(pass)
-        this.props.addTabToArray(this)
+        window.tabs.push(this)
         this.props.selectTab(this)
         this.props.calcWidths(true)
         this.props.calcPositions(true, true)
@@ -99,7 +100,7 @@ export default class Tab extends React.Component {
     */
     makeDraggable(self) {
         var tabRef = self.refs.tab,
-            tabs = self.props.tabs
+            tabs = window.tabs
         function handle_mousedown(e) {
             if (e.target.tagName != 'I') {
                 self.props.selectTab(self)
@@ -133,7 +134,7 @@ export default class Tab extends React.Component {
     */
     reorderTabs(self, cursorX) {
         var overTab = self.props.getTabFromMousePoint(self, cursorX),
-            tabs = self.props.tabs
+            tabs = window.tabs
         if (overTab != null) {
             var indexTab = tabs.indexOf(self),
                 indexOverTab = tabs.indexOf(overTab)

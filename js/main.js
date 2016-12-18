@@ -1,5 +1,5 @@
 const {remote} = require('electron')
-var app = remote.app
+var app = remote.app,
     appData = app.getPath('userData'),
     userData = appData + '/userdata',
     historyPath = userData + '/history.json',
@@ -7,6 +7,8 @@ var app = remote.app
     isThere = require('is-there'),
     dir = require('node-dir'),
     fs = require('fs')
+
+window.tabs = []
 
 function checkFiles() {
     //check if directory called userdata exists

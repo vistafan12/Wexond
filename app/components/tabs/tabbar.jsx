@@ -6,7 +6,6 @@ export default class TabBar extends React.Component {
     constructor() {
         super()
         //binds
-        this.addTabToArray = this.addTabToArray.bind(this)
         this.selectTab = this.selectTab.bind(this)
         this.removeTab = this.removeTab.bind(this)
         this.calcWidths = this.calcWidths.bind(this)
@@ -20,10 +19,6 @@ export default class TabBar extends React.Component {
         this.actualTabWidth = this.maxTabWidth
         this.animationDuration = 150
         this.animationEasing = 'easeOutCirc'
-        //state
-        this.state = {
-            tabs: []
-        }
     }
     /*
     events
@@ -74,7 +69,7 @@ export default class TabBar extends React.Component {
     * tab - <Tab>
     */
     selectTab(tab) {
-        var tabs = this.state.tabs
+        var tabs = window.tabs
         if (tab != null && tab.state.page.getPage() != null) {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i] == tab) {
@@ -92,14 +87,13 @@ export default class TabBar extends React.Component {
     * tab - <Tab>
     */
     removeTab(tab) {
-        var tabs = this.state.tabs,
+        var tabs = window.tabs,
             newState = tab.state,
             index = tabs.indexOf(tab),
             t = this,
             newState2 = this.state
 
-        newState2.tabs.splice(index, 1)
-        this.setState(newState2)
+        tabs.splice(index, 1)
 
         var prevTab = tabs[index - 1]
         if (prevTab == null) {
@@ -157,22 +151,13 @@ export default class TabBar extends React.Component {
         }
     }
     /*
-    * adds tab to array
-    * tab - <Tab>
-    */
-    addTabToArray(tab) {
-        var newState = this.state
-        newState.tabs.push(tab)
-        this.setState(newState)
-    }
-    /*
     * gets tab from mouse point
     * callingTab - <Tab>
     * cursorX - current cursor x position
     * returns <Tab>
     */
     getTabFromMousePoint(callingTab, cursorX) {
-        var tabs = this.state.tabs
+        var tabs = window.tabs
         for (var i = 0; i < tabs.length; i++) {
             if (tabs[i] != callingTab) {
                 if (this.contains(tabs[i], cursorX)) {
@@ -202,7 +187,7 @@ export default class TabBar extends React.Component {
         var tabbarwidth = $(this.refs.tabBarContainer).width(),
             tabbar = this.refs.tabbar,
             addbtn = this.refs.addbtn,
-            tabs = this.state.tabs,
+            tabs = window.tabs,
             a = 0
         for (var i = 0; i < tabs.length; i++) {
             var tabWidthTemp = (tabbarwidth - addbtn.offsetWidth - 2) / tabs.length
@@ -234,7 +219,7 @@ export default class TabBar extends React.Component {
     getWidths(callback = null) {
         var tabbarwidth = $(this.refs.tabBarContainer).width(),
             addbtn = this.refs.addbtn,
-            tabs = this.state.tabs
+            tabs = window.tabs
         for (var i = 0; i < tabs.length; i++) {
             var tabWidthTemp = (tabbarwidth - addbtn.offsetWidth - 2) / tabs.length
             if (tabWidthTemp > this.maxTabWidth) {
@@ -253,7 +238,7 @@ export default class TabBar extends React.Component {
     */
     calcPositions(animateTabs = false, animateAddButton = false) {
         var tabCountTemp = 0,
-            tabs = this.state.tabs,
+            tabs = window.tabs,
             addbtn = this.refs.addbtn,
             lefts = [],
             a = 0
@@ -297,10 +282,8 @@ export default class TabBar extends React.Component {
     * secondTab - <Tab>
     */
     replaceTabs(firstIndex, secondIndex, firstTab, secondTab) {
-        var newState = this.state
-        newState.tabs[firstIndex] = secondTab
-        newState.tabs[secondIndex] = firstTab
-        this.setState(newState)
+        window.tabs[firstIndex] = secondTab
+        window.tabs[secondIndex] = firstTab
         this.changePos(secondTab)
     }
     /*
@@ -311,8 +294,8 @@ export default class TabBar extends React.Component {
         callingTab.locked = true
         var t = this,
             a = 0
-        for (var i = 0; i < t.state.tabs.indexOf(callingTab); i++) {
-            a += t.state.tabs[i].refs.tab.offsetWidth - 2
+        for (var i = 0; i < window.tabs.indexOf(callingTab); i++) {
+            a += window.tabs[i].refs.tab.offsetWidth - 2
         }
         $(callingTab.refs.tab).animate({
             left: a
@@ -332,7 +315,7 @@ export default class TabBar extends React.Component {
                 <div ref='tabbar' className="tabBar">
 
                     {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} tabs={t.state.tabs} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} addTabToArray={t.addTabToArray} page={object} key={i}></Tab>
+                        return <Tab maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
                         })
                     }
                         <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">

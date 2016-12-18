@@ -73,3 +73,7 @@
     position: relative;
     top: calc(42px);
 }
+
+.extensions-iframe {
+    display: none;
+}
