@@ -7,6 +7,9 @@ export default class Extensions {
     * deletes extensions
     */
     deleteExtensions() {
+        for (var i = 0; i < this.loadedExts.length; i++) {
+            $(this.loadedExts[i]).remove()
+        }
         for (var i = 0; i < this.apis.length; i++) {
             this.apis[i].dispose()
             this.apis[i] = null

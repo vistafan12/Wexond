@@ -47,6 +47,9 @@ export default class Bar extends React.Component {
              return false;
          }
     }
+    refresh(self) {
+        self.props.reloadExtensions()
+    }
 
     render() {
         return (
@@ -54,7 +57,7 @@ export default class Bar extends React.Component {
             <div className="bar">
                 <i className="material-icons">arrow_back</i>
                 <i className="material-icons">arrow_forward</i>
-                <i className="material-icons">refresh</i>
+                <i onClick={()=> this.refresh(this)} className="material-icons">refresh</i>
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e)=>this.handleKeyPress(e)} onFocus={(e)=>this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>

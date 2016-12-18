@@ -74,7 +74,8 @@ export default class Page extends React.Component {
     * reloads only extensions that are related to current page
     */
     reloadExtensions() {
-
+        this.extensions.deleteExtensions();
+        this.extensions.loadExtensions(this.tab.getIndex())
     }
     /*
     * gets extensions
@@ -136,7 +137,7 @@ export default class Page extends React.Component {
         var t = this,
             el = (
                 <div className="page" ref="page">
-                    <Bar ref="bar" getSuggestions={t.getSuggestions} getWebView={t.getWebView}></Bar>
+                    <Bar reloadExtensions={t.reloadExtensions} ref="bar" getSuggestions={t.getSuggestions} getWebView={t.getWebView}></Bar>
                     <Suggestions ref="suggestions" getWebView={t.getWebView} getSearchInput={t.getSearchInput}></Suggestions>
                     <webview className="webview" ref="webview" src={this.props.url}></webview>
                 </div>
