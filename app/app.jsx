@@ -11,6 +11,7 @@ class App extends React.Component {
         this.addTab = this.addTab.bind(this)
         this.addPage = this.addPage.bind(this)
         this.getTabsToCreate = this.getTabsToCreate.bind(this)
+        this.isMaximized = false;
         //state
         this.state = {
             pagesToCreate: [],
@@ -31,6 +32,32 @@ class App extends React.Component {
         var state = this.state
         state.tabsToCreate.push(pageObj)
         this.setState(state)
+    }
+    /*
+    * closes window
+    */
+    close() {
+
+    }
+    /*
+    * maximizes / restores window
+    */
+    maximizeOrRestore() {
+        if (this.isMaximized) {
+            //restore window
+        } else {
+            //maximize window
+        }
+    }
+    /*
+    * minimizes / restores window
+    */
+    minimizeOrRestore() {
+        if (this.isMinimized) {
+            //restore window
+        } else {
+            //minimize window
+        }
     }
     /*
     * adds page to render queue
@@ -58,6 +85,9 @@ class App extends React.Component {
                     return <Page index={i} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
                 }
+                <div className="window-controls">
+
+                </div>
             </div>
         )
     }

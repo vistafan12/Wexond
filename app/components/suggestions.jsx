@@ -115,9 +115,6 @@ export default class Suggestions extends React.Component {
                                     }
                                 }
                                 var lastChar = str.substr(str.length - 1);
-                                if (str.split('/').length == 2 && lastChar == "/") {
-                                    str = str.replace('/', '');
-                                }
                                 //google search engine
                                 if (!(str.indexOf("google") !== -1 && str.indexOf("search?q=") !== -1)) {
                                     if (str.startsWith(inputText)) {
@@ -135,9 +132,13 @@ export default class Suggestions extends React.Component {
                                 var newLink = links.sort(function(a, b) {
                                     return a.length - b.length;
                                 })[0];
-                                //get important part of link ex. webexpress.tk for better suggestions
+                                //get important part of link ex. wexond.tk for better suggestions
                                 newLink = newLink.substr(0, newLink.indexOf('/'));
-                                if (oldLink != newLink) {
+                                var compareOldLink = oldLink.replace("/", "").split("&mdash")[0];
+                                var compareNewLink = newLink.replace("/", "").split("&mdash")[0];
+                                console.log(compareNewLink);
+                                console.log(compareOldLink);
+                                if (compareOldLink != compareNewLink) {
                                     links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
                                 }
                                 //sort links by length
