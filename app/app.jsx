@@ -11,7 +11,6 @@ class App extends React.Component {
         this.addTab = this.addTab.bind(this)
         this.addPage = this.addPage.bind(this)
         this.getTabsToCreate = this.getTabsToCreate.bind(this)
-        this.isMaximized = false;
         //state
         this.state = {
             pagesToCreate: [],
@@ -37,26 +36,30 @@ class App extends React.Component {
     * closes window
     */
     close() {
-
+        remote.getCurrentWindow().close();
     }
     /*
     * maximizes / restores window
     */
     maximizeOrRestore() {
-        if (this.isMaximized) {
+        if (remote.getCurrentWindow().isMaximized()) {
             //restore window
+            remote.getCurrentWindow().unmaximize();
         } else {
             //maximize window
+            remote.getCurrentWindow().maximize();
         }
     }
     /*
     * minimizes / restores window
     */
     minimizeOrRestore() {
-        if (this.isMinimized) {
+        if (remote.getCurrentWindow().isMinimized()) {
             //restore window
+            remote.getCurrentWindow().restore();
         } else {
             //minimize window
+            remote.getCurrentWindow().minimize();
         }
     }
     /*
@@ -77,17 +80,31 @@ class App extends React.Component {
 
     render() {
         var t = this
+        var closeStyle = {
+          backgroundImage: 'url(img/controls/close-white.png)'
+        };
+        var maximizeStyle = {
+          backgroundImage: 'url(img/controls/maximize-white.png)'
+        };
+        var minimizeStyle = {
+          backgroundImage: 'url(img/controls/minimize-white.png)'
+        };
         return (
             <div>
                 <div className="draggable"></div>
+                <div className="window-controls">
+                    <div className="control" style={closeStyle} onClick={this.close}>
+                    </div>
+                    <div className="control" style={maximizeStyle} onClick={this.maximizeOrRestore}>
+                    </div>
+                    <div className="control" style={minimizeStyle} onClick={this.minimizeOrRestore}>
+                    </div>
+                </div>
                 <TabBar addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()}></TabBar>
                 {this.state.pagesToCreate.map(function(object, i) {
                     return <Page index={i} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
                 }
-                <div className="window-controls">
-
-                </div>
             </div>
         )
     }

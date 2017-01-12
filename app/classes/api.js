@@ -8,6 +8,7 @@ class API {
         this.tab = new Tab(tab, this),
         this.instance = new Instance(this.tab, this)
         this.webview = new WebView(tab.state.page.getWebView(), instance, this)
+        this.webviews = []
     }
 
     //global methods that manage whole window
@@ -16,7 +17,9 @@ class API {
     * removes all event listeners
     */
     dispose() {
-
+        for (var i = 0; i < this.webviews.length; i++) {
+            this.webviews[i].destroy()
+        }
     }
 }
 /*
@@ -27,6 +30,13 @@ class API {
 class WebView {
     constructor(webview, instance, api) {
         //event listeners and methods for webview
+        api.webviews.push(this)
+    }
+    /*
+    * destroys webview
+    */
+    destroy() {
+
     }
 }
 /*

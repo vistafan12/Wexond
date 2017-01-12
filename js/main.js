@@ -1,4 +1,5 @@
 const {remote} = require('electron')
+
 var app = remote.app,
     appData = app.getPath('userData'),
     userData = appData + '/userdata',

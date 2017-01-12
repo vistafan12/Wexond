@@ -298,7 +298,7 @@ export default class TabBar extends React.Component {
         var t = this,
             a = 0
         for (var i = 0; i < window.tabs.indexOf(callingTab); i++) {
-            a += window.tabs[i].refs.tab.offsetWidth - 2
+            a += window.tabs[i].refs.tab.offsetWidth
         }
         $(callingTab.refs.tab).animate({
             left: a

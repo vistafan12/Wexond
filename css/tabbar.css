@@ -8,6 +8,33 @@
     z-index: 9;
     color: #fff;
 }
+.icon-button {
+    width: 12px;
+    margin-top: 10px;
+    height: 12px;
+    margin-left: 2px;
+}
+.control {
+    height: 32px;
+    width: 32px;
+    float: right;
+    opacity: 0.6;
+    background-size: 12px 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 0.2s all;
+}
+.control:hover {
+    opacity: 1;
+    transition: 0.2s all;
+}
+.window-controls {
+    position: absolute;
+    z-index: 99999;
+    height: 32px;
+    -webkit-app-region: no-drag;
+    right: 3px;
+}
 .tabBarContainer {
     width: 100%;
     background-color: #1976D2;

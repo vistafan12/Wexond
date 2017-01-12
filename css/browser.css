@@ -54,10 +54,15 @@
     -webkit-filter: blur(5px);
 }
 
+/*
+left arrow icon
+*/
 .bar i:nth-child(1) {
     margin-left: 8px;
 }
-
+/*
+menu icon
+*/
 .bar i:nth-child(5) {
     position: absolute;
     right: 8px;

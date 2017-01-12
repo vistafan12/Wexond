@@ -47,16 +47,23 @@ export default class Bar extends React.Component {
              return false;
          }
     }
+    back(self) {
+        self.props.getWebView().goBack()
+    }
+    forward(self) {
+        self.props.getWebView().goForward()
+    }
     refresh(self) {
         self.props.reloadExtensions()
+        self.props.getWebView().reload()
     }
 
     render() {
         return (
 
             <div className="bar">
-                <i className="material-icons">arrow_back</i>
-                <i className="material-icons">arrow_forward</i>
+                <i className="material-icons" onClick={()=> this.back(this)}>arrow_back</i>
+                <i className="material-icons" onClick={()=> this.forward(this)}>arrow_forward</i>
                 <i onClick={()=> this.refresh(this)} className="material-icons">refresh</i>
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e)=>this.handleKeyPress(e)} onFocus={(e)=>this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
