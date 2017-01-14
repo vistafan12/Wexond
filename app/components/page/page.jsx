@@ -257,7 +257,7 @@ export default class Page extends React.Component {
                             : '#444')
                         t.tab.setBackground(data.background)
                         t.tab.setForeground(data.foreground, false)
-                        t.getTitlebar().setBackground(shadeColor(data.background, -0.3))
+                        t.getTitlebar().setBackground(shadeColor(data.background, -0.2))
                     }
                 })
             }

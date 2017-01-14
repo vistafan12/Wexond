@@ -51,7 +51,7 @@ export default class TabBar extends React.Component {
             tab.setForeground(Colors.getForegroundColor(tab.background), false)
             $(tab.refs.tab).css({backgroundColor: tab.background, 'color': tab.foreground})
             tab.selected = true
-            this.props.getApp().refs.titlebar.setBackground(shadeColor(tab.background, -0.3))
+            this.props.getApp().refs.titlebar.setBackground(shadeColor(tab.background, -0.2))
         }
     }
     /*
