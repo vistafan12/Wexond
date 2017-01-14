@@ -47,7 +47,6 @@ export default class TabBar extends React.Component {
         if (tab != null && page != null) {
             page.resize()
             tab.refs.tab.style.zIndex = 9999
-            console.log(tab.background)
             $(page.getPage().refs.page).css({position: 'relative', opacity: 1, marginLeft: 0})
             tab.setForeground(Colors.getForegroundColor(tab.background), false)
             $(tab.refs.tab).css({backgroundColor: tab.background, 'color': tab.foreground})

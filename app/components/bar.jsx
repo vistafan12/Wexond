@@ -8,6 +8,7 @@ export default class Bar extends React.Component {
         this.handleInput = this.handleInput.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
         this.setHoverColor = this.setHoverColor.bind(this)
+        this.refresh = this.refresh.bind(this)
         this.hoverColor = 'rgba(0, 0, 0, 0.2)'
     }
     /*
@@ -62,9 +63,9 @@ export default class Bar extends React.Component {
     forward(self) {
         self.props.getWebView().goForward()
     }
-    refresh(self) {
-        self.props.reloadExtensions()
-        self.props.getWebView().reload()
+    refresh() {
+        this.props.reloadExtensions()
+        this.props.getWebView().reload()
     }
 
     /*

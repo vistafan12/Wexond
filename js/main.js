@@ -1,5 +1,8 @@
 const {remote} = require('electron')
-
+const {
+    Menu,
+    MenuItem
+} = remote
 var app = remote.app,
     appData = app.getPath('userData'),
     userData = appData + '/userdata',

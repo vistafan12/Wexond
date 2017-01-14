@@ -44,14 +44,14 @@ export default class Suggestions extends React.Component {
         if (key != 8 && key != 13 && key != 17 && key != 18 && key != 16 && key != 9 && key != 20 && key != 46 && key != 32) {
             this.canSuggest = true
         }
-        var selected = $('.selected')
+        var selected = $(this.refs.suggestionsWindow).find('.selected')
         //arrow key up
         if (e.keyCode == 38) {
             e.preventDefault();
             e.target.setSelectionRange(0, e.target.value.length)
             e.target.value = selected.prev().attr('link')
 
-            $('li').removeClass("selected");
+            $(this.refs.suggestionsWindow).find('li').removeClass("selected");
             if (selected.prev().length == 0) {
                 selected.first().addClass("selected");
                 e.target.value = selected.first().attr('link')
@@ -66,7 +66,7 @@ export default class Suggestions extends React.Component {
             e.target.setSelectionRange(0, e.target.value.length)
             e.target.value = selected.next().attr('link')
 
-            $('li').removeClass("selected");
+            $(this.refs.suggestionsWindow).find('li').removeClass("selected");
             if (selected.next().length == 0) {
                 selected.last().addClass("selected");
                 e.target.value = selected.last().attr('link')
@@ -176,7 +176,7 @@ export default class Suggestions extends React.Component {
                                     finalLength = 0;
                                 }
                                 //append missing items
-                                while ($('.history').length < finalLength) {
+                                while ($(t.refs.suggestionsWindow).find('.history').length < finalLength) {
                                     var s = $('<li data-ripple-color="#444" class="suggestions-li ripple history" link=""></li>').prependTo($(t.refs.suggestions));
                                     s.click(function(e) {
                                         webview.loadURL('http://' + $(this).attr('link'));
@@ -185,18 +185,18 @@ export default class Suggestions extends React.Component {
                                         //TODO: make ripple
                                     });
                                     s.mouseover(function() {
-                                        $('.suggestions-li').removeClass("selected");
+                                        $(t.refs.suggestionsWindow).find('.suggestions-li').removeClass("selected");
                                         $(this).addClass("selected");
                                         e.target.value = $(this).attr('link')
                                     });
 
                                 }
                                 //remove excess items
-                                while ($('.history').length > finalLength) {
-                                    $('.history').first().remove()
+                                while ($(t.refs.suggestionsWindow).find('.history').length > finalLength) {
+                                    $(t.refs.suggestionsWindow).find('.history').first().remove()
                                 }
                                 //change each item content to new link from array
-                                $('.history').each(function(i) {
+                                $(t.refs.suggestionsWindow).find('.history').each(function(i) {
                                     var link = uniqueLinks[i].split('&mdash;')[0],
                                         title = uniqueLinks[i].split('&mdash;')[1]
                                     $(this).html('<span class="link">' + link + ' </span>' + `<span class="title">&mdash; ${title}</span`);
@@ -209,19 +209,19 @@ export default class Suggestions extends React.Component {
                                     t.canSuggest = false;
                                 }
                             } else {
-                                $('.history').each(function(i) {
+                                $(t.refs.suggestionsWindow).find('.history').each(function(i) {
                                     $(this).remove();
                                 });
                             }
 
                         } else {
                             //if addressbar text is empty, clear all items
-                            $('.history').each(function(i) {
+                            $(t.refs.suggestionsWindow).find('.history').each(function(i) {
                                 $(this).remove();
                             });
                         }
                         //select first item from suggestions box
-                        var first = $('li');
+                        var first = $(t.refs.suggestionsWindow).find('li');
                         first.removeClass('selected');
                         first.first().addClass("selected");
 
@@ -265,7 +265,7 @@ export default class Suggestions extends React.Component {
                                         finalLength = 0;
                                     }
                                     //append missing items
-                                    while ($('.internet').length < finalLength) {
+                                    while ($(t.refs.suggestionsWindow).find('.internet').length < finalLength) {
                                         var s = $('<li data-ripple-color="#444" class="suggestions-li ripple internet" link=""></li>').appendTo($(t.refs.suggestions));
                                         s.click(function(e) {
                                             webview.loadURL("http://www.google.com/search?q=" + $(this).attr('link'));
@@ -274,17 +274,17 @@ export default class Suggestions extends React.Component {
                                             //TODO: make ripple
                                         });
                                         s.mouseover(function() {
-                                            $('.suggestions-li').removeClass("selected");
+                                            $(t.refs.suggestionsWindow).find('.suggestions-li').removeClass("selected");
                                             $(this).addClass("selected");
                                             e.target.value = $(this).attr('link')
                                         });
                                     }
                                     //remove excess items
-                                    while ($('.internet').length > finalLength) {
-                                        $('.internet').first().remove()
+                                    while ($(t.refs.suggestionsWindow).find('.internet').length > finalLength) {
+                                        $(t.refs.suggestionsWindow).find('.internet').first().remove()
                                     }
                                     //change each item content to new link from array
-                                    $('.internet').each(function(i) {
+                                    $(t.refs.suggestionsWindow).find('.internet').each(function(i) {
                                         $(this).html('<span class="title">' + uniqueLinks[i] + '</span>');
                                         $(this).attr('link', uniqueLinks[i]);
                                     })

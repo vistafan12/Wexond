@@ -91,14 +91,22 @@ export default class Titlebar extends React.Component {
         }
     }
     render() {
-
+        var closeStyle = {
+                backgroundImage: this.state.closeStyle.backgroundImage
+            },
+            maximizeStyle = {
+                backgroundImage: this.state.maximizeStyle.backgroundImage
+            },
+            minimizeStyle = {
+                backgroundImage: this.state.minimizeStyle.backgroundImage
+            }
         return (
             <div>
                 <div ref="titlebar" className="titlebar">
                     <div className="window-controls">
-                        <div className="control" style={this.state.closeStyle} onClick={this.close}></div>
-                        <div className="control" style={this.state.maximizeStyle} onClick={this.maximizeOrRestore}></div>
-                        <div className="control" style={this.state.minimizeStyle} onClick={this.minimizeOrRestore}></div>
+                        <div className="control" style={closeStyle} onClick={this.close}></div>
+                        <div className="control" style={maximizeStyle} onClick={this.maximizeOrRestore}></div>
+                        <div className="control" style={minimizeStyle} onClick={this.minimizeOrRestore}></div>
                     </div>
                     <TabBar getApp={this.props.getApp} ref="tabbar" addPage={() => this.props.addPage()} getTabsToCreate={() => this.props.getTabsToCreate()}></TabBar>
                     <div className="border5"></div>
