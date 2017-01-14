@@ -11,6 +11,7 @@ class App extends React.Component {
         this.addTab = this.addTab.bind(this)
         this.addPage = this.addPage.bind(this)
         this.getTabsToCreate = this.getTabsToCreate.bind(this)
+        this.getApp = this.getApp.bind(this)
         //state
         this.state = {
             pagesToCreate: [],
@@ -77,6 +78,12 @@ class App extends React.Component {
     getTabsToCreate() {
         return this.state.tabsToCreate
     }
+    /*
+    * returns this
+    */
+    getApp() {
+      return this
+    }
 
     render() {
         var t = this
@@ -100,9 +107,9 @@ class App extends React.Component {
                     <div className="control" style={minimizeStyle} onClick={this.minimizeOrRestore}>
                     </div>
                 </div>
-                <TabBar addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()}></TabBar>
+                <TabBar ref="tabbar" addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()}></TabBar>
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page index={i} addTab={t.addTab} key={i} url={object.url}></Page>
+                    return <Page index={i} getApp={t.getApp} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
                 }
             </div>

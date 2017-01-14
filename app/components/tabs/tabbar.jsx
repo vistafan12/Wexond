@@ -46,7 +46,7 @@ export default class TabBar extends React.Component {
         if (tab != null && page != null) {
             page.resize()
             tab.refs.tab.style.zIndex = 9999
-            $(page.getPage()).css({position: 'relative', opacity: 1, marginLeft: 0})
+            $(page.getPage().refs.page).css({position: 'relative', opacity: 1, marginLeft: 0})
             $(tab.refs.tab).css({backgroundColor: '#2196F3', 'color': '#fff'})
             tab.isSelected = true
         }
@@ -60,7 +60,7 @@ export default class TabBar extends React.Component {
         var page = tab.state.page
         if (tab != null && page != null) {
             tab.refs.tab.style.zIndex = 1
-            $(page.getPage()).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
+            $(page.getPage().refs.page).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
             $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': '#fff'})
             tab.isSelected = false
         }
@@ -71,7 +71,7 @@ export default class TabBar extends React.Component {
     */
     selectTab(tab) {
         var tabs = window.tabs
-        if (tab != null && tab.state.page.getPage() != null) {
+        if (tab != null && tab.state.page.getPage().refs.page != null) {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i] == tab) {
                     //select

@@ -89,7 +89,7 @@ export default class Page extends React.Component {
     * returns page ref
     */
     getPage() {
-        return this.refs.page
+        return this
     }
     /*
     * gets WebView ref

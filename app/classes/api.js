@@ -5,10 +5,13 @@
 */
 class API {
     constructor(tab, parent) {
-        this.tab = new Tab(tab, this),
-        this.instance = new Instance(this.tab, this)
-        this.webview = new WebView(tab.state.page.getWebView(), instance, this)
+        var instance = tab.instance,
+            webview = tab.state.page.getWebView()
+
         this.webviews = []
+        this.tab = new Tab(tab, this)
+        this.instance = new Page(tab.state.page.getPage(), this)
+        this.webview = new WebView(webview, this)
     }
 
     //global methods that manage whole window
@@ -21,14 +24,26 @@ class API {
             this.webviews[i].destroy()
         }
     }
+    /*
+    * sets titlebar color
+    */
+    setTitlebarColor(color) {
+        $(this.instance.getTabbar().refs.tabBarContainer).css('background-color', color)
+    }
+    /*
+    * gets titlebar color
+    */
+    getTitlebarColor() {
+        return $(this.instance.getTabbar().refs.tabBarContainer).css('background-color')
+    }
 }
 /*
-* class WebView(webview, instance)
-* instance - instance class
-* webview - DOM node of webview
+* class WebView(webview, api)
+* webview - Object DOM node of webview
+* api - Object api
 */
 class WebView {
-    constructor(webview, instance, api) {
+    constructor(webview, api) {
         //event listeners and methods for webview
         api.webviews.push(this)
     }
@@ -40,17 +55,32 @@ class WebView {
     }
 }
 /*
-* class Instance(tab)
-* tab - tab class
+* class Instance(page, api)
+* page - Object page react instance
+* api - Object api
 */
-class Instance {
-    constructor(tab, api) {
+class Page {
+    constructor(page, api) {
         //event listeners and methods for instance
+        this.page = page
+    }
+    /*
+    * returns app
+    */
+    getApp() {
+        return this.page.props.getApp()
+    }
+    /*
+    * returns tabbar in app
+    */
+    getTabbar() {
+        return this.page.props.getApp().refs.tabbar
     }
 }
 /*
-* class Tab(tab)
+* class Tab(tab, api)
 * tab - React object of tab
+* api - Object api
 */
 class Tab {
     constructor(tab, api) {
