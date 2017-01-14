@@ -1,6 +1,7 @@
 'use babel';
 import React from 'react';
 import Tab from './tab.jsx';
+import Colors from '../../classes/colors.js'
 
 export default class TabBar extends React.Component {
     constructor() {
@@ -42,13 +43,16 @@ export default class TabBar extends React.Component {
     * tab - <Tab>
     */
     _selectTab(self, tab) {
-        var page = tab.state.page
+        var page = tab.page
         if (tab != null && page != null) {
             page.resize()
             tab.refs.tab.style.zIndex = 9999
+            console.log(tab.background)
             $(page.getPage().refs.page).css({position: 'relative', opacity: 1, marginLeft: 0})
-            $(tab.refs.tab).css({backgroundColor: '#2196F3', 'color': '#fff'})
-            tab.isSelected = true
+            tab.setForeground(Colors.getForegroundColor(tab.background), false)
+            $(tab.refs.tab).css({backgroundColor: tab.background, 'color': tab.foreground})
+            tab.selected = true
+            this.props.getApp().refs.titlebar.setBackground(shadeColor(tab.background, -30))
         }
     }
     /*
@@ -57,12 +61,12 @@ export default class TabBar extends React.Component {
     * tab - <Tab>
     */
     _deselectTab(self, tab) {
-        var page = tab.state.page
+        var page = tab.page
         if (tab != null && page != null) {
             tab.refs.tab.style.zIndex = 1
             $(page.getPage().refs.page).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
-            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': '#fff'})
-            tab.isSelected = false
+            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': this.props.getApp().refs.titlebar.foreground})
+            tab.selected = false
         }
     }
     /*
@@ -71,7 +75,7 @@ export default class TabBar extends React.Component {
     */
     selectTab(tab) {
         var tabs = window.tabs
-        if (tab != null && tab.state.page.getPage().refs.page != null) {
+        if (tab != null && tab.page.getPage().refs.page != null) {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i] == tab) {
                     //select
@@ -95,7 +99,7 @@ export default class TabBar extends React.Component {
             newState2 = this.state
 
         tabs.splice(index, 1)
-        if (tab.isSelected) {
+        if (tab.isSelected()) {
             var prevTab = tabs[index - 1]
             if (prevTab == null) {
                 this.selectTab(tabs[0])
@@ -109,7 +113,7 @@ export default class TabBar extends React.Component {
             if (tabs[0] != null) {
                 if (tabs[0].refs.tab.offsetWidth < t.maxTabWidth) {
                     newState.render = false
-                    tab.state.page.removePage()
+                    tab.page.removePage()
                     tab.setState(newState)
                     t.calcWidths(true)
                     t.calcPositions(true, true)
@@ -125,7 +129,7 @@ export default class TabBar extends React.Component {
                         },
                         easing: t.animationEasing
                     })
-                    tab.state.page.removePage()
+                    tab.page.removePage()
                     t.calcWidths(true)
                     t.calcPositions(true, true)
                 }
@@ -150,7 +154,7 @@ export default class TabBar extends React.Component {
                 },
                 easing: t.animationEasing
             })
-            tab.state.page.removePage()
+            tab.page.removePage()
         }
     }
     /*
@@ -213,7 +217,6 @@ export default class TabBar extends React.Component {
         for (var i = 0; i < tabs.length; i++) {
             a += tabs[i].offsetWidth
         }
-        $(tabbar).animate({width: a + addbtn.offsetWidth + 1}, {duration: this.animationDuration, easing: this.animationEasing, queue: false})
     }
     /*
     * only calculates widths for all tabs
@@ -318,7 +321,7 @@ export default class TabBar extends React.Component {
                 <div ref='tabbar' className="tabBar">
 
                     {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
+                        return <Tab getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
                         })
                     }
                         <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">

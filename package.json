@@ -15,14 +15,15 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "babel-register": "^6.3.13",
-    "electron-packager": "^8.5.0",
     "asar": "^0.13.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "node-dir": "^0.1.16",
-    "is-there": "^4.3.6",
+    "babel-register": "^6.3.13",
     "electron-connect": "^0.6.1",
-    "gulp": "^3.9.1"
+    "electron-packager": "^8.5.0",
+    "get-pixels": "^3.3.0",
+    "gulp": "^3.9.1",
+    "is-there": "^4.3.6",
+    "node-dir": "^0.1.16"
   }
 }

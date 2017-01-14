@@ -136,8 +136,6 @@ export default class Suggestions extends React.Component {
                                 newLink = newLink.substr(0, newLink.indexOf('/'));
                                 var compareOldLink = oldLink.replace("/", "").split("&mdash")[0];
                                 var compareNewLink = newLink.replace("/", "").split("&mdash")[0];
-                                console.log(compareNewLink);
-                                console.log(compareOldLink);
                                 if (compareOldLink != compareNewLink) {
                                     links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
                                 }

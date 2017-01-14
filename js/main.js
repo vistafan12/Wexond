@@ -7,7 +7,8 @@ var app = remote.app,
     extensionsPath = userData + '/extensions',
     isThere = require('is-there'),
     dir = require('node-dir'),
-    fs = require('fs')
+    fs = require('fs'),
+    getPixels = require("get-pixels")
 
 window.tabs = []
 

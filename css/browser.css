@@ -1,11 +1,11 @@
 .bar {
     height: 42px;
-    background: #2196F3;
-    color: #fff;
+    background: #F5F5F5;
+    color: #212121;
     width: 100%;
     position: absolute;
     top: 0;
-     box-shadow: 0 3px 6px rgba(0,0,0,0.13), 0 3px 6px rgba(0,0,0,0.17);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13), 0 3px 6px rgba(0,0,0,0.17);
     z-index: 2;
 }
 
@@ -33,7 +33,6 @@
     margin-left: 8px;
     position: absolute;
     left: 0;
-    color: rgba(255, 255, 255, 0.75);
     width: calc(100% - 64px);
     background-color: transparent;
 }
@@ -47,6 +46,7 @@
     transform: translateY(-50%);
     height: 30px;
     background-color: rgba(255,255,255,0.2);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     float: left;
 }
 
@@ -69,7 +69,6 @@ menu icon
     margin-left: 12px;
 }
 .bar i:hover {
-    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     transition: 0.3s all;
 }

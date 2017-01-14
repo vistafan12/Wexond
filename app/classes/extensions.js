@@ -68,7 +68,7 @@ export default class Extensions {
                                                         var script = document.createElement('script');
                                                         script.text = `function a${id}(index) {
                                                             var api = new API(parent.tabs[index], parent)
-                                                            parent.tabs[index].state.page.getExtensions().apis.push(api)
+                                                            parent.tabs[index].page.getExtensions().apis.push(api)
                                                             parent = null
                                                             ${data}
                                                         } a${id}(${id});`

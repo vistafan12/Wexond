@@ -9,14 +9,20 @@ export default class Tab extends React.Component {
         this.setPage = this.setPage.bind(this)
         this.changeFavicon = this.changeFavicon.bind(this)
         this.getIndex = this.getIndex.bind(this)
+        this.isSelected = this.isSelected.bind(this)
+        this.setBackground = this.setBackground.bind(this)
+        this.setForeground = this.setForeground.bind(this)
         //global properties
         this.locked = false
         this.animationDuration = 150
+        this.page = null
+        this.selected = false
+        this.foreground = '#212121'
+        this.background = '#F5F5F5'
         //state
         this.state = {
             title: "New tab",
-            render: true,
-            page: null
+            render: true
         }
     }
     /*
@@ -29,9 +35,12 @@ export default class Tab extends React.Component {
             setPage: this.setPage,
             changeFavicon: this.changeFavicon,
             refs: this.refs,
-            getIndex: this.getIndex
+            getIndex: this.getIndex,
+            isSelected: this.isSelected,
+            setForeground: this.setForeground,
+            setBackground: this.setBackground
         }
-        this.state.page.associateTab(pass)
+        this.page.associateTab(pass)
         window.tabs.push(this)
         this.props.selectTab(this)
         this.props.calcWidths(true)
@@ -40,8 +49,6 @@ export default class Tab extends React.Component {
         var t = this
         this.props.getWidths(function(width) {
             if (width < t.props.maxTabWidth) {
-                console.log(width)
-                console.log(t.props.maxTabWidth)
                 $(t.refs.tab).css({width: 0, marginLeft: width})
             } else {
                 $(t.refs.tab).css({width: 0})
@@ -60,8 +67,45 @@ export default class Tab extends React.Component {
             })
 
         })
-        this.state.page.getExtensions().loadExtensions(this.getIndex())
+        this.page.getExtensions().loadExtensions(this.getIndex())
 
+    }
+    /*
+    * returns Object tabbar
+    */
+    getTabbar() {
+        return this.props.getApp().refs.tabbar
+    }
+    /*
+    * returns boolean
+    */
+    isSelected() {
+        return this.selected
+    }
+    /*
+    * sets background
+    * color - String color
+    */
+    setBackground(color) {
+        this.background = color
+        if (this.selected) {
+            $(this.refs.tab).css('background-color', color)
+        }
+    }
+    /*
+    * sets foreground
+    * color - String color
+    */
+    setForeground(color, force) {
+        this.foreground = color
+
+        if (force) {
+            $(this.refs.tab).css('color', color)
+        } else {
+            if (this.selected) {
+                $(this.refs.tab).css('color', color)
+            }
+        }
     }
     /*
     * gets index of current tab
@@ -89,20 +133,17 @@ export default class Tab extends React.Component {
     /*
     events
     */
-
     closeBtnClick(self, e) {
         e.stopPropagation()
         e.preventDefault()
         self.props.removeTab(self)
     }
     /*
-    * sets this.state.page to new value
+    * sets this.page to new value
     * page - object of page
     */
     setPage(page) {
-        var newState = this.state
-        newState.page = page
-        this.setState(newState)
+        this.page = page
     }
     /*
     * makes tab able to draggable

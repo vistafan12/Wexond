@@ -7,11 +7,20 @@ export default class Bar extends React.Component {
         //binds
         this.handleInput = this.handleInput.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.setHoverColor = this.setHoverColor.bind(this)
+        this.hoverColor = 'rgba(0, 0, 0, 0.2)'
     }
     /*
     lifecycle
     */
     componentDidMount() {
+        var t = this
+        $(this.refs.bar).find('i').mouseover(function() {
+            $(this).css('background-color', t.hoverColor)
+        })
+        $(this.refs.bar).find('i').mouseout(function() {
+            $(this).css('background-color', 'transparent')
+        })
     }
     /*
     events
@@ -58,10 +67,18 @@ export default class Bar extends React.Component {
         self.props.getWebView().reload()
     }
 
+    /*
+    * sets hover color
+    * color - String color
+    */
+    setHoverColor(color) {
+        this.hoverColor = color
+    }
+
     render() {
         return (
 
-            <div className="bar">
+            <div className="bar" ref="bar">
                 <i className="material-icons" onClick={()=> this.back(this)}>arrow_back</i>
                 <i className="material-icons" onClick={()=> this.forward(this)}>arrow_forward</i>
                 <i onClick={()=> this.refresh(this)} className="material-icons">refresh</i>

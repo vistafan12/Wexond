@@ -6,11 +6,11 @@
 class API {
     constructor(tab, parent) {
         var instance = tab.instance,
-            webview = tab.state.page.getWebView()
+            webview = tab.page.getWebView()
 
         this.webviews = []
         this.tab = new Tab(tab, this)
-        this.instance = new Page(tab.state.page.getPage(), this)
+        this.instance = new Page(tab.page.getPage(), this)
         this.webview = new WebView(webview, this)
     }
 
