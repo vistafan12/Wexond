@@ -47,10 +47,10 @@ export default class Page extends React.Component {
     * lifecycle
     */
     componentDidUpdate() {
-        this.prepareContextMenu()
         this.tab.setPage(this)
     }
     componentDidMount() {
+        this.prepareContextMenu()
         var pageObj = {
                 getPage: this.getPage,
                 getWebView: this.getWebView,
@@ -257,7 +257,7 @@ export default class Page extends React.Component {
                             : '#444')
                         t.tab.setBackground(data.background)
                         t.tab.setForeground(data.foreground, false)
-                        t.getTitlebar().setBackground(shadeColor(data.background, -30))
+                        t.getTitlebar().setBackground(shadeColor(data.background, -0.3))
                     }
                 })
             }
@@ -288,6 +288,8 @@ export default class Page extends React.Component {
         var newState = this.state
         newState.render = false
         this.setState(newState)
+        for (var i = 0; i < 99; i++)
+            clearInterval(i)
     }
     /*
     * reloads only extensions that are related to current page

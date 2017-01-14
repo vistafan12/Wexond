@@ -38,7 +38,7 @@ class App extends React.Component {
     */
     addPage() {
         var state = this.state
-        state.pagesToCreate.push({url: "http://google.pl"})
+        state.pagesToCreate.push({url: "about:blank"})
         this.setState(state)
     }
     /*
@@ -62,7 +62,7 @@ class App extends React.Component {
             <div>
 
                 <Titlebar getApp={t.getApp} addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()} ref="titlebar"></Titlebar>
-                
+
                 {this.state.pagesToCreate.map(function(object, i) {
                     return <Page index={i} getApp={t.getApp} addTab={t.addTab} key={i} url={object.url}></Page>
                 })
