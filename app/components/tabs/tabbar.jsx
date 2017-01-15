@@ -194,6 +194,7 @@ export default class TabBar extends React.Component {
     }
     /*
     * sets widths for all tabs
+    * animation (optional) - boolean default: false
     */
     calcWidths(animation = false) {
         var tabbarwidth = $(this.refs.tabBarContainer).width(),
@@ -221,6 +222,25 @@ export default class TabBar extends React.Component {
         }
         for (var i = 0; i < tabs.length; i++) {
             a += tabs[i].offsetWidth
+        }
+    }
+    /*
+    * calculates and sets positions for tabs
+    * animateTabs (optional) - boolean default: false
+    * animateAddButton (optional) - boolean default: false
+    */
+    getPositions(callback = null) {
+        var tabCountTemp = 0,
+            tabs = window.tabs,
+            lefts = [],
+            a = 0
+
+        for (var i = 0; i < tabs.length; i++) {
+            lefts.push(a)
+            a += tabs[i].offsetWidth
+        }
+        if (typeof(callback) === 'function') {
+            callback(lefts)
         }
     }
     /*
@@ -326,7 +346,7 @@ export default class TabBar extends React.Component {
                 <div ref='tabbar' className="tabBar">
 
                     {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
+                        return <Tab getPositions={t.getPositions} getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
                         })
                     }
                         <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
