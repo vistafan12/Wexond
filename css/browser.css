@@ -33,7 +33,7 @@
     margin-left: 8px;
     position: absolute;
     left: 0;
-    width: calc(100% - 64px);
+    width: calc(100% - 48px);
     background-color: transparent;
 }
 

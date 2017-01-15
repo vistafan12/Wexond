@@ -184,12 +184,12 @@ export default class Suggestions extends React.Component {
                                         uniqueLinks.push(el)
                                 });
                                 //limit array length to 3
-                                if (uniqueLinks.length > 3) {
-                                    uniqueLinks.length = 3;
+                                if (uniqueLinks.length > 4) {
+                                    uniqueLinks.length = 4;
                                 }
                                 var finalLength = uniqueLinks.length;
-                                if (finalLength > 3) {
-                                    finalLength = 3;
+                                if (finalLength > 5) {
+                                    finalLength = 5;
                                 }
                                 if (finalLength < 0) {
                                     finalLength = 0;
@@ -239,6 +239,12 @@ export default class Suggestions extends React.Component {
                                 $(this).remove();
                             });
                         }
+                        if (!($(t.refs.suggestionsWindow).find('.history').length <= 0)) {
+                            //select first item from suggestions box
+                            var first = $(t.refs.suggestionsWindow).find('li');
+                            first.removeClass('selected');
+                            first.first().addClass("selected");
+                        }
 
                     },
                     complete: function() {
@@ -269,24 +275,19 @@ export default class Suggestions extends React.Component {
                                         return a.length - b.length;
                                     });
                                     //limit array length to 3
-                                    if (uniqueLinks.length > 3) {
-                                        uniqueLinks.length = 3;
+                                    if (uniqueLinks.length > 5) {
+                                        uniqueLinks.length = 5;
                                     }
                                     var finalLength = uniqueLinks.length;
-                                    if (finalLength > 3) {
-                                        finalLength = 3;
+                                    if (finalLength > 5) {
+                                        finalLength = 5;
                                     }
                                     if (finalLength < 0) {
                                         finalLength = 0;
                                     }
                                     //append missing items
                                     while ($(t.refs.suggestionsWindow).find('.internet').length < finalLength) {
-                                        if (!($(t.refs.suggestionsWindow).find('.history').length <= 0)) {
-                                            //select first item from suggestions box
-                                            var first = $(t.refs.suggestionsWindow).find('li');
-                                            first.removeClass('selected');
-                                            first.first().addClass("selected");
-                                        }
+
                                         var s = $('<li data-ripple-color="#444" class="suggestions-li ripple internet" link=""></li>').appendTo($(t.refs.suggestions));
                                         s.click(function(e) {
                                             webview.loadURL("http://www.google.com/search?q=" + $(this).attr('link'));

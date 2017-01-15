@@ -8,7 +8,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({width: 800, height: 600, frame: false});
+  mainWindow = new BrowserWindow({width: 800, height: 600, frame: false, minWidth: 300, minHeight: 430});
   mainWindow.loadURL('file://' + __dirname + '/index.html');
   mainWindow.setMenu(null)
   mainWindow.webContents.openDevTools()

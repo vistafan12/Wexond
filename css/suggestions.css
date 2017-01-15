@@ -1,7 +1,7 @@
 .suggestions-window {
     height: calc(100vh - 42px);
     width: 100vw;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.85);
     position: absolute;
     top: 42px;
     z-index: 99999;
@@ -10,14 +10,12 @@
 
 .suggestions {
     max-width: 768px;
-    width: calc(100% - 128px);
+    width: calc(100% - 220px);
     margin: 0;
     padding: 0;
     position: relative;
     top: 32px;
-    left: 50%;
-    margin-left: -24px;
-    transform: translateX(-50%);
+    left: 130px;
     list-style: none;
 }
 .suggestions li {
