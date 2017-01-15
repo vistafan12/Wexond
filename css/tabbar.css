@@ -60,6 +60,8 @@
     z-index: 1;
     -webkit-user-select: none;
     cursor: default;
+    transition: 0.3s background;
+    transition: 0.3s color;
 }
 
 .border-horizontal {

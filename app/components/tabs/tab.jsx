@@ -18,7 +18,7 @@ export default class Tab extends React.Component {
         this.page = null
         this.selected = false
         this.foreground = '#212121'
-        this.background = '#F5F5F5'
+        this.background = '#fff'
         //state
         this.state = {
             title: "New tab",
