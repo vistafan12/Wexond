@@ -114,8 +114,9 @@ export default class Page extends React.Component {
         t.openImageInNewTabMenuItem = new MenuItem({
             label: 'Open image in new tab',
             click() {
-                if (t.linkToOpen != "") {
+                if (t.imageToSave != "") {
                     //add new tab
+                    t.props.getApp().addPage({url: t.imageToSave})
                 }
             }
         })
