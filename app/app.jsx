@@ -39,8 +39,9 @@ class App extends React.Component {
     * adds page to render queue
     * options (optional) - Object {url} default: {url: this.defaultURL}
     */
-    addPage(options = {url: this.defaultURL}) {
-        console.log(options)
+    addPage(options = {
+        url: this.defaultURL
+    }) {
         var state = this.state
         state.pagesToCreate.push(options)
         this.setState(state)
@@ -56,7 +57,7 @@ class App extends React.Component {
     * returns this
     */
     getApp() {
-      return this
+        return this
     }
 
     render() {
@@ -65,12 +66,12 @@ class App extends React.Component {
         return (
             <div>
 
-                <Titlebar getApp={t.getApp} addPage={() => this.addPage()} getTabsToCreate={() => this.getTabsToCreate()} ref="titlebar"></Titlebar>
+                <Titlebar getApp={t.getApp} ref="titlebar"></Titlebar>
 
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page index={i} getApp={t.getApp} addTab={t.addTab} key={i} url={object.url}></Page>
+                    return <Page index={i} getApp={t.getApp} key={i} url={object.url}></Page>
                 })
-                }
+}
 
             </div>
         )

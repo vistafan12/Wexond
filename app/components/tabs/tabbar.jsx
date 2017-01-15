@@ -15,6 +15,7 @@ export default class TabBar extends React.Component {
         this.getTabFromMousePoint = this.getTabFromMousePoint.bind(this)
         this.replaceTabs = this.replaceTabs.bind(this)
         this.getWidths = this.getWidths.bind(this)
+        this.getTabBar = this.getTabBar.bind(this)
         //global properties
         this.maxTabWidth = 190
         this.actualTabWidth = this.maxTabWidth
@@ -74,7 +75,10 @@ export default class TabBar extends React.Component {
         if (tab != null && page != null) {
             tab.refs.tab.style.zIndex = 1
             $(page.getPage().refs.page).css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999})
-            $(tab.refs.tab).css({backgroundColor: $(self.refs.tabBarContainer).css('background-color'), 'color': this.props.getApp().refs.titlebar.foreground})
+            $(tab.refs.tab).css({
+                backgroundColor: $(self.refs.tabBarContainer).css('background-color'),
+                'color': this.props.getApp().refs.titlebar.foreground
+            })
             tab.selected = false
         }
     }
@@ -106,7 +110,6 @@ export default class TabBar extends React.Component {
             index = tabs.indexOf(tab),
             t = this,
             newState2 = this.state
-
 
         tabs.splice(index, 1)
         if (tab.isSelected()) {
@@ -337,22 +340,28 @@ export default class TabBar extends React.Component {
             easing: this.animationEasing
         })
     }
+    /*
+    * returns this
+    */
+    getTabBar() {
+        return this
+    }
     render() {
         var t = this
         return (
             <div ref="tabBarContainer" className="tabBarContainer">
                 <div ref='tabbar' className="tabBar">
 
-                    {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab getPositions={t.getPositions} getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
-                        })
-                    }
-                        <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
-                            <i className="material-icons">add</i>
-                            <div className="border-horizontal2"></div>
-                        </div>
-
+                    {this.props.getApp().getTabsToCreate().map(function(object, i) {
+                        return <Tab getApp={t.props.getApp} getTabBar={t.getTabBar} page={object} key={i}></Tab>
+                    })
+}
+                    <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
+                        <i className="material-icons">add</i>
+                        <div className="border-horizontal2"></div>
                     </div>
+
+                </div>
             </div>
         )
     }

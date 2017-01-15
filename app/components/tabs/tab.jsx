@@ -40,17 +40,18 @@ export default class Tab extends React.Component {
                 setForeground: this.setForeground,
                 setBackground: this.setBackground
             },
-            t = this
+            t = this,
+            tabbar = this.props.getTabBar()
         this.page.associateTab(pass)
         window.tabs.push(this)
-        this.props.selectTab(this)
-        this.props.calcWidths(true)
-        this.props.getPositions(function(lefts) {
+        tabbar.selectTab(this)
+        tabbar.calcWidths(true)
+        tabbar.getPositions(function(lefts) {
             $(t.refs.tab).css('left', lefts[lefts.length - 1])
         })
-        this.props.calcPositions(true, true)
+        tabbar.calcPositions(true, true)
         this.makeDraggable(this)
-        this.props.getWidths(function(width) {
+        tabbar.getWidths(function(width) {
             if (width < t.props.maxTabWidth) {
                 $(t.refs.tab).css({width: 0, marginLeft: width})
             } else {
@@ -63,8 +64,8 @@ export default class Tab extends React.Component {
                 duration: t.animationDuration,
                 queue: false,
                 complete: function() {
-                    t.props.calcWidths(true)
-                    t.props.calcPositions(true, true)
+                    tabbar.calcWidths(true)
+                    tabbar.calcPositions(true, true)
                 },
                 easing: 'easeOutQuint'
             })
@@ -77,7 +78,7 @@ export default class Tab extends React.Component {
     * returns Object tabbar
     */
     getTabbar() {
-        return this.props.getApp().refs.tabbar
+        return this.props.getTabBar()
     }
     /*
     * returns boolean
@@ -139,7 +140,7 @@ export default class Tab extends React.Component {
     closeBtnClick(self, e) {
         e.stopPropagation()
         e.preventDefault()
-        self.props.removeTab(self)
+        self.props.getTabBar().removeTab(self)
     }
     /*
     * sets this.page to new value
@@ -157,7 +158,7 @@ export default class Tab extends React.Component {
             tabs = window.tabs
         function handle_mousedown(e) {
             if (e.target.tagName != 'I') {
-                self.props.selectTab(self)
+                self.props.getTabBar().selectTab(self)
                 window.my_dragging = {};
                 my_dragging.pageX0 = e.pageX;
                 my_dragging.pageY0 = e.pageY;
@@ -174,7 +175,7 @@ export default class Tab extends React.Component {
                 }
                 function handle_mouseup(e) {
                     $(window).off('mousemove', handle_dragging).off('mouseup', handle_mouseup);
-                    self.props.calcPositions(true, true)
+                    self.props.getTabBar().calcPositions(true, true)
                 }
                 $(window).on('mouseup', handle_mouseup).on('mousemove', handle_dragging);
             }
@@ -187,12 +188,12 @@ export default class Tab extends React.Component {
     * cursorX - current cursor x position
     */
     reorderTabs(self, cursorX) {
-        var overTab = self.props.getTabFromMousePoint(self, cursorX),
+        var overTab = self.props.getTabBar().getTabFromMousePoint(self, cursorX),
             tabs = window.tabs
         if (overTab != null) {
             var indexTab = tabs.indexOf(self),
                 indexOverTab = tabs.indexOf(overTab)
-            self.props.replaceTabs(indexTab, indexOverTab, self, overTab)
+            self.props.getTabBar().replaceTabs(indexTab, indexOverTab, self, overTab)
         }
     }
 

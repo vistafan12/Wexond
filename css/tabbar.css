@@ -17,9 +17,12 @@
     bottom: 0;*/
     left: 0px;
 }
+
+
 /*.tabBarContainer .border5 {
     top: 0;
 }*/
+
 .tabTitle {
     position: absolute;
     left: 50%;
@@ -72,6 +75,7 @@
     left: 0px;
     opacity: 0.15;
 }
+
 .border-horizontal2 {
     position: absolute;
     width: 1px;

@@ -63,7 +63,7 @@ export default class Page extends React.Component {
             bar = this.refs.bar,
             background = '#FAFAFA'
 
-        this.props.addTab(pageObj)
+        this.props.getApp().addTab(pageObj)
         this.extensions = new Extensions()
         this.resize()
 
@@ -371,8 +371,8 @@ export default class Page extends React.Component {
         var t = this,
             el = (
                 <div className="page" ref="page">
-                    <Bar reloadExtensions={t.reloadExtensions} ref="bar" getSuggestions={t.getSuggestions} getWebView={t.getWebView}></Bar>
-                    <Suggestions ref="suggestions" getWebView={t.getWebView} getSearchInput={t.getSearchInput}></Suggestions>
+                    <Bar ref="bar" getPage={t.getPage}></Bar>
+                    <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
                     <webview className="webview" ref="webview" src={this.props.url}></webview>
                 </div>
             )

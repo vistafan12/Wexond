@@ -7,9 +7,11 @@
     z-index: 99999;
     display: none;
 }
+
 .blur {
     -webkit-filter: blur(5px);
 }
+
 .suggestions {
     max-width: 768px;
     width: calc(100% - 220px);
@@ -20,6 +22,7 @@
     left: 130px;
     list-style: none;
 }
+
 .suggestions li {
     width: calc(100%);
     padding: 8px;
@@ -28,6 +31,7 @@
     -webkit-user-select: none;
     cursor: default;
 }
+
 .selected {
     background-color: rgba(189, 189, 189, 0.5);
     border-radius: 3px;

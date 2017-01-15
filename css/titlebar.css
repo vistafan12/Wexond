@@ -8,10 +8,12 @@
     background-repeat: no-repeat;
     transition: 0.2s all;
 }
+
 .control:hover {
     opacity: 1;
     transition: 0.2s all;
 }
+
 .window-controls {
     position: absolute;
     z-index: 99999;
@@ -19,6 +21,7 @@
     -webkit-app-region: no-drag;
     right: 0px;
 }
+
 .titlebar {
     width: 100%;
     height: 32px;

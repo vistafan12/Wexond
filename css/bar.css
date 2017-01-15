@@ -5,7 +5,7 @@
     width: 100%;
     position: absolute;
     top: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.14);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.14);
     z-index: 2;
     transition: 0.2s background;
 }
@@ -27,7 +27,7 @@
 
 .searchInput {
     outline: none;
-    border:none;
+    border: none;
     font-size: 14px;
     top: 50%;
     transform: translateY(-50%);
@@ -46,25 +46,32 @@
     top: 50%;
     transform: translateY(-50%);
     height: 30px;
-    background-color: rgba(255,255,255,0.2);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     float: left;
     transition: 0.2s background;
 }
+
+
 /*
 left arrow icon
 */
+
 .bar i:nth-child(1) {
     margin-left: 8px;
 }
+
+
 /*
 menu icon
 */
+
 .bar i:nth-child(5) {
     position: absolute;
     right: 8px;
     margin-left: 12px;
 }
+
 .bar i:hover {
     border-radius: 3px;
     transition: 0.3s all;

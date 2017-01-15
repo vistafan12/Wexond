@@ -27,35 +27,35 @@ export default class Bar extends React.Component {
     events
     */
     handleInput() {
-        var suggestions = this.props.getSuggestions()
+        var suggestions = this.props.getPage().getSuggestions()
         suggestions.show()
     }
     handleFocusIn(e) {
         e.target.setSelectionRange(0, e.target.value.length)
     }
     handleKeyPress(e) {
-        var webview = this.props.getWebView(),
-            suggestions = this.props.getSuggestions()
-            //if enter key was pressed
-         if (e.which == 13) {
-             suggestions.hide()
-             if (!e.target.value.startsWith("webexpress://")) {
-                 if (isURL(e.target.value)) {
-                     if (e.target.value.startsWith("http://") || e.target.value.startsWith("https://") || e.target.value.startsWith("file://")) {
-                         webview.loadURL(e.target.value);
-                     } else {
-                         webview.loadURL("http://" + e.target.value);
-                     }
-                 } else {
-                     //TODO: search engines
-                     webview.loadURL("http://www.google.com/search?q=" + e.target.value);
-                 }
-             } else {
-                 webview.loadURL(e.target.value);
-             }
+        var webview = this.props.getPage().getWebView(),
+            suggestions = this.props.getPage().getSuggestions()
+        //if enter key was pressed
+        if (e.which == 13) {
+            suggestions.hide()
+            if (!e.target.value.startsWith("webexpress://")) {
+                if (isURL(e.target.value)) {
+                    if (e.target.value.startsWith("http://") || e.target.value.startsWith("https://") || e.target.value.startsWith("file://")) {
+                        webview.loadURL(e.target.value);
+                    } else {
+                        webview.loadURL("http://" + e.target.value);
+                    }
+                } else {
+                    //TODO: search engines
+                    webview.loadURL("http://www.google.com/search?q=" + e.target.value);
+                }
+            } else {
+                webview.loadURL(e.target.value);
+            }
 
-             return false;
-         }
+            return false;
+        }
     }
     back(self) {
         self.props.getWebView().goBack()
@@ -64,8 +64,8 @@ export default class Bar extends React.Component {
         self.props.getWebView().goForward()
     }
     refresh() {
-        this.props.reloadExtensions()
-        this.props.getWebView().reload()
+        this.props.getPage().reloadExtensions()
+        this.props.getPage().getWebView().reload()
     }
 
     /*
@@ -80,11 +80,11 @@ export default class Bar extends React.Component {
         return (
 
             <div className="bar" ref="bar">
-                <i className="material-icons" onClick={()=> this.back(this)}>arrow_back</i>
-                <i className="material-icons" onClick={()=> this.forward(this)}>arrow_forward</i>
-                <i onClick={()=> this.refresh(this)} className="material-icons">refresh</i>
+                <i className="material-icons" onClick={() => this.back(this)}>arrow_back</i>
+                <i className="material-icons" onClick={() => this.forward(this)}>arrow_forward</i>
+                <i onClick={() => this.refresh(this)} className="material-icons">refresh</i>
                 <div ref="searchBox" className="searchBox">
-                    <input onKeyPress={(e)=>this.handleKeyPress(e)} onFocus={(e)=>this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
+                    <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
                 <i className="material-icons">menu</i>
             </div>

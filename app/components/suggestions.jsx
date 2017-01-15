@@ -13,7 +13,7 @@ export default class Suggestions extends React.Component {
         this.canSuggest = false
     }
     componentDidMount() {
-        var searchInput = this.props.getSearchInput()
+        var searchInput = this.props.getPage().getSearchInput()
 
         searchInput.addEventListener('input', this.getSuggestions)
         searchInput.onkeydown = this.handleKeyDown
@@ -23,14 +23,14 @@ export default class Suggestions extends React.Component {
     */
     hide() {
         $(this.refs.suggestionsWindow).css('display', 'none')
-        $(this.props.getWebView()).removeClass('blur')
+        $(this.props.getPage().getWebView()).removeClass('blur')
     }
     /*
     * shows suggestions window
     */
     show() {
         $(this.refs.suggestionsWindow).css('display', 'block')
-        $(this.props.getWebView()).addClass('blur')
+        $(this.props.getPage().getWebView()).addClass('blur')
     }
     /*
     events
@@ -102,7 +102,7 @@ export default class Suggestions extends React.Component {
     getSuggestions(e) {
         var key = e.keyCode || e.charCode,
             t = this,
-            webview = this.props.getWebView()
+            webview = this.props.getPage().getWebView()
 
         if (key != 40 && key != 38) {
             //get suggestions from history

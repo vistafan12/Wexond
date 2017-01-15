@@ -50,9 +50,7 @@ class WebView {
     /*
     * destroys webview
     */
-    destroy() {
-
-    }
+    destroy() {}
 }
 /*
 * class Instance(page, api)
