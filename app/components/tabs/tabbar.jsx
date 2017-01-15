@@ -188,13 +188,13 @@ export default class TabBar extends React.Component {
     }
     /*
     * sets widths for all tabs
-    * animation (optional) - boolean default: false
     */
     calcWidths(animation = false) {
         var tabbarwidth = $(this.refs.tabBarContainer).width(),
             tabbar = this.refs.tabbar,
             addbtn = this.refs.addbtn,
-            tabs = window.tabs
+            tabs = window.tabs,
+            a = 0
         for (var i = 0; i < tabs.length; i++) {
             var tabWidthTemp = (tabbarwidth - addbtn.offsetWidth - 2) / tabs.length
             if (tabWidthTemp > this.maxTabWidth) {
@@ -205,8 +205,7 @@ export default class TabBar extends React.Component {
                     width: tabWidthTemp
                 }, {
                     duration: this.animationDuration,
-                    queue: false,
-                    easing: this.animationEasing
+                    queue: false
                 })
             } else {
                 tabs[i].refs.tab.style.width = tabWidthTemp + 'px'
@@ -214,10 +213,13 @@ export default class TabBar extends React.Component {
             tabs[i].offsetWidth = tabWidthTemp
             this.actualTabWidth = tabWidthTemp
         }
+        for (var i = 0; i < tabs.length; i++) {
+            a += tabs[i].offsetWidth
+        }
     }
     /*
     * only calculates widths for all tabs
-    * callback - function
+    * callback function
     */
     getWidths(callback = null) {
         var tabbarwidth = $(this.refs.tabBarContainer).width(),
@@ -232,22 +234,6 @@ export default class TabBar extends React.Component {
         }
         if (typeof(callback) === 'function') {
             callback(tabWidthTemp)
-        }
-    }
-    /*
-    * only calculates positions for all tabs
-    * callback - function
-    */
-    getPositions(callback = null) {
-        var tabs = window.tabs,
-            lefts = [],
-            a = 0
-        for (var i = 0; i < tabs.length; i++) {
-            lefts.push(a)
-            a += tabs[i].offsetWidth
-        }
-        if (typeof(callback) === 'function') {
-            callback(lefts)
         }
     }
     /*
@@ -334,7 +320,7 @@ export default class TabBar extends React.Component {
                 <div ref='tabbar' className="tabBar">
 
                     {this.props.getTabsToCreate().map(function(object, i) {
-                        return <Tab getPositions={t.getPositions} getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
+                        return <Tab getApp={t.props.getApp} maxTabWidth={t.maxTabWidth} getWidths={t.getWidths} changePos={t.changePos} replaceTabs={t.replaceTabs} getTabFromMousePoint={t.getTabFromMousePoint} calcPositions={t.calcPositions} calcWidths={t.calcWidths} removeTab={t.removeTab} selectTab={t.selectTab} page={object} key={i}></Tab>
                         })
                     }
                         <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
