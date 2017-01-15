@@ -31,6 +31,7 @@ export default class Page extends React.Component {
         this.addContextMenuItem = this.addContextMenuItem.bind(this)
         this.ready = this.ready.bind(this)
         this.onContextMenu = this.onContextMenu.bind(this)
+        this.focusSearchInput = this.focusSearchInput.bind(this)
         //global properties
         this.menu = new Menu()
         this.xToInspect = null
@@ -57,11 +58,14 @@ export default class Page extends React.Component {
                 associateTab: this.associateTab,
                 removePage: this.removePage,
                 resize: this.resize,
-                getExtensions: this.getExtensions
+                getExtensions: this.getExtensions,
+                select: this.props.select,
+                focusSearchInput: this.focusSearchInput
             },
             webview = this.refs.webview,
             bar = this.refs.bar,
-            background = '#FAFAFA'
+            background = '#FAFAFA',
+            t = this
 
         this.props.getApp().addTab(pageObj)
         this.extensions = new Extensions()
@@ -75,6 +79,20 @@ export default class Page extends React.Component {
 
         this.colors = new Colors(this.getWebView())
         this.colorInterval = setInterval(this.updateColors, 200)
+        var lastLink = ''
+        webview.addEventListener('ipc-message', function (e) {
+            if (e.channel == 'scroll') {
+                if (lastLink != e.args[0]) {
+                    t.props.getApp().addPage({url: e.args[0], select: false})
+                    lastLink = e.args[0]
+                    setTimeout(function() {
+                        lastLink = ''
+                    }, 50)
+                }
+            }
+        })
+
+
     }
     /*
     * appends and prepares context menu items
@@ -107,7 +125,7 @@ export default class Page extends React.Component {
             click() {
                 if (t.linkToOpen != "") {
                     //add new tab
-                    t.props.getApp().addPage({url: t.linkToOpen})
+                    t.props.getApp().addPage({url: t.linkToOpen, select: false})
                 }
             }
         })
@@ -116,7 +134,7 @@ export default class Page extends React.Component {
             click() {
                 if (t.imageToSave != "") {
                     //add new tab
-                    t.props.getApp().addPage({url: t.imageToSave})
+                    t.props.getApp().addPage({url: t.imageToSave, select: false})
                 }
             }
         })
@@ -170,7 +188,6 @@ export default class Page extends React.Component {
 
         webview.getWebContents().removeListener('context-menu', this.onContextMenu)
         webview.getWebContents().on('context-menu', this.onContextMenu, false)
-
     }
     onContextMenu(e, params) {
         var webview = this.refs.webview,
@@ -236,7 +253,8 @@ export default class Page extends React.Component {
     frameFinishLoad() {
         var webview = this.refs.webview,
             bar = this.refs.bar
-        $(bar.refs.searchInput).val(webview.getURL())
+        if(webview.getURL() != this.props.getApp().defaultURL)
+            $(bar.refs.searchInput).val(webview.getURL())
     }
     faviconUpdated(favicons) {
         this.tab.changeFavicon(favicons.favicons[0])
@@ -291,6 +309,14 @@ export default class Page extends React.Component {
         newState.render = false
         this.setState(newState)
         clearInterval(this.colorInterval)
+    }
+    /*
+    * focuses search input
+    */
+    focusSearchInput() {
+        if ($(this.refs.bar.refs.searchInput).val() == '') {
+            $(this.refs.bar.refs.searchInput).focus()
+        }
     }
     /*
     * reloads only extensions that are related to current page
@@ -373,7 +399,7 @@ export default class Page extends React.Component {
                 <div className="page" ref="page">
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
-                    <webview className="webview" ref="webview" src={this.props.url}></webview>
+                    <webview preload="js/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
                 </div>
             )
         if (this.state.render) {

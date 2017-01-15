@@ -13,10 +13,17 @@ export default class Suggestions extends React.Component {
         this.canSuggest = false
     }
     componentDidMount() {
-        var searchInput = this.props.getPage().getSearchInput()
+        var searchInput = this.props.getPage().getSearchInput(),
+            t = this
 
         searchInput.addEventListener('input', this.getSuggestions)
         searchInput.onkeydown = this.handleKeyDown
+
+        globalShortcut.register('Esc', () => {
+            if (remote.getCurrentWindow().isFocused())
+                t.hide()
+        })
+
     }
     /*
     * hides suggestions window

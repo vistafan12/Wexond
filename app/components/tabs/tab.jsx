@@ -38,13 +38,22 @@ export default class Tab extends React.Component {
                 getIndex: this.getIndex,
                 isSelected: this.isSelected,
                 setForeground: this.setForeground,
-                setBackground: this.setBackground
+                setBackground: this.setBackground,
+                selectTabByIndex: this.props.getTabBar().selectTabByIndex
             },
             t = this,
             tabbar = this.props.getTabBar()
+
         this.page.associateTab(pass)
         window.tabs.push(this)
-        tabbar.selectTab(this)
+
+        if (this.props.page.select) {
+            tabbar.selectTab(this)
+        }
+        else {
+            tabbar._deselectTab(this)
+        }
+
         tabbar.calcWidths(true)
         tabbar.getPositions(function(lefts) {
             $(t.refs.tab).css('left', lefts[lefts.length - 1])
@@ -72,7 +81,7 @@ export default class Tab extends React.Component {
 
         })
         this.page.getExtensions().loadExtensions(this.getIndex())
-
+        this.page.focusSearchInput()
     }
     /*
     * returns Object tabbar

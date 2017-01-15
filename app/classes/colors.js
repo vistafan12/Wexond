@@ -2,7 +2,11 @@ export default class Colors {
     constructor(webview) {
         this.webview = webview
     }
-
+    /*
+    * calculates foreground color based on background color
+    * color - String color
+    * returns String 'black' or 'white'
+    */
     static getForegroundColor(color) {
         var brightness = colorBrightness(color)
         if (brightness < 125) {
@@ -12,6 +16,10 @@ export default class Colors {
         }
     }
 
+    /*
+    * gets color from top of website
+    * callback (optional) - function default: null
+    */
     getColorFromTop(callback = null) {
         var t = this
         if (typeof(this.webview) !== "undefined" && this.webview != null && this.webview.getWebContents() != null) {
@@ -37,6 +45,12 @@ export default class Colors {
             });
         }
     }
+    /*
+    * gets color from html tag <meta name="theme-color".../>
+    * regexp - regular expression
+    * result - Object
+    * callback (optional) - function default: null
+    */
     getColorFromSource(regexp, result, callback = null) {
         var t = this
         var regex = result.match(regexp).toString();
@@ -45,6 +59,10 @@ export default class Colors {
             callback({foreground: Colors.getForegroundColor(color), background: color})
         }
     }
+    /*
+    * determines whether to get a color from the code or website
+    * callback (optional) - function default: null
+    */
     getColor(callback = null) {
         var t = this
         if (this.webview != null && this.webview.getWebContents() != null) {

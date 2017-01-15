@@ -24,7 +24,12 @@ class App extends React.Component {
     lifecycle
     */
     componentDidMount() {
+        var t = this
         this.addPage()
+        globalShortcut.register('CmdOrCtrl+T', () => {
+            if (remote.getCurrentWindow().isFocused())
+                t.addPage()
+        })
     }
     /*
     * adds tab to render queue
@@ -37,10 +42,11 @@ class App extends React.Component {
     }
     /*
     * adds page to render queue
-    * options (optional) - Object {url} default: {url: this.defaultURL}
+    * options (optional) - Object {url} default: {url: this.defaultURL, select: true}
     */
     addPage(options = {
-        url: this.defaultURL
+        url: this.defaultURL,
+        select: true
     }) {
         var state = this.state
         state.pagesToCreate.push(options)
@@ -69,7 +75,7 @@ class App extends React.Component {
                 <Titlebar getApp={t.getApp} ref="titlebar"></Titlebar>
 
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page index={i} getApp={t.getApp} key={i} url={object.url}></Page>
+                    return <Page index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>
                 })
 }
 
