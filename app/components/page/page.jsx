@@ -74,7 +74,7 @@ export default class Page extends React.Component {
         webview.addEventListener('page-favicon-updated', this.faviconUpdated)
 
         this.colors = new Colors(this.getWebView())
-        setInterval(this.updateColors, 200)
+        this.colorInterval = setInterval(this.updateColors, 200)
     }
     /*
     * appends and prepares context menu items
@@ -288,8 +288,7 @@ export default class Page extends React.Component {
         var newState = this.state
         newState.render = false
         this.setState(newState)
-        for (var i = 0; i < 99; i++)
-            clearInterval(i)
+        clearInterval(this.colorInterval)
     }
     /*
     * reloads only extensions that are related to current page

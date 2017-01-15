@@ -19,6 +19,7 @@ export default class TabBar extends React.Component {
         this.maxTabWidth = 190
         this.actualTabWidth = this.maxTabWidth
         this.animationDuration = 150
+        this.timer = 0
         this.animationEasing = 'easeOutCirc'
     }
     /*
@@ -36,6 +37,15 @@ export default class TabBar extends React.Component {
             t.calcWidths()
             t.calcPositions()
         })
+        setInterval(function() {
+            if (t.timer >= 3) {
+
+                t.calcWidths(true)
+                t.calcPositions(true, true)
+                t.timer = 0
+            }
+            t.timer += 1
+        }, 1000)
     }
     /*
     * selects tab
@@ -97,7 +107,7 @@ export default class TabBar extends React.Component {
             t = this,
             newState2 = this.state
 
-        this.tabWidthLocked = true
+
         tabs.splice(index, 1)
         if (tab.isSelected()) {
             var prevTab = tabs[index - 1]
@@ -107,8 +117,6 @@ export default class TabBar extends React.Component {
                 this.selectTab(prevTab)
             }
         }
-
-
         if (index - 1 == tabs.length - 1) {
             if (tabs[0] != null) {
                 if (tabs[0].refs.tab.offsetWidth < t.maxTabWidth) {
@@ -135,15 +143,6 @@ export default class TabBar extends React.Component {
                 }
             }
         } else {
-            for (var i = 0; i < 999; i++) {
-                clearTimeout(i)
-            }
-            setTimeout(function() {
-                if (!this.tabWidthLocked) {
-                    t.calcWidths(true)
-                    t.calcPositions(true, true)
-                }
-            }, 4000)
             t.calcPositions(true, true)
             $(tab.refs.tab).animate({
                 width: 0
@@ -153,13 +152,12 @@ export default class TabBar extends React.Component {
                 complete: function() {
                     newState.render = false
                     tab.setState(newState)
-                    setTimeout(function() {
-
-                    }, 3000)
                 },
                 easing: t.animationEasing
             })
             tab.page.removePage()
+            t.timer = 0
+
         }
     }
     /*
