@@ -31,22 +31,27 @@ export default class Tab extends React.Component {
     componentDidMount() {
         this.setPage(this.props.page)
         var pass = {
-            changeTitle: this.changeTitle,
-            setPage: this.setPage,
-            changeFavicon: this.changeFavicon,
-            refs: this.refs,
-            getIndex: this.getIndex,
-            isSelected: this.isSelected,
-            setForeground: this.setForeground,
-            setBackground: this.setBackground
-        }
+                changeTitle: this.changeTitle,
+                setPage: this.setPage,
+                changeFavicon: this.changeFavicon,
+                refs: this.refs,
+                getIndex: this.getIndex,
+                isSelected: this.isSelected,
+                setForeground: this.setForeground,
+                setBackground: this.setBackground
+            },
+            t = this
         this.page.associateTab(pass)
         window.tabs.push(this)
         this.props.selectTab(this)
         this.props.calcWidths(true)
+        this.props.getPositions(function(lefts) {
+            $(t.refs.tab).css({
+                left: lefts[lefts.length - 1]
+            })
+        })
         this.props.calcPositions(true, true)
         this.makeDraggable(this)
-        var t = this
         this.props.getWidths(function(width) {
             if (width < t.props.maxTabWidth) {
                 $(t.refs.tab).css({width: 0, marginLeft: width})
@@ -197,7 +202,7 @@ export default class Tab extends React.Component {
         if (this.state.render) {
             return (
                 <div ref="tab" className="tab draggable">
-                  <div className="border-horizontal"></div>
+                    <div className="border-horizontal"></div>
                     <div className="content">
                         <div ref="favicon" className="favicon"></div>
                         <div className="tabTitle">{this.state.title}</div>
