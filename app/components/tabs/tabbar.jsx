@@ -97,6 +97,7 @@ export default class TabBar extends React.Component {
             t = this,
             newState2 = this.state
 
+        this.tabWidthLocked = true
         tabs.splice(index, 1)
         if (tab.isSelected()) {
             var prevTab = tabs[index - 1]
@@ -138,8 +139,10 @@ export default class TabBar extends React.Component {
                 clearTimeout(i)
             }
             setTimeout(function() {
-                t.calcWidths(true)
-                t.calcPositions(true, true)
+                if (!this.tabWidthLocked) {
+                    t.calcWidths(true)
+                    t.calcPositions(true, true)
+                }
             }, 4000)
             t.calcPositions(true, true)
             $(tab.refs.tab).animate({
@@ -150,6 +153,9 @@ export default class TabBar extends React.Component {
                 complete: function() {
                     newState.render = false
                     tab.setState(newState)
+                    setTimeout(function() {
+
+                    }, 3000)
                 },
                 easing: t.animationEasing
             })
