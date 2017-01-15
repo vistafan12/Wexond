@@ -7,33 +7,7 @@
     z-index: 9;
     color: #212121;
 }
-.icon-button {
-    width: 12px;
-    margin-top: 10px;
-    height: 12px;
-    margin-left: 2px;
-}
-.control {
-    height: 32px;
-    width: 32px;
-    float: right;
-    opacity: 0.6;
-    background-size: 12px 12px;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: 0.2s all;
-}
-.control:hover {
-    opacity: 1;
-    transition: 0.2s all;
-}
-.window-controls {
-    position: absolute;
-    z-index: 99999;
-    height: 32px;
-    -webkit-app-region: no-drag;
-    right: 0px;
-}
+
 .tabBarContainer {
     width: calc(100% - 100px);
     height: 100%;
@@ -46,15 +20,6 @@
 /*.tabBarContainer .border5 {
     top: 0;
 }*/
-.titlebar {
-    width: 100%;
-    height: 32px;
-    background-color: #BDBDBD;
-    color: #fff;
-    -webkit-app-region: drag;
-    position: relative;
-}
-
 .tabTitle {
     position: absolute;
     left: 50%;

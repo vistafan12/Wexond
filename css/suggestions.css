@@ -7,7 +7,9 @@
     z-index: 99999;
     display: none;
 }
-
+.blur {
+    -webkit-filter: blur(5px);
+}
 .suggestions {
     max-width: 768px;
     width: calc(100% - 220px);

@@ -108,7 +108,7 @@ export default class Titlebar extends React.Component {
                         <div className="control" style={maximizeStyle} onClick={this.maximizeOrRestore}></div>
                         <div className="control" style={minimizeStyle} onClick={this.minimizeOrRestore}></div>
                     </div>
-                    <TabBar getApp={this.props.getApp} ref="tabbar" addPage={() => this.props.addPage()} getTabsToCreate={() => this.props.getTabsToCreate()}></TabBar>
+                    <TabBar getApp={this.props.getApp} ref="tabbar" getTabsToCreate={() => this.props.getTabsToCreate()}></TabBar>
                     <div className="border5"></div>
                 </div>
             </div>

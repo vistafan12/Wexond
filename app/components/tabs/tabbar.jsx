@@ -26,7 +26,7 @@ export default class TabBar extends React.Component {
     events
     */
     addTabClick(self) {
-        self.props.addPage()
+        self.props.getApp().addPage()
     }
     /*
     lifecycle

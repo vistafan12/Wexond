@@ -17,6 +17,8 @@ class App extends React.Component {
             pagesToCreate: [],
             tabsToCreate: []
         }
+        //properties
+        this.defaultURL = 'about:blank'
     }
     /*
     lifecycle
@@ -35,10 +37,12 @@ class App extends React.Component {
     }
     /*
     * adds page to render queue
+    * options (optional) - Object {url} default: {url: this.defaultURL}
     */
-    addPage() {
+    addPage(options = {url: this.defaultURL}) {
+        console.log(options)
         var state = this.state
-        state.pagesToCreate.push({url: "about:blank"})
+        state.pagesToCreate.push(options)
         this.setState(state)
     }
     /*

@@ -107,6 +107,7 @@ export default class Page extends React.Component {
             click() {
                 if (t.linkToOpen != "") {
                     //add new tab
+                    t.props.getApp().addPage({url: t.linkToOpen})
                 }
             }
         })

@@ -301,7 +301,6 @@ export default class Suggestions extends React.Component {
                                             e.target.value = $(this).attr('link')
                                         });
                                     }
-                                    function appendItem() {}
                                     //remove excess items
                                     while ($(t.refs.suggestionsWindow).find('.internet').length > finalLength) {
                                         $(t.refs.suggestionsWindow).find('.internet').first().remove()
