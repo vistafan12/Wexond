@@ -44,37 +44,56 @@ export default class Suggestions extends React.Component {
         if (key != 8 && key != 13 && key != 17 && key != 18 && key != 16 && key != 9 && key != 20 && key != 46 && key != 32) {
             this.canSuggest = true
         }
-        var selected = $(this.refs.suggestionsWindow).find('.selected')
         //arrow key up
         if (e.keyCode == 38) {
             e.preventDefault();
-            e.target.setSelectionRange(0, e.target.value.length)
-            e.target.value = selected.prev().attr('link')
-
-            $(this.refs.suggestionsWindow).find('li').removeClass("selected");
-            if (selected.prev().length == 0) {
-                selected.first().addClass("selected");
-                e.target.value = selected.first().attr('link')
+            var selected = $(this.refs.suggestionsWindow).find('.selected')
+            //select first item from suggestions box
+            if (selected.length <= 0) {
+                var first = $(this.refs.suggestionsWindow).find('li');
+                first.removeClass('selected');
+                first.first().addClass("selected");
+                e.target.value = first.first().attr('link')
+                e.target.setSelectionRange(0, e.target.value.length)
             } else {
-                selected.prev().addClass("selected");
+                e.target.setSelectionRange(0, e.target.value.length)
+                e.target.value = selected.prev().attr('link')
+
+                $(this.refs.suggestionsWindow).find('li').removeClass("selected");
+                if (selected.prev().length == 0) {
+                    selected.first().addClass("selected");
+                    e.target.value = selected.first().attr('link')
+                } else {
+                    selected.prev().addClass("selected");
+                }
+                e.target.setSelectionRange(0, e.target.value.length)
             }
-            e.target.setSelectionRange(0, e.target.value.length)
+
         }
         //arrow key down
         if (e.keyCode == 40) {
             e.preventDefault();
-            e.target.setSelectionRange(0, e.target.value.length)
-            e.target.value = selected.next().attr('link')
-
-            $(this.refs.suggestionsWindow).find('li').removeClass("selected");
-            if (selected.next().length == 0) {
-                selected.last().addClass("selected");
-                e.target.value = selected.last().attr('link')
+            var selected = $(this.refs.suggestionsWindow).find('.selected')
+            //select first item from suggestions box
+            if (selected.length <= 0) {
+                var first = $(this.refs.suggestionsWindow).find('li');
+                first.removeClass('selected');
+                first.first().addClass("selected");
+                e.target.value = first.first().attr('link')
+                e.target.setSelectionRange(0, e.target.value.length)
             } else {
-                selected.next().addClass("selected");
-            }
-            e.target.setSelectionRange(0, e.target.value.length)
+                e.target.setSelectionRange(0, e.target.value.length)
+                e.target.value = selected.next().attr('link')
 
+                $(this.refs.suggestionsWindow).find('li').removeClass("selected");
+                if (selected.next().length == 0) {
+                    selected.last().addClass("selected");
+                    e.target.value = selected.last().attr('link')
+                } else {
+                    selected.next().addClass("selected");
+                }
+                e.target.setSelectionRange(0, e.target.value.length)
+            }
         }
     }
     /*
@@ -220,10 +239,6 @@ export default class Suggestions extends React.Component {
                                 $(this).remove();
                             });
                         }
-                        //select first item from suggestions box
-                        var first = $(t.refs.suggestionsWindow).find('li');
-                        first.removeClass('selected');
-                        first.first().addClass("selected");
 
                     },
                     complete: function() {
@@ -266,6 +281,12 @@ export default class Suggestions extends React.Component {
                                     }
                                     //append missing items
                                     while ($(t.refs.suggestionsWindow).find('.internet').length < finalLength) {
+                                        if (!($(t.refs.suggestionsWindow).find('.history').length <= 0)) {
+                                            //select first item from suggestions box
+                                            var first = $(t.refs.suggestionsWindow).find('li');
+                                            first.removeClass('selected');
+                                            first.first().addClass("selected");
+                                        }
                                         var s = $('<li data-ripple-color="#444" class="suggestions-li ripple internet" link=""></li>').appendTo($(t.refs.suggestions));
                                         s.click(function(e) {
                                             webview.loadURL("http://www.google.com/search?q=" + $(this).attr('link'));
@@ -279,6 +300,7 @@ export default class Suggestions extends React.Component {
                                             e.target.value = $(this).attr('link')
                                         });
                                     }
+                                    function appendItem() {}
                                     //remove excess items
                                     while ($(t.refs.suggestionsWindow).find('.internet').length > finalLength) {
                                         $(t.refs.suggestionsWindow).find('.internet').first().remove()
