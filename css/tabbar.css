@@ -99,13 +99,9 @@
     cursor: default;
     top: 50%;
     transform: translateY(-50%);
-}
-
-.addBtn i {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-image: url(../img/tabbar/add.png);
+    background-size: 24px 24px;
+    background-position: center;
 }
 
 .addBtn:hover {
@@ -114,22 +110,17 @@
 
 .closeBtn {
     float: right;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 8px;
     opacity: 0.6;
-}
-
-.closeBtn i {
-    font-size: 18px;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-user-select: none;
-    cursor: default;
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url(../img/tabbar/close.png);
 }
 
 .closeBtn:hover {

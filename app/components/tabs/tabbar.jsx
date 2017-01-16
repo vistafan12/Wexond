@@ -402,7 +402,7 @@ export default class TabBar extends React.Component {
                     })
 }
                     <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
-                        <i className="material-icons">add</i>
+                        <div className="addbtn-icon"></div>
                         <div className="border-horizontal2"></div>
                     </div>
 

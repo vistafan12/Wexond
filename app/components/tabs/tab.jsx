@@ -214,9 +214,7 @@ export default class Tab extends React.Component {
                     <div className="content">
                         <div ref="favicon" className="favicon"></div>
                         <div className="tabTitle">{this.state.title}</div>
-                        <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}>
-                            <i className="material-icons">close</i>
-                        </div>
+                        <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}></div>
                     </div>
                 </div>
             )

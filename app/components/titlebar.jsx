@@ -13,13 +13,13 @@ export default class Titlebar extends React.Component {
         this.foreground = '#fff'
         this.state = {
             closeStyle: {
-                backgroundImage: 'url(img/controls/close-white.png)'
+                backgroundImage: 'url(img/controls/close.png)'
             },
             maximizeStyle: {
-                backgroundImage: 'url(img/controls/maximize-white.png)'
+                backgroundImage: 'url(img/controls/maximize.png)'
             },
             minimizeStyle: {
-                backgroundImage: 'url(img/controls/minimize-white.png)'
+                backgroundImage: 'url(img/controls/minimize.png)'
             }
         }
     }
@@ -77,17 +77,9 @@ export default class Titlebar extends React.Component {
         $('.border-horizontal2').css('background-color', color)
         $('.border5').css('background-color', color)
         if (color == "white") {
-            var newState = this.state
-            newState.closeStyle.backgroundImage = 'url(img/controls/close-white.png)'
-            newState.maximizeStyle.backgroundImage = 'url(img/controls/maximize-white.png)'
-            newState.minimizeStyle.backgroundImage = 'url(img/controls/minimize-white.png)'
-            this.setState(newState)
+
         } else if (color == "black") {
-            var newState = this.state
-            newState.closeStyle.backgroundImage = 'url(img/controls/close.png)'
-            newState.maximizeStyle.backgroundImage = 'url(img/controls/maximize.png)'
-            newState.minimizeStyle.backgroundImage = 'url(img/controls/minimize.png)'
-            this.setState(newState)
+
         }
     }
 
