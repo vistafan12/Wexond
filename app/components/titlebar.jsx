@@ -75,11 +75,15 @@ export default class Titlebar extends React.Component {
         $(this.refs.tabbar.refs.tabbar).css('color', color)
         $('.border-horizontal').css('background-color', color)
         $('.border-horizontal2').css('background-color', color)
-        $('.border5').css('background-color', color)
+        $('.border-bottom').css('background-color', color)
         if (color == "white") {
-
+            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').addClass('white-icon')
+            $(this.refs.tabbar.refs.tabbar).find('.addBtn').addClass('white-icon')
+            $(this.refs.titlebar).find('.control').addClass('white-icon')
         } else if (color == "black") {
-
+            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').removeClass('white-icon')
+            $(this.refs.tabbar.refs.tabbar).find('.addBtn').removeClass('white-icon')
+            $(this.refs.titlebar).find('.control').removeClass('white-icon')
         }
     }
 
@@ -102,7 +106,7 @@ export default class Titlebar extends React.Component {
                         <div className="control" style={minimizeStyle} onClick={this.minimizeOrRestore}></div>
                     </div>
                     <TabBar getApp={this.props.getApp} ref="tabbar"></TabBar>
-                    <div className="border5"></div>
+                    <div className="border-bottom"></div>
                 </div>
             </div>
         )

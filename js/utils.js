@@ -1,3 +1,6 @@
+var iconRippleTime = 300;
+var rippleTime = 400;
+
 function isURL(s) {
     var regexp = /[a-zA-Z-0-9]+\.[a-zA-Z-0-9]{2,3}/;
     return regexp.test(s);
@@ -20,7 +23,15 @@ function autocomplete(input, text) {
         }
     }
 }
+function makeRippleMenuItem(menuItem, e) {
+    var relX = e.pageX - $(menuItem).offset().left;
+    var relY = e.pageY - $(menuItem).offset().top;
+    Ripple.makeRipple($(menuItem), relX, relY, $(menuItem).width(), $(menuItem).height(), rippleTime, 0);
+}
 
+function makeRippleIconButton(item) {
+    Ripple.makeRipple(item, item.width() / 2, item.height() / 2, 12, 12, iconRippleTime, 0);
+}
 function isInArray(value, array) {
     return array.indexOf(value) > -1;
 }

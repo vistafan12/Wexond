@@ -16,12 +16,16 @@ export default class Bar extends React.Component {
     */
     componentDidMount() {
         var t = this
-        $(this.refs.bar).find('i').mouseover(function() {
+        /*$(this.refs.bar).find('i').mouseover(function() {
             $(this).css('background-color', t.hoverColor)
         })
         $(this.refs.bar).find('i').mouseout(function() {
             $(this).css('background-color', 'transparent')
-        })
+        })*/
+        $(this.refs.bar).find('i').mousedown(function() {
+          //Ripple.makeRipple($(this), $(this).width() + 16,$(this).height() + 16, $(this).width() / 2,$(this).height() / 2, 200, 0, "#000");
+          makeRippleIconButton($(this))
+        });
     }
     /*
     events
@@ -67,7 +71,10 @@ export default class Bar extends React.Component {
         this.props.getPage().reloadExtensions()
         this.props.getPage().getWebView().reload()
     }
-
+    ripple(e) {
+         $(e.target).addClass('remove-background');
+         makeRippleIconButton($(e.target));
+    }
     /*
     * sets hover color
     * color - String color
@@ -78,15 +85,14 @@ export default class Bar extends React.Component {
 
     render() {
         return (
-
             <div className="bar" ref="bar">
-                <i onClick={() => this.back(this)}></i>
-                <i onClick={() => this.forward(this)}></i>
-                <i onClick={() => this.refresh(this)}></i>
+                <div className="bar-icon back ripple-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
+                <div className="bar-icon forward ripple-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
+                <div className="bar-icon refresh ripple-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
-                <i className="material-icons">menu</i>
+                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={() => this.props.getPage().getMenu().menu()}></div>
             </div>
         )
     }

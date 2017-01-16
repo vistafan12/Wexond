@@ -1,34 +1,11 @@
 .bar {
     height: 42px;
     background: #fff;
-    color: #212121;
     width: 100%;
     position: absolute;
     top: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.14);
-    z-index: 2;
     transition: 0.2s background;
-}
-
-.bar i {
-    /*font-size: 22px;*/
-    font-size: 0px;
-    width: 24px;
-    height: 24px;
-    opacity: 0.6;
-    -webkit-user-select: none;
-    cursor: default;
-    position: relative;
-    float: left;
-    margin-left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 2px;
-    transition: 0.2s all;
-    -webkit-app-region: no-drag;
-    background-position: center;
-    background-size: 22px 22px;
-    background-repeat: no-repeat;
 }
 
 .searchInput {
@@ -45,10 +22,10 @@
 }
 
 .searchBox {
-    width: calc(100% - 180px);
+    width: calc(100% - 160px);
     position: relative;
     border-radius: 2px;
-    margin-left: 20px;
+    margin-left: 13px;
     top: 50%;
     transform: translateY(-50%);
     height: 30px;
@@ -58,49 +35,43 @@
     transition: 0.2s background;
 }
 
-
-/*
-left arrow icon (back)
-*/
-
-.bar i:nth-child(1) {
+.bar-icon {
+    width: 26px;
+    height: 26px;
+    float: left;
+    transition: 0.3s background;
     margin-left: 8px;
+    position: relative;
+    top: 50%;
+    opacity: 0.7;
+    transform: translateY(-50%);
+    background-size: 22px 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.back {
+    margin-left: 6px;
     background-image: url(../img/bar/back.png);
 }
-
-
-/*
-right arrow icon (forward)
-*/
-
-.bar i:nth-child(2) {
-    margin-left: 8px;
+.forward {
     background-image: url(../img/bar/forward.png);
 }
-
-
-/*
-refresh page icon
-*/
-
-.bar i:nth-child(3) {
-    margin-left: 8px;
+.refresh {
     background-image: url(../img/bar/refresh.png);
 }
-
-
-/*
-menu icon
-*/
-
-.bar i:nth-child(5) {
-    position: absolute;
-    right: 8px;
-    margin-left: 12px;
+.menu-icon {
+    float: right;
+    margin-right: 8px;
     background-image: url(../img/bar/menu.png);
 }
-
-.bar i:hover {
+.remove-background {
+    background-color: transparent !important;
+}
+.bar-icon:hover {
     border-radius: 3px;
-    transition: 0.3s all;
+    background-color: rgba(0,0,0,0.15);
+    transition: 0.3s background;
+}
+.white-icon {
+    -webkit-filter: invert(100%);
 }
