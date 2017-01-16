@@ -64,12 +64,8 @@
     margin-right: 8px;
     background-image: url(../img/bar/menu.png);
 }
-.remove-background {
-    background-color: transparent !important;
-}
 .bar-icon:hover {
-    border-radius: 3px;
-    background-color: rgba(0,0,0,0.15);
+    opacity: 1;
     transition: 0.3s background;
 }
 .white-icon {

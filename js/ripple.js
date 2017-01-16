@@ -35,7 +35,6 @@ var Ripple = class Ripple {
                     }
                 })
             }, 200)
-            $(element).removeClass('remove-background');
         })
         return $rippleElement
     }
