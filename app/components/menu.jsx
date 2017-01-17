@@ -12,7 +12,7 @@ export default class MDMenu extends React.Component {
 
     componentDidMount() {
       var t = this;
-      $(this.refs.item).mousedown(function(e) {
+      $(this.refs.menu).find('li').mousedown(function(e) {
         var btnOffset = $(this).offset();
         var xpos = e.pageX - btnOffset.left;
         var ypos = e.pageY - btnOffset.top;
