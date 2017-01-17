@@ -7,21 +7,66 @@ export default class MDMenu extends React.Component {
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.menu = this.menu.bind(this);
-          this.openedMenu = false;
+        this.openedMenu = false;
     }
 
     componentDidMount() {
+      var t = this;
+      $(this.refs.item).mousedown(function(e) {
+        var btnOffset = $(this).offset();
+        var xpos = e.pageX - btnOffset.left;
+        var ypos = e.pageY - btnOffset.top;
+
+        Ripple.makeRipple($(this), xpos, ypos, $(this).height(), $(this).width(), 300, 0, "#000");
+      });
     }
 
     render() {
         return (
-            <div className="menu" ref="menu"></div>
+            <ul className="menu" ref="menu">
+              <li className="ripple settings" ref="item">
+                <div className="icon"></div>
+                Settings
+              </li>
+              <li className="ripple history" ref="item">
+                <div className="icon"></div>
+                History
+              </li>
+              <li className="ripple bookmarks" ref="item">
+                <div className="icon"></div>
+                Bookmarks
+              </li>
+              <li className="ripple downloads" ref="item">
+                <div className="icon"></div>
+                Downloads
+              </li>
+              <li className="ripple extensions" ref="item">
+                <div className="icon"></div>
+                Extensions
+              </li>
+              <li className="ripple fullscreen" ref="item">
+                <div className="icon"></div>
+                Full Screen
+              </li>
+              <li className="ripple devtools" ref="item">
+                <div className="icon"></div>
+                Developer Tools
+              </li>
+              <li className="ripple screenshot" ref="item">
+                <div className="icon"></div>
+                Take ScreenShot
+              </li>
+              <li className="ripple privatemode" ref="item">
+                <div className="icon"></div>
+                Private mode
+              </li>
+            </ul>
         )
     }
 
     show() {
         $(this.refs.menu).css('display', 'block');
-        $(this.refs.menu).animate({top: 48}, {duration: 300, queue: false});
+        $(this.refs.menu).animate({top: 30}, {duration: 300, queue: false});
         $(this.refs.menu).animate({opacity: 1}, {duration: 300, queue: false});
         this.openedMenu = true;
     }
