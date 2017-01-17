@@ -48,7 +48,7 @@ export default class MDMenu extends React.Component {
                 <div className="icon"></div>
                 Full Screen
               </li>
-              <li className="ripple devtools" ref="item">
+              <li className="ripple devtools" ref="item" onClick={() => this.props.getPage().getWebView().openDevTools()}>
                 <div className="icon"></div>
                 Developer Tools
               </li>
@@ -65,6 +65,7 @@ export default class MDMenu extends React.Component {
     }
 
     show() {
+      //require('remote').getCurrentWindow().toggleDevTools();
         $(this.refs.menu).css('display', 'block');
         $(this.refs.menu).animate({top: 30}, {duration: 300, queue: false});
         $(this.refs.menu).animate({opacity: 1}, {duration: 300, queue: false});
@@ -86,6 +87,5 @@ export default class MDMenu extends React.Component {
       } else {
         this.show();
       }
-      console.log(this.openedMenu);
     }
 }

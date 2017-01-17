@@ -407,7 +407,7 @@ export default class Page extends React.Component {
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
                     <webview preload="js/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
-                    <MDMenu ref="menu"></MDMenu>
+                    <MDMenu ref="menu" getPage={t.getPage}></MDMenu>
                 </div>
             )
         if (this.state.render) {

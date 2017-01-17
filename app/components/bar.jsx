@@ -43,7 +43,7 @@ export default class Bar extends React.Component {
         //if enter key was pressed
         if (e.which == 13) {
             suggestions.hide()
-            if (!e.target.value.startsWith("webexpress://")) {
+            if (!e.target.value.startsWith("wexond://")) {
                 if (isURL(e.target.value)) {
                     if (e.target.value.startsWith("http://") || e.target.value.startsWith("https://") || e.target.value.startsWith("file://")) {
                         webview.loadURL(e.target.value);

@@ -1,5 +1,5 @@
 .menu {
-  width: 280px;
+  width: 220px;
   min-height: 20px;
   background-color: #fff;
   border-radius: 2px;
@@ -18,11 +18,11 @@
   height: auto;
   text-align: left;
   padding: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   position: relative;
-  padding-left: 54px;
-  font-size: 17px;
+  padding-left: 50px;
+  font-size: 14px;
   font-family: 'Roboto-Light';
   transition: all 0.3s;
   -webkit-user-select: none;
@@ -39,7 +39,7 @@
   width: 20px;
   height: 20px;
   top: 50%;
-  left: 24px;
+  left: 20px;
   transform: translateY(-50%);
   position: absolute;
   opacity: 0.7;
