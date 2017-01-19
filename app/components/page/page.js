@@ -1,11 +1,11 @@
 'use babel';
 import React from 'react';
-import Bar from '../bar.jsx'
-import Suggestions from '../suggestions.jsx'
+import Bar from '../bar.js'
+import Suggestions from '../suggestions.js'
 import Storage from '../../classes/storage.js'
 import Extensions from '../../classes/extensions.js'
 import Colors from '../../classes/colors.js'
-import MDMenu from '../menu.jsx'
+import MDMenu from '../menu.js'
 
 export default class Page extends React.Component {
     constructor() {

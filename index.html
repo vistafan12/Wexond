@@ -6,8 +6,13 @@
     <title>Wexond</title>
     <script>
         // install babel hooks in the renderer process
-        require('babel-register');
-        require('./app/app.jsx');
+        require('process');
+        if (process.env.NODE_ENV == 'dev') {
+            require('babel-register');
+            require('./app/app.js');
+        } else {
+            require('./build/app.js');
+        }
     </script>
     <style>
         @font-face {
@@ -64,9 +69,6 @@
         require(`electron-connect`).client.create()
     </script>
     <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='lib/jquery.min.js'></script><script src='js/utils.js'></script><script src='app/classes/api.js'></script></body></html>"></iframe>
-    &copy; Nersent 2013-2017
-    <br>
-    Mikołaj Palkiewicz & Eryk Rakowski
 </body>
 
 </html>

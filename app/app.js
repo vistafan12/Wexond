@@ -1,8 +1,8 @@
 'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './components/page/page.jsx'
-import Titlebar from './components/titlebar.jsx'
+import Page from './components/page/page.js'
+import Titlebar from './components/titlebar.js'
 
 class App extends React.Component {
     constructor() {

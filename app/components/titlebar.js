@@ -1,6 +1,6 @@
 'use babel';
 import React from 'react'
-import TabBar from './tabs/tabbar.jsx'
+import TabBar from './tabs/tabbar.js'
 import Colors from '../classes/colors.js'
 
 export default class Titlebar extends React.Component {
