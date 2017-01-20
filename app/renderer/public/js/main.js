@@ -1,5 +1,5 @@
-const {remote, clipboard} = require('electron')
-const {Menu, MenuItem, globalShortcut} = remote
+const {remote, clipboard} = require('electron');
+const {Menu, MenuItem, globalShortcut} = remote;
 
 var app = remote.app,
     appData = app.getPath('userData'),
@@ -9,9 +9,9 @@ var app = remote.app,
     isThere = require('is-there'),
     dir = require('node-dir'),
     fs = require('fs'),
-    getPixels = require("get-pixels")
+    getPixels = require("get-pixels");
 
-window.tabs = []
+window.tabs = [];
 
 function checkFiles() {
     //check if directory called userdata exists
@@ -28,4 +28,4 @@ function checkFiles() {
     }
 }
 
- globalShortcut.unregisterAll()
+ globalShortcut.unregisterAll();

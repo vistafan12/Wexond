@@ -3,19 +3,19 @@ import React from 'react';
 
 export default class Bar extends React.Component {
     constructor() {
-        super()
+        super();
         //binds
-        this.handleInput = this.handleInput.bind(this)
-        this.handleKeyPress = this.handleKeyPress.bind(this)
-        this.setHoverColor = this.setHoverColor.bind(this)
-        this.refresh = this.refresh.bind(this)
-        this.hoverColor = 'rgba(0, 0, 0, 0.2)'
+        this.handleInput = this.handleInput.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.setHoverColor = this.setHoverColor.bind(this);
+        this.refresh = this.refresh.bind(this);
+        this.hoverColor = 'rgba(0, 0, 0, 0.2)';
     }
     /*
     lifecycle
     */
     componentDidMount() {
-        var t = this
+        var t = this;
         /*$(this.refs.bar).find('i').mouseover(function() {
             $(this).css('background-color', t.hoverColor)
         })
@@ -24,25 +24,25 @@ export default class Bar extends React.Component {
         })*/
         $(this.refs.bar).find('i').mousedown(function() {
           //Ripple.makeRipple($(this), $(this).width() + 16,$(this).height() + 16, $(this).width() / 2,$(this).height() / 2, 200, 0, "#000");
-          makeRippleIconButton($(this))
+          makeRippleIconButton($(this));
         });
     }
     /*
     events
     */
     handleInput() {
-        var suggestions = this.props.getPage().getSuggestions()
-        suggestions.show()
+        var suggestions = this.props.getPage().getSuggestions();
+        suggestions.show();
     }
     handleFocusIn(e) {
-        e.target.setSelectionRange(0, e.target.value.length)
+        e.target.setSelectionRange(0, e.target.value.length);
     }
     handleKeyPress(e) {
         var webview = this.props.getPage().getWebView(),
-            suggestions = this.props.getPage().getSuggestions()
+            suggestions = this.props.getPage().getSuggestions();
         //if enter key was pressed
         if (e.which == 13) {
-            suggestions.hide()
+            suggestions.hide();
             if (!e.target.value.startsWith("wexond://")) {
                 if (isURL(e.target.value)) {
                     if (e.target.value.startsWith("http://") || e.target.value.startsWith("https://") || e.target.value.startsWith("file://")) {
@@ -62,14 +62,14 @@ export default class Bar extends React.Component {
         }
     }
     back(self) {
-        self.props.getPage().getWebView().goBack()
+        self.props.getPage().getWebView().goBack();
     }
     forward(self) {
-        self.props.getPage().getWebView().goForward()
+        self.props.getPage().getWebView().goForward();
     }
     refresh() {
-        this.props.getPage().reloadExtensions()
-        this.props.getPage().getWebView().reload()
+        this.props.getPage().reloadExtensions();
+        this.props.getPage().getWebView().reload();
     }
     ripple(e) {
          $(e.target).addClass('remove-background');
@@ -80,7 +80,7 @@ export default class Bar extends React.Component {
     * color - String color
     */
     setHoverColor(color) {
-        this.hoverColor = color
+        this.hoverColor = color;
     }
 
     render() {
@@ -94,6 +94,6 @@ export default class Bar extends React.Component {
                 </div>
                 <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={() => this.props.getPage().getMenu().menu()}></div>
             </div>
-        )
+        );
     }
 }

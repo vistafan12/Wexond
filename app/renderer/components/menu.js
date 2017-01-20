@@ -3,7 +3,7 @@ import React from 'react';
 
 export default class MDMenu extends React.Component {
     constructor() {
-        super()
+        super();
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.menu = this.menu.bind(this);
@@ -61,7 +61,7 @@ export default class MDMenu extends React.Component {
                 Private mode
               </li>
             </ul>
-        )
+        );
     }
 
     show() {

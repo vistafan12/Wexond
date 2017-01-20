@@ -1,16 +1,16 @@
 'use babel';
-import React from 'react'
-import TabBar from './tabs/tabbar.js'
-import Colors from '../classes/colors.js'
+import React from 'react';
+import TabBar from './tabbar.js';
+import Colors from '../../classes/colors.js';
 
 export default class Titlebar extends React.Component {
     constructor() {
-        super()
+        super();
         //binds
-        this.setBackground = this.setBackground.bind(this)
-        this.setForeground = this.setForeground.bind(this)
+        this.setBackground = this.setBackground.bind(this);
+        this.setForeground = this.setForeground.bind(this);
         //global properties
-        this.foreground = '#fff'
+        this.foreground = '#fff';
         this.state = {
             closeStyle: {
                 backgroundImage: 'url(img/controls/close.png)'
@@ -21,7 +21,7 @@ export default class Titlebar extends React.Component {
             minimizeStyle: {
                 backgroundImage: 'url(img/controls/minimize.png)'
             }
-        }
+        };
     }
     componentDidMount() {}
     /*
@@ -59,31 +59,31 @@ export default class Titlebar extends React.Component {
     * color - String color
     */
     setBackground(color) {
-        $(this.refs.titlebar).css('background-color', color)
-        this.setForeground(Colors.getForegroundColor(color))
+        $(this.refs.titlebar).css('background-color', color);
+        this.setForeground(Colors.getForegroundColor(color));
     }
     /*
     * sets titlebar foreground color
     * color - String color
     */
     setForeground(color) {
-        this.foreground = color
+        this.foreground = color;
         for (var i = 0; i < tabs.length; i++) {
             if (!tabs[i].selected)
-                tabs[i].setForeground(color, true)
+                tabs[i].setForeground(color, true);
         }
-        $(this.refs.tabbar.refs.tabbar).css('color', color)
-        $('.border-horizontal').css('background-color', color)
-        $('.border-horizontal2').css('background-color', color)
-        $('.border-bottom').css('background-color', color)
+        $(this.refs.tabbar.refs.tabbar).css('color', color);
+        $('.border-horizontal').css('background-color', color);
+        $('.border-horizontal2').css('background-color', color);
+        $('.border-bottom').css('background-color', color);
         if (color == "white") {
-            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').addClass('white-icon')
-            $(this.refs.tabbar.refs.tabbar).find('.addBtn').addClass('white-icon')
-            $(this.refs.titlebar).find('.control').addClass('white-icon')
+            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').addClass('white-icon');
+            $(this.refs.tabbar.refs.tabbar).find('.addBtn').addClass('white-icon');
+            $(this.refs.titlebar).find('.control').addClass('white-icon');
         } else if (color == "black") {
-            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').removeClass('white-icon')
-            $(this.refs.tabbar.refs.tabbar).find('.addBtn').removeClass('white-icon')
-            $(this.refs.titlebar).find('.control').removeClass('white-icon')
+            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').removeClass('white-icon');
+            $(this.refs.tabbar.refs.tabbar).find('.addBtn').removeClass('white-icon');
+            $(this.refs.titlebar).find('.control').removeClass('white-icon');
         }
     }
 
@@ -96,7 +96,7 @@ export default class Titlebar extends React.Component {
             },
             minimizeStyle = {
                 backgroundImage: this.state.minimizeStyle.backgroundImage
-            }
+            };
         return (
             <div>
                 <div ref="titlebar" className="titlebar">
@@ -109,6 +109,6 @@ export default class Titlebar extends React.Component {
                     <div className="border-bottom"></div>
                 </div>
             </div>
-        )
+        );
     }
 }

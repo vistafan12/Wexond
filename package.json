@@ -1,34 +1,39 @@
 {
   "name": "Wexond",
   "version": "0.0.3",
-  "main": "bootstrapper.js",
+  "main": "build/main.bundle.js",
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev electron .",
-    "build-all": "babel app -d build && electron-packager . --all Wexond --overwrite",
-    "build-win32": "babel app -d build && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
-    "build-win64": "babel app -d build && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
-    "build-linux32": "babel app -d build && electron-packager . --platform=linux --arch=x86 Wexond --overwrite",
-    "build-linux64": "babel app -d build && electron-packager . --platform=linux --arch=x64 Wexond --overwrite"
+    "start": "webpack && cross-env NODE_ENV=dev electron build/main.bundle.js",
+    "watch": "webpack-dev-server --hot --inline --port 8080",
+    "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
+    "win32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
+    "win64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
+    "linux32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x86 Wexond --overwrite",
+    "linux64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x64 Wexond --overwrite"
   },
   "dependencies": {
-    "electron": "^1.4.14",
-    "react": "^15.4.1",
-    "babel-register": "^6.3.13",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "react-dom": "^15.3.2",
-    "get-pixels": "^3.3.0",
-    "gulp": "^3.9.1",
-    "is-there": "^4.3.6",
-    "node-dir": "^0.1.16"
+    "electron": "latest",
+    "react": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "react-dom": "latest",
+    "get-pixels": "latest",
+    "is-there": "latest",
+    "node-dir": "latest"
   },
   "devDependencies": {
-    "asar": "^0.13.0",
-    "babel-cli": "^6.18.0",
-    "cross-env": "^3.1.4",
-    "electron-connect": "^0.6.1",
-    "electron-packager": "^8.5.0"
+    "asar": "latest",
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "cross-env": "latest",
+    "css-loader": "latest",
+    "electron-packager": "latest",
+    "eslint": "latest",
+    "eslint-loader": "^1.6.1",
+    "json-loader": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
   }
 }

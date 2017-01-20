@@ -1,21 +1,21 @@
 export default class Extensions {
     constructor() {
-        this.loadedExts = []
-        this.apis = []
+        this.loadedExts = [];
+        this.apis = [];
     }
     /*
     * deletes extensions
     */
     deleteExtensions() {
         for (var i = 0; i < this.loadedExts.length; i++) {
-            $(this.loadedExts[i]).remove()
+            $(this.loadedExts[i]).remove();
         }
         for (var i = 0; i < this.apis.length; i++) {
-            this.apis[i].dispose()
-            this.apis[i] = null
+            this.apis[i].dispose();
+            this.apis[i] = null;
         }
-        this.apis = []
-        this.loadedExts = []
+        this.apis = [];
+        this.loadedExts = [];
     }
     /*
     * loads extensions
@@ -23,7 +23,7 @@ export default class Extensions {
     * callback - function (default: null)
     */
     loadExtensions(id, callback = null) {
-        var t = this
+        var t = this;
         //get all .JSON files in folder to an array
         var listOfExtensions = [];
         var listOfExtensionsDirs = [];
@@ -53,43 +53,43 @@ export default class Extensions {
                                         popupPage: jsonObject.popuppage,
                                         settingsPage: jsonObject.settingspage,
                                         scripts: jsonObject.scripts
-                                    }
+                                    };
 
                                     for (var i3 = 0; i3 < jsonData.scripts.length; i3++) {
-                                        var fileUrl = extensionsPath + "/" + jsonData.folder + "/" + jsonData.scripts[i3]["url"]
+                                        var fileUrl = extensionsPath + "/" + jsonData.folder + "/" + jsonData.scripts[i3]["url"];
                                         $.ajax({
                                             type: "GET",
                                             url: fileUrl,
                                             success: function(data) {
                                                 if (typeof(callback) === 'function') {
-                                                    jsonData.code = data
-                                                    callback(jsonData)
+                                                    jsonData.code = data;
+                                                    callback(jsonData);
                                                 }
                                                 $('#extensions-iframe').ready(function() {
-                                                    $('#extensions-iframe')[0].contentWindow.parent = window
+                                                    $('#extensions-iframe')[0].contentWindow.parent = window;
                                                     var script = document.createElement('script');
                                                     script.text = `function a${id}(index) {
                                                             var api = new API(parent.tabs[index], parent)
                                                             parent.tabs[index].page.getExtensions().apis.push(api)
                                                             parent = null
                                                             ${data}
-                                                        } a${id}(${id});`
-                                                    $('#extensions-iframe').contents().find('head')[0].appendChild(script)
-                                                    t.loadedExts.push(script)
-                                                })
+                                                        } a${id}(${id});`;
+                                                    $('#extensions-iframe').contents().find('head')[0].appendChild(script);
+                                                    t.loadedExts.push(script);
+                                                });
 
                                             }
-                                        })
+                                        });
 
                                     }
                                 }
-                            })
+                            });
 
                         }
                     }
-                })
+                });
             }
-        })
+        });
 
     }
 }

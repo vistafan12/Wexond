@@ -8,12 +8,12 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({width: 800, height: 600, frame: false, minWidth: 300, minHeight: 430});
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430});
+    mainWindow.loadURL('file://' + __dirname + '/../app/renderer/public/index.html');
     mainWindow.setMenu(null);
 
     if (process.env.NODE_ENV == 'dev')
-        mainWindow.webContents.openDevTools()
+        mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', () => {
         mainWindow = null;
