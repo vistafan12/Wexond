@@ -29,7 +29,8 @@ export default class App extends React.Component {
         globalShortcut.register('CmdOrCtrl+T', () => {
             if (remote.getCurrentWindow().isFocused())
                 t.addPage();
-        });
+            }
+        );
     }
     /*
     * adds tab to render queue
@@ -77,7 +78,7 @@ export default class App extends React.Component {
                 {this.state.pagesToCreate.map(function(object, i) {
                     return <Page index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
                 })
-                }
+}
 
             </div>
         );

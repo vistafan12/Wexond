@@ -154,7 +154,7 @@ export default class TabBar extends React.Component {
             index = tabs.indexOf(tab),
             t = this,
             newState2 = this.state;
-            t.canReset = true;
+        t.canReset = true;
         if (tabs.length == 1) {
             remote.getCurrentWindow().close();
         }
@@ -226,8 +226,8 @@ export default class TabBar extends React.Component {
                 if (this.contains(tabs[i], cursorX)) {
                     if (!tabs[i].locked)
                         return tabs[i];
+                    }
                 }
-            }
         }
     }
     /*

@@ -22,7 +22,8 @@ export default class Suggestions extends React.Component {
         globalShortcut.register('Esc', () => {
             if (remote.getCurrentWindow().isFocused())
                 t.hide();
-        });
+            }
+        );
 
     }
     /*
@@ -189,7 +190,8 @@ export default class Suggestions extends React.Component {
                                 $.each(links, function(i, el) {
                                     if ($.inArray(el, uniqueLinks) === -1)
                                         uniqueLinks.push(el);
-                                });
+                                    }
+                                );
                                 //limit array length to 3
                                 if (uniqueLinks.length > 4) {
                                     uniqueLinks.length = 4;

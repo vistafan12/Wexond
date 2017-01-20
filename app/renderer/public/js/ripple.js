@@ -18,8 +18,7 @@ var Ripple = class Ripple {
                 }, {
                     duration: time,
                     queue: false,
-                    complete: function() {
-                    }
+                    complete: function() {}
                 })
             }, 200)
         })
@@ -30,9 +29,7 @@ var Ripple = class Ripple {
                 }, {
                     duration: time,
                     queue: false,
-                    complete: function() {
-
-                    }
+                    complete: function() {}
                 })
             }, 200)
         })

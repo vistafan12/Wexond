@@ -49,25 +49,31 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
 .back {
     margin-left: 6px;
     background-image: url(../img/bar/back.png);
 }
+
 .forward {
     background-image: url(../img/bar/forward.png);
 }
+
 .refresh {
     background-image: url(../img/bar/refresh.png);
 }
+
 .menu-icon {
     float: right;
     margin-right: 8px;
     background-image: url(../img/bar/menu.png);
 }
+
 .bar-icon:hover {
     opacity: 1;
     transition: 0.3s background;
 }
+
 .white-icon {
     -webkit-filter: invert(100%);
 }

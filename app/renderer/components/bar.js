@@ -23,8 +23,8 @@ export default class Bar extends React.Component {
             $(this).css('background-color', 'transparent')
         })*/
         $(this.refs.bar).find('i').mousedown(function() {
-          //Ripple.makeRipple($(this), $(this).width() + 16,$(this).height() + 16, $(this).width() / 2,$(this).height() / 2, 200, 0, "#000");
-          makeRippleIconButton($(this));
+            //Ripple.makeRipple($(this), $(this).width() + 16,$(this).height() + 16, $(this).width() / 2,$(this).height() / 2, 200, 0, "#000");
+            makeRippleIconButton($(this));
         });
     }
     /*
@@ -72,8 +72,8 @@ export default class Bar extends React.Component {
         this.props.getPage().getWebView().reload();
     }
     ripple(e) {
-         $(e.target).addClass('remove-background');
-         makeRippleIconButton($(e.target));
+        $(e.target).addClass('remove-background');
+        makeRippleIconButton($(e.target));
     }
     /*
     * sets hover color
@@ -92,7 +92,10 @@ export default class Bar extends React.Component {
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
-                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={(e) =>{ e.stopPropagation(); this.props.getPage().getMenu().menu(); }}></div>
+                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={(e) => {
+                    e.stopPropagation();
+                    this.props.getPage().getMenu().menu();
+                }}></div>
             </div>
         );
     }

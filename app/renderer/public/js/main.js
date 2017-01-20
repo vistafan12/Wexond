@@ -28,4 +28,4 @@ function checkFiles() {
     }
 }
 
- globalShortcut.unregisterAll();
+globalShortcut.unregisterAll();

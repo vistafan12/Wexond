@@ -49,8 +49,7 @@ export default class Tab extends React.Component {
 
         if (this.props.page.select) {
             tabbar.selectTab(this);
-        }
-        else {
+        } else {
             tabbar._deselectTab(this);
         }
 

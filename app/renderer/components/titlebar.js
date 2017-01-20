@@ -71,7 +71,7 @@ export default class Titlebar extends React.Component {
         for (var i = 0; i < tabs.length; i++) {
             if (!tabs[i].selected)
                 tabs[i].setForeground(color, true);
-        }
+            }
         $(this.refs.tabbar.refs.tabbar).css('color', color);
         $('.border-horizontal').css('background-color', color);
         $('.border-horizontal2').css('background-color', color);
