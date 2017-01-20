@@ -19,6 +19,9 @@ export default class MDMenu extends React.Component {
 
         Ripple.makeRipple($(this), xpos, ypos, $(this).height(), $(this).width(), 300, 0, "#000");
       });
+      $(window).click(function() {
+          t.hide();
+      })
     }
 
     render() {
@@ -46,17 +49,17 @@ export default class MDMenu extends React.Component {
               </li>
               <li className="ripple fullscreen" ref="item">
                 <div className="icon"></div>
-                Full Screen
+                Fullscreen
               </li>
               <li className="ripple devtools" ref="item" onClick={() => this.props.getPage().getWebView().openDevTools()}>
                 <div className="icon"></div>
-                Developer Tools
+                Developer tools
               </li>
               <li className="ripple screenshot" ref="item">
                 <div className="icon"></div>
-                Take ScreenShot
+                Take screenshot
               </li>
-              <li className="ripple privatemode" ref="item">
+              <li className="ripple privacy" ref="item">
                 <div className="icon"></div>
                 Private mode
               </li>
@@ -67,15 +70,15 @@ export default class MDMenu extends React.Component {
     show() {
       //require('remote').getCurrentWindow().toggleDevTools();
         $(this.refs.menu).css('display', 'block');
-        $(this.refs.menu).animate({top: 30}, {duration: 300, queue: false});
-        $(this.refs.menu).animate({opacity: 1}, {duration: 300, queue: false});
+        $(this.refs.menu).animate({top: 36}, {duration: 200, queue: false});
+        $(this.refs.menu).animate({opacity: 1}, {duration: 200, queue: false});
         this.openedMenu = true;
     }
 
     hide() {
         var t = this;
-        $(this.refs.menu).animate({top: 0}, {duration: 300, queue: false});
-        $(this.refs.menu).animate({opacity: 0}, {duration: 300, queue: false, complete: function() {
+        $(this.refs.menu).animate({top: 0}, {duration: 200, queue: false});
+        $(this.refs.menu).animate({opacity: 0}, {duration: 200, queue: false, complete: function() {
           $(this).css('display', 'none');
           t.openedMenu = false;
         }});

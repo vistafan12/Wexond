@@ -92,7 +92,7 @@ export default class Bar extends React.Component {
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
-                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={() => this.props.getPage().getMenu().menu()}></div>
+                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={(e) =>{ e.stopPropagation(); this.props.getPage().getMenu().menu(); }}></div>
             </div>
         );
     }

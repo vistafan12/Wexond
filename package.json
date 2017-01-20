@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "webpack && cross-env NODE_ENV=dev electron build/main.bundle.js",
+    "start": "cross-env NODE_ENV=dev electron build/main.bundle.js",
     "watch": "webpack-dev-server --hot --inline --port 8080",
     "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
     "win32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
@@ -31,9 +31,11 @@
     "css-loader": "latest",
     "electron-packager": "latest",
     "eslint": "latest",
-    "eslint-loader": "^1.6.1",
+    "eslint-loader": "latest",
+    "gulp": "latest",
     "json-loader": "latest",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "electron-connect": "latest"
   }
 }
