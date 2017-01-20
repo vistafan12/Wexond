@@ -19,7 +19,6 @@
         "babel-preset-es2015": "latest",
         "babel-preset-react": "latest",
         "react-dom": "latest",
-        "get-pixels": "latest",
         "is-there": "latest",
         "node-dir": "latest"
     },

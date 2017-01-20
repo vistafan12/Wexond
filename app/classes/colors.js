@@ -29,19 +29,27 @@ export default class Colors {
                 width: 2,
                 height: 2
             }, function(image) {
-                getPixels(image.toDataURL(), function(err, pixels) {
-                    if (err) {
-                        console.log("Bad image path");
-                        return;
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                var img = new Image();
+                img.onload = function() {
+                    context.drawImage(img, 0, 0);
+                    var myData = context.getImageData(1, 1, 1, 1);
+                    if (myData != null) {
+
+                        var color = rgbToHex(myData.data[0], myData.data[1], myData.data[2]);
+                        if (myData.data[3] == 0) {
+                            color = "#fff";
+                        }
+                        if (typeof(callback) === 'function') {
+                            callback({foreground: Colors.getForegroundColor(color), background: color});
+                        }
                     }
-                    var color = rgbToHex(pixels.data[0], pixels.data[1], pixels.data[2]);
-                    if (pixels.data[3] == 0) {
-                        color = "#fff";
-                    }
-                    if (typeof(callback) === 'function') {
-                        callback({foreground: Colors.getForegroundColor(color), background: color});
-                    }
-                });
+                };
+                img.src = image.toDataURL();
+                canvas.width = 2;
+                canvas.height = 2;
+
             });
         }
     }
