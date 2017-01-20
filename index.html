@@ -66,7 +66,8 @@
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
     <script>
-        require(`electron-connect`).client.create()
+        if (process.env.NODE_ENV == 'dev')
+            require(`electron-connect`).client.create()
     </script>
     <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='lib/jquery.min.js'></script><script src='js/utils.js'></script><script src='app/classes/api.js'></script></body></html>"></iframe>
 </body>

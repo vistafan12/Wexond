@@ -1,3 +1,3 @@
-// install babel hooks in the main process
-require('babel-register');
+if (process.env.NODE_ENV == 'dev')
+    require('babel-register');
 require('./main.js');

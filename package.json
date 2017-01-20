@@ -6,7 +6,11 @@
   "repository": "sential/wexond",
   "scripts": {
     "start": "cross-env NODE_ENV=dev electron .",
-    "build": "babel app -d build && electron-packager . --all Wexond --overwrite"
+    "build-all": "babel app -d build && electron-packager . --all Wexond --overwrite",
+    "build-win32": "babel app -d build && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
+    "build-win64": "babel app -d build && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
+    "build-linux32": "babel app -d build && electron-packager . --platform=linux --arch=x86 Wexond --overwrite",
+    "build-linux64": "babel app -d build && electron-packager . --platform=linux --arch=x64 Wexond --overwrite"
   },
   "dependencies": {
     "electron": "^1.4.14",
