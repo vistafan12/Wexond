@@ -28,3 +28,8 @@ function checkFiles() {
 }
 
 globalShortcut.unregisterAll();
+
+if (process.env.ENV == 'dev') {
+    remote.getCurrentWindow().webContents.openDevTools();
+    require('devtron').install();
+}

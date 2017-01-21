@@ -20,7 +20,7 @@ var Ripple = class Ripple {
                     queue: false,
                     complete: function() {}
                 })
-            }, 200)
+            }, 125)
         })
         $(element).on('mouseout', function() {
             setTimeout(function() {
@@ -31,7 +31,7 @@ var Ripple = class Ripple {
                     queue: false,
                     complete: function() {}
                 })
-            }, 200)
+            }, 125)
         })
         return $rippleElement
     }

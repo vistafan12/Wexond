@@ -12,10 +12,13 @@ app.on('ready', () => {
     mainWindow.loadURL('file://' + __dirname + '/../app/renderer/public/index.html');
     mainWindow.setMenu(null);
 
-    if (process.env.NODE_ENV == 'dev')
-        mainWindow.webContents.openDevTools();
-
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+    process.on('uncaughtException', function () {
+
+    });
+    mainWindow.on('unresponsive', function () { 
+
     });
 });

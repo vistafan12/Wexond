@@ -1,40 +1,41 @@
 {
-    "name": "Wexond",
-    "version": "0.0.3",
-    "main": "build/main.bundle.js",
-    "license": "MIT",
-    "repository": "sential/wexond",
-    "scripts": {
-        "start": "cross-env NODE_ENV=dev electron build/main.bundle.js",
-        "watch": "webpack-dev-server --hot --inline --port 8080",
-        "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
-        "win32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
-        "win64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
-        "linux32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x86 Wexond --overwrite",
-        "linux64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x64 Wexond --overwrite"
-    },
-    "dependencies": {
-        "electron": "latest",
-        "react": "latest",
-        "babel-preset-es2015": "latest",
-        "babel-preset-react": "latest",
-        "react-dom": "latest",
-        "is-there": "latest",
-        "node-dir": "latest"
-    },
-    "devDependencies": {
-        "asar": "latest",
-        "babel-core": "latest",
-        "babel-loader": "latest",
-        "cross-env": "latest",
-        "css-loader": "latest",
-        "electron-packager": "latest",
-        "eslint": "latest",
-        "eslint-loader": "latest",
-        "gulp": "latest",
-        "json-loader": "latest",
-        "webpack": "latest",
-        "webpack-dev-server": "latest",
-        "electron-connect": "latest"
-    }
+  "name": "Wexond",
+  "version": "0.0.3",
+  "main": "build/main.bundle.js",
+  "license": "MIT",
+  "repository": "sential/wexond",
+  "scripts": {
+    "start": "cross-env NODE_ENV=dev electron build/main.bundle.js",
+    "watch": "webpack-dev-server --hot --inline --port 8080",
+    "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
+    "win32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
+    "win64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
+    "linux32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x86 Wexond --overwrite",
+    "linux64": "webpack --config webpack.config.production.js -p && electron-packager . --platform=linux --arch=x64 Wexond --overwrite"
+  },
+  "dependencies": {
+    "electron": "latest",
+    "react": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "react-dom": "latest",
+    "is-there": "latest",
+    "node-dir": "latest"
+  },
+  "devDependencies": {
+    "asar": "latest",
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "cross-env": "latest",
+    "css-loader": "latest",
+    "devtron": "^1.4.0",
+    "electron-connect": "latest",
+    "electron-packager": "latest",
+    "eslint": "latest",
+    "eslint-loader": "latest",
+    "gulp": "latest",
+    "json-loader": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
+  }
 }

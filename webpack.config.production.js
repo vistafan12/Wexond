@@ -71,8 +71,6 @@ module.exports = {
             compress: {
                 warnings: true
             },
-            minimize: true,
-            sourceMap: false,
             output: {
                 comments: false
             }

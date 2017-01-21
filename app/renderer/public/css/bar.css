@@ -22,7 +22,7 @@
 }
 
 .searchBox {
-    width: calc(100% - 160px);
+    width: calc(100% - 164px);
     position: relative;
     border-radius: 2px;
     margin-left: 13px;
@@ -51,7 +51,7 @@
 }
 
 .back {
-    margin-left: 6px;
+    margin-left: 8px;
     background-image: url(../img/bar/back.png);
 }
 
@@ -65,7 +65,7 @@
 
 .menu-icon {
     float: right;
-    margin-right: 8px;
+    margin-right: 10px;
     background-image: url(../img/bar/menu.png);
 }
 
