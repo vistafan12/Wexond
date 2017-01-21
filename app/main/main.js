@@ -28,6 +28,10 @@ function createWindow() {
     mainWindow.on('unresponsive', function () {
 
     });
+
+    if (process.env.ENV == 'dev') {
+        mainWindow.webContents.openDevTools();
+    }
 }
 process.on('uncaughtException', function () {
 

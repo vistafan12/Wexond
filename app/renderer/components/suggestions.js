@@ -160,11 +160,13 @@ export default class Suggestions extends React.Component {
                                     return a.length - b.length;
                                 })[0];
                                 //get important part of link ex. wexond.tk for better suggestions
-                                newLink = newLink.substr(0, newLink.indexOf('/'));
-                                var compareOldLink = oldLink.replace("/", "").split("&mdash")[0];
-                                var compareNewLink = newLink.replace("/", "").split("&mdash")[0];
-                                if (compareOldLink != compareNewLink) {
-                                    links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
+                                if (!newLink.startsWith("wexond:")) {
+                                    newLink = newLink.substr(0, newLink.indexOf('/'));
+                                    var compareOldLink = oldLink.replace("/", "").split("&mdash")[0];
+                                    var compareNewLink = newLink.replace("/", "").split("&mdash")[0];
+                                    if (compareOldLink != compareNewLink) {
+                                        links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
+                                    }
                                 }
                                 //sort links by length
                                 links.sort(function(a, b) {
@@ -186,12 +188,22 @@ export default class Suggestions extends React.Component {
                                     }
                                 }
                                 //remove duplicates from array
-                                var uniqueLinks = [];
+                                var uniqueLinks1 = [],
+                                    uniqueLinks = [],
+                                    tempLinks = [];
                                 $.each(links, function(i, el) {
-                                    if ($.inArray(el, uniqueLinks) === -1)
-                                        uniqueLinks.push(el);
+                                    tempLinks.push(el.split("&mdash")[0]);
+                                });
+                                $.each(tempLinks, function(i, el) {
+                                    if (!isInArray(el, uniqueLinks1)) {
+                                        uniqueLinks1.push(el);
                                     }
-                                );
+                                });
+                                $.each(uniqueLinks1, function(i, el) {
+                                    if (!isInArray(el, uniqueLinks)) {
+                                        uniqueLinks.push(links[i]);
+                                    }
+                                });
                                 //limit array length to 3
                                 if (uniqueLinks.length > 4) {
                                     uniqueLinks.length = 4;
