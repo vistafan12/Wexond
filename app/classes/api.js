@@ -5,13 +5,13 @@
 */
 class API {
     constructor(tab, parent) {
-        var instance = tab.instance,
-            webview = tab.page.getWebView()
+        var instance = tab.page.getPage(),
+            webview = tab.page.getWebView();
 
-        this.webviews = []
-        this.tab = new Tab(tab, this)
-        this.instance = new Page(tab.page.getPage(), this)
-        this.webview = new WebView(webview, this)
+        this.webviews = [];
+        this.tab = new Tab(tab, this);
+        this.page = new Page(tab.page.getPage(), this);
+        this.webview = new WebView(webview, this);
     }
 
     //global methods that manage whole window
@@ -21,20 +21,20 @@ class API {
     */
     dispose() {
         for (var i = 0; i < this.webviews.length; i++) {
-            this.webviews[i].destroy()
+            this.webviews[i].destroy();
         }
     }
     /*
     * sets titlebar color
     */
     setTitlebarColor(color) {
-        $(this.instance.getTabbar().refs.tabBarContainer).css('background-color', color)
+        $(this.page.getTitlebar().refs.titlebar).css('background-color', color);
     }
     /*
     * gets titlebar color
     */
     getTitlebarColor() {
-        return $(this.instance.getTabbar().refs.tabBarContainer).css('background-color')
+        return $(this.page.getTabbar().refs.tabBarContainer).css('background-color');
     }
 }
 /*
@@ -45,7 +45,7 @@ class API {
 class WebView {
     constructor(webview, api) {
         //event listeners and methods for webview
-        api.webviews.push(this)
+        api.webviews.push(this);
     }
     /*
     * destroys webview
@@ -60,19 +60,25 @@ class WebView {
 class Page {
     constructor(page, api) {
         //event listeners and methods for instance
-        this.page = page
+        this.page = page;
     }
     /*
     * returns app
     */
     getApp() {
-        return this.page.props.getApp()
+        return this.page.props.getApp();
     }
     /*
     * returns tabbar in app
     */
     getTabbar() {
-        return this.page.props.getApp().refs.tabbar
+        return this.page.getTabbar();
+    }
+    /*
+    * returns titlebar
+    */
+    getTitlebar() {
+        return this.page.getTitlebar();
     }
 }
 /*

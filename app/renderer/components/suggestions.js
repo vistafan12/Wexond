@@ -194,6 +194,7 @@ export default class Suggestions extends React.Component {
                                 $.each(links, function(i, el) {
                                     tempLinks.push(el.split("&mdash")[0]);
                                 });
+
                                 $.each(tempLinks, function(i, el) {
                                     if (!isInArray(el, uniqueLinks1)) {
                                         uniqueLinks1.push(el);
