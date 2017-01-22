@@ -190,7 +190,7 @@ function loadHistory(search = "") {
                 if (search == "") {
                     addItem(card, i);
                 } else {
-                    if (jsonObj.history[i].title.toLowerCase().startsWith(search.toLowerCase()) || jsonObj.history[i].link.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+                    if (jsonObj.history[i].link.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
                         addItem(card, i);
                     }
                 }

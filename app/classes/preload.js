@@ -1,10 +1,10 @@
 var fs = require('fs'),
     os = require('os');
 const {app} = require('electron').remote;
+const {ipcRenderer} = require('electron');
 var historyPath = app.getPath('userData') + '/userdata/history.json',
     extensionsPath = app.getPath('userData') + '/userdata/extensions',
     userdataPath = app.getPath('userData') + '/userdata',
-    ipcRenderer = require('electron'),
     remote = require('electron').remote;
 
 document.addEventListener("click", function(e) {
