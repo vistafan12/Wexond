@@ -1,5 +1,5 @@
 function doRippleIcon(item, x, y, width, height, rippleTime) {
-    return Ripple.makeRipple(item, x, y, width, height, rippleTime, 0)
+    return Ripple.makeRipple(item, x, y,height, width, rippleTime, 0)
 }
 
 (function ($) {
@@ -21,7 +21,7 @@ function doRippleIcon(item, x, y, width, height, rippleTime) {
         var border = $('<div class="border"></div>').appendTo(checkContainer)
         var check1 = $('<div class="check">').appendTo(fill)
         var checkIcon = $('<div class="check-icon"></div>').appendTo(check1)
-        
+
         var lastState = t.checked
 
         fill.css({
@@ -101,14 +101,14 @@ function doRippleIcon(item, x, y, width, height, rippleTime) {
         mdSwitch.mousedown(function (e) {
             if (!t.checked) {
                 check()
-                doRippleIcon($(t), 9, 8, 17, 17, options.rippleTime)
+                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 17, 17, options.rippleTime)
                 $(t).triggerHandler('checked-changed', {
                     checked: true,
                     userInteraction: true
                 })
             } else {
                 uncheck()
-                doRippleIcon($(t), 9, 8, 17, 17, options.rippleTime)
+                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 17, 17, options.rippleTime)
                 $(t).triggerHandler('checked-changed', {
                     checked: false,
                     userInteraction: true

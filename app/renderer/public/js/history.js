@@ -210,7 +210,7 @@ function loadHistory(search = "") {
 function addItem(card, i) {
     var item = $('<div class="item">').appendTo(card.find('.items'));
     item.append('\
-                <div class="checkbox ripple-icon" data-ripple-color="#757575"></div>\
+                <div class="checkbox ripple-checkbox" data-ripple-color="#757575"></div>\
                 <div class="details">\
                     <div class="time"></div>\
                     <div class="page-title"></div>\
