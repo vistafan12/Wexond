@@ -1,5 +1,8 @@
 'use babel';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Page from './page.js';
+import Titlebar from './titlebar.js';
 
 export default class MDMenu extends React.Component {
     constructor() {
@@ -31,7 +34,7 @@ export default class MDMenu extends React.Component {
                     <div className="icon"></div>
                     Settings
                 </li>
-                <li className="ripple history" ref="item">
+                <li className="ripple history" ref="item" onClick={() => this.props.addTab("wexond://history", true)}>
                     <div className="icon"></div>
                     History
                 </li>
@@ -43,11 +46,11 @@ export default class MDMenu extends React.Component {
                     <div className="icon"></div>
                     Downloads
                 </li>
-                <li className="ripple extensions" ref="item">
+                <li className="ripple extensions" ref="item" onClick={() => this.props.addTab("http://www.nersent.tk/wexond/wextore", true)}>
                     <div className="icon"></div>
                     Extensions
                 </li>
-                <li className="ripple fullscreen" ref="item">
+                <li className="ripple fullscreen" ref="item" onClick={() => remote.getCurrentWindow().setFullScreen(remote.getCurrentWindow().isFullScreen() ? false : true)}>
                     <div className="icon"></div>
                     Fullscreen
                 </li>
@@ -68,7 +71,7 @@ export default class MDMenu extends React.Component {
     }
 
     show() {
-        //require('remote').getCurrentWindow().toggleDevTools();
+        //require('remote').getCurrentWindow().toggleDevTools();setFullScreen(true);
         $(this.refs.menu).css('display', 'block');
         $(this.refs.menu).animate({
             top: 36
@@ -112,4 +115,5 @@ export default class MDMenu extends React.Component {
             this.show();
         }
     }
+
 }

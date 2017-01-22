@@ -1,0 +1,136 @@
+
+/* switch */
+
+.md-switch {
+  width: 40px;
+  min-height: 14px;
+}
+
+.switch-container {
+  position: relative;
+}
+
+.lever {
+  width: 36px;
+  height: 18px;
+  border-radius: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #818181;
+}
+
+.flat-button {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.ellipse {
+  height: 22px;
+  width: 22px;
+  position: absolute;
+  top: -2px;
+  left: -4px;
+  background-color: #F1F1F1;
+  border-radius: 100%;
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* checkbox */
+
+.check-container {
+  height: 18px;
+  width: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.border {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 4px;
+  border: 2px solid #757575;
+}
+
+.md-checkbox {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  position: absolute;
+  background-color: #3F51B5;
+}
+
+.fill2 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 4px;
+  background-color: #3F51B5;
+}
+
+.check {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.check-icon {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('../img/check.png');
+}
+
+/* preloader */
+
+.md-preloader {
+  font-size: 0;
+  display: inline-block;
+  animation: outer 6600ms linear infinite;
+}
+.md-preloader svg {
+  animation: inner 1320ms linear infinite;
+}
+.md-preloader svg circle {
+  fill: none;
+  stroke-linecap: square;
+  animation: arc 1320ms cubic-bezier(0.8, 0, 0.4, 0.8) infinite;
+}
+@keyframes outer {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes inner {
+  0% {
+    transform: rotate(-100.8deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+@keyframes arc {
+  0% {
+    stroke-dasharray: 1 210.48670779px;
+    stroke-dashoffset: 0;
+  }
+  40% {
+    stroke-dasharray: 151.55042961px, 210.48670779px;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 1 210.48670779px;
+    stroke-dashoffset: -151.55042961px;
+  }
+}

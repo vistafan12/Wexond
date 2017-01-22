@@ -1,5 +1,5 @@
 var Ripple = class Ripple {
-    static makeRipple(element, xpos, ypos, height, width, time, fadeoutopacity) {
+    static makeRipple(element, xpos, ypos, height, width, time, fadeoutopacity, bgcolor) {
         var $rippleElement = $('<span class="ripple-effect" />'),
             $buttonElement = element,
             btnOffset = $buttonElement.offset(),
@@ -7,7 +7,7 @@ var Ripple = class Ripple {
             yPos = ypos,
             size = 0,
             animateSize = parseInt(Math.max(width, height) * Math.PI);
-        $rippleElement.css({top: yPos, left: xPos, width: size, height: size, backgroundColor: $buttonElement.attr("data-ripple-color")}).appendTo($buttonElement).animate({
+        $rippleElement.css({top: yPos, left: xPos, width: size, height: size, backgroundColor: bgcolor}).appendTo($buttonElement).animate({
             width: animateSize,
             height: animateSize
         }, time, 'linear', function() {});

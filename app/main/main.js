@@ -40,7 +40,7 @@ process.on('uncaughtException', function () {
 protocol.registerStandardSchemes(['wexond']);
 app.on('ready', function () {
     protocol.registerFileProtocol('wexond', (request, callback) => {
-        var url = request.url.substr(8);
+        var url = request.url.substr(9);
         var lastChar = url.substr(url.length - 1);
         var s = url.split("/");
         if (lastChar != "/") {

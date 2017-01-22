@@ -60,6 +60,9 @@ function shadeColor(hex, lum) {
 
     return rgb;
 }
+function test() {
+  console.log("dziala lel");
+}
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }

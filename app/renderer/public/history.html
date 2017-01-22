@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>History</title>
+    <link href="css/history.css" rel="stylesheet" type="text/css" />
+    <link href="css/ripple.css" rel="stylesheet" type="text/css" />
+    <link href="lib/materialdesign/css/materialdesign.css" rel="stylesheet" type="text/css" />
     <style>
         @font-face {
             font-family: "Roboto";
@@ -23,7 +26,34 @@
 </head>
 
 <body>
-    XDDD
+    <div class="actionbar">
+        <div class="normal">
+            <div class="toolbar">
+                <div class="title" style="font-size: 18px">History</div>
+                <div class="search-bar">
+                    <div class="search-box">
+                        <div class="search-icon"></div>
+                        <div class="hint">Search</div>
+                        <input class="search-input"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="selected">
+            <div class="center">
+                <div class="icon-button ripple-icon ripple" id="unselect-btn"><div id="unselect-btn-img"></div></div>
+                <div class="selected-items-text">Selected items: 0</div>
+                <div class="flat-button ripple" id="delete-btn">DELETE</div>
+                <div class="flat-button ripple" id="cancel-btn">CANCEL</div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+    </div>
+    <script src="lib/jquery.min.js"></script>
+    <script src="js/ripple.js"></script>
+    <script src="lib/materialdesign/materialdesign.js" type="text/javascript"></script>
+    <script src="js/history.js"></script>
 </body>
 
 </html>

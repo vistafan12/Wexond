@@ -34,6 +34,7 @@ export default class Page extends React.Component {
         this.onContextMenu = this.onContextMenu.bind(this);
         this.focusSearchInput = this.focusSearchInput.bind(this);
         this.getMenu = this.getMenu.bind(this);
+        this.openNewTab = this.openNewTab.bind(this);
         //global properties
         this.menu = new Menu();
         this.xToInspect = null;
@@ -72,7 +73,6 @@ export default class Page extends React.Component {
         this.props.getApp().addTab(pageObj);
         this.extensions = new Extensions();
         this.resize();
-
         window.addEventListener('resize', this.onResize);
         webview.addEventListener('page-title-updated', this.pageTitleUpdated);
         webview.addEventListener('dom-ready', this.ready);
@@ -94,6 +94,12 @@ export default class Page extends React.Component {
             }
         });
 
+    }
+    /*
+    * open new tab with url
+    */
+    openNewTab(u, select) {
+      this.props.getApp().addPage({url: u, select: select});
     }
     /*
     * appends and prepares context menu items
@@ -406,8 +412,8 @@ export default class Page extends React.Component {
                 <div className="page" ref="page">
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
-                    <webview preload="js/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
-                    <MDMenu ref="menu" getPage={t.getPage}></MDMenu>
+                    <webview preload="../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
+                    <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.openNewTab(u, s)}></MDMenu>
                 </div>
             );
         if (this.state.render) {
