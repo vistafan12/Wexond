@@ -137,7 +137,7 @@ export default class MDMenu extends React.Component {
     hide() {
         var t = this;
         $(this.refs.menu).animate({
-            top: 0
+            top: 28
         }, {
             duration: 200,
             queue: false
