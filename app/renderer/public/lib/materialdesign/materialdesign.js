@@ -101,14 +101,14 @@ function doRippleIcon(item, x, y, width, height, rippleTime) {
         mdSwitch.mousedown(function (e) {
             if (!t.checked) {
                 check()
-                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 17, 17, options.rippleTime)
+                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 14, 14, options.rippleTime)
                 $(t).triggerHandler('checked-changed', {
                     checked: true,
                     userInteraction: true
                 })
             } else {
                 uncheck()
-                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 17, 17, options.rippleTime)
+                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 14, 14, options.rippleTime)
                 $(t).triggerHandler('checked-changed', {
                     checked: false,
                     userInteraction: true
