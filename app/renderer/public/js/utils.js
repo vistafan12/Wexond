@@ -1,4 +1,4 @@
-var iconRippleTime = 300;
+var iconRippleTime = 250;
 var rippleTime = 400;
 
 function isURL(s) {
@@ -32,6 +32,17 @@ function makeRippleMenuItem(menuItem, e) {
 function makeRippleIconButton(item) {
     Ripple.makeRipple(item, item.width() / 2, item.height() / 2, 12, 12, iconRippleTime, 0);
 }
+
+function makeRipple(item, isFromCenter = true, scale = 12, e = null, time = 250) {
+    if (isFromCenter) {
+        Ripple.makeRipple(item, (item.width() / 2), (item.height() / 2), scale, scale, time, 0);
+    } else {
+        var relX = e.pageX - $(item).offset().left;
+        var relY = e.pageY - $(item).offset().top;
+        Ripple.makeRipple($(menuItem), relX, relY, $(item).width(), $(item).height(), time, 0);
+    }
+}
+
 function isInArray(value, array) {
     return array.indexOf(value) > -1;
 }

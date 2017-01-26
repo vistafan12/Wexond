@@ -1,6 +1,6 @@
 .menu {
-    width: 230px;
-    height: auto;
+    width: 300px;
+    height: 386px;
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -11,11 +11,62 @@
     z-index: 10;
     opacity: 0;
     display: none;
+}
+.menu-items {
+    width: 220px;
     list-style: none;
     padding: 0;
+    font-size: 0;
+    float: left;
+}
+::-webkit-scrollbar
+{
+  width: 4px;
+  height: 4px;
 }
 
-.menu li {
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(0, 0, 0, 0.3);
+}
+.divider {
+    width: 1px;
+    background-color: #eee;
+    height: 100%;
+    margin-top: 8px;
+    margin-left: 8px;
+    float: left;
+}
+.extensions-items {
+    right: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 386px;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.extensions-items li {
+    padding: 0;
+    margin: 0;
+    background-image: url('../img/menu/settings.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+    margin-right: 8px;
+    margin-left: 4px;
+}
+.menu-items li {
     max-width: 100%;
     height: auto;
     text-align: left;
@@ -32,12 +83,12 @@
     cursor: default;
 }
 
-.menu li:hover {
+.menu-items li:hover {
     background-color: #E0E0E0;
     transition: all 0.2s;
 }
 
-.menu li .icon {
+.menu-items li .icon {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;

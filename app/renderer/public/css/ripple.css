@@ -8,10 +8,10 @@
 
 .ripple-icon {
     user-select: none;
-}
-.ripple-checkbox {
-    user-select: none;
     transform: translate3d(0, 0, 0);
+}
+.ripple-bar-icon {
+    user-select: none;
 }
 
 .ripple-effect {

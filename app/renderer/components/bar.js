@@ -86,13 +86,13 @@ export default class Bar extends React.Component {
     render() {
         return (
             <div className="bar" ref="bar">
-                <div className="bar-icon back ripple-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
-                <div className="bar-icon forward ripple-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
-                <div className="bar-icon refresh ripple-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
+                <div className="bar-icon back ripple-bar-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
+                <div className="bar-icon forward ripple-bar-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
+                <div className="bar-icon refresh ripple-bar-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
                 <div ref="searchBox" className="searchBox">
                     <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 </div>
-                <div className="bar-icon menu-icon ripple-icon" onMouseDown={this.ripple} onClick={(e) => {
+                <div className="bar-icon menu-icon ripple-bar-icon" onMouseDown={this.ripple} onClick={(e) => {
                     e.stopPropagation();
                     this.props.getPage().getMenu().menu();
                 }}></div>
