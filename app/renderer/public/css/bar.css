@@ -3,6 +3,7 @@
     background: #fff;
     width: 100%;
     position: absolute;
+    z-index: 99;
     top: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.14);
     transition: 0.2s background;
