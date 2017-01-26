@@ -1,5 +1,5 @@
 .menu {
-    width: 300px;
+    width: 280px;
     height: 386px;
     background-color: #fff;
     border-radius: 3px;
@@ -19,14 +19,12 @@
     font-size: 0;
     float: left;
 }
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 
-::-webkit-scrollbar-track
-{
+::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
 }
 
@@ -39,18 +37,17 @@
     background-color: #eee;
     height: 100%;
     margin-top: 8px;
-    margin-left: 8px;
     float: left;
 }
 .extensions-items {
-    right: 0;
     list-style: none;
     padding: 0;
     margin: 0;
     height: 386px;
     position: absolute;
+    right: 0;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 .extensions-items li {
     padding: 0;
@@ -59,12 +56,13 @@
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
-    height: 48px;
-    width: 48px;
+    height: 36px;
+    width: 36px;
     margin-bottom: 6px;
     margin-top: 6px;
-    margin-right: 8px;
+    margin-right: 9px;
     margin-left: 4px;
+    opacity: 0.8;
 }
 .menu-items li {
     max-width: 100%;

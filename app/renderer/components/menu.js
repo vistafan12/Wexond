@@ -27,7 +27,7 @@ export default class MDMenu extends React.Component {
         });
         $(this.refs.divider).css('height', $(this.refs.menu).height() - 16);
         $(this.refs.extensionsItems).find('li').mousedown(function() {
-            makeRipple($(this), true, 18, 150);
+            makeRipple($(this), true, 14, 150);
         });
     }
 
