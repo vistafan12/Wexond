@@ -94,6 +94,8 @@ export default class TabBar extends React.Component {
             $(tab.refs.tab).css({backgroundColor: tab.background, 'color': tab.foreground});
             tab.selected = true;
             this.props.getApp().refs.titlebar.setBackground(shadeColor(tab.background, -0.2));
+            $(tab.refs.closeBtn).css('display', 'block');
+            $(tab.refs.tabTitle).css('max-width', 'calc(100% - 64px)');
         }
     }
     /*
@@ -110,6 +112,8 @@ export default class TabBar extends React.Component {
                 'color': this.props.getApp().refs.titlebar.foreground
             });
             tab.selected = false;
+            $(tab.refs.closeBtn).css('display', 'none');
+            $(tab.refs.tabTitle).css('max-width', 'calc(100% - 48px)');
         }
     }
     /*

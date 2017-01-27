@@ -81,6 +81,22 @@ export default class Tab extends React.Component {
         });
         this.page.getExtensions().loadExtensions(this.getIndex());
         this.page.focusSearchInput();
+        var oldColor = null;
+        $(this.refs.tab).mouseenter(function() {
+            if (!t.isSelected()) {
+                oldColor = $(t.getTabbar().refs.tabbar).css('background-color');
+                $(this).css('background-color', 'rgba(255,255,255,0.2)');
+                $(t.refs.closeBtn).css('display', 'block');
+                $(t.refs.tabTitle).css('max-width', 'calc(100% - 64px)');
+            }
+        });
+        $(this.refs.tab).mouseleave(function() {
+            if (!t.isSelected()) {
+                $(this).css('background-color', oldColor);
+                $(t.refs.closeBtn).css('display', 'none');
+                $(t.refs.tabTitle).css('max-width', 'calc(100% - 48px)');
+            }
+        });
     }
     /*
     * returns Object tabbar
@@ -212,7 +228,7 @@ export default class Tab extends React.Component {
                     <div className="border-horizontal"></div>
                     <div className="content">
                         <div ref="favicon" className="favicon"></div>
-                        <div className="tabTitle">{this.state.title}</div>
+                        <div className="tabTitle" ref="tabTitle">{this.state.title}</div>
                         <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}></div>
                     </div>
                 </div>

@@ -25,10 +25,10 @@
 
 .tabTitle {
     position: absolute;
-    left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     max-width: calc(100% - 72px);
+    margin-left: 32px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
