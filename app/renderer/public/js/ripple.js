@@ -18,10 +18,12 @@ var Ripple = class Ripple {
                 }, {
                     duration: time,
                     queue: false,
-                    complete: function() {}
-                })
-            }, 125)
-        })
+                    complete: function() {
+                        $rippleElement.remove();
+                    }
+                });
+            }, 125);
+        });
         $(element).on('mouseout', function() {
             setTimeout(function() {
                 $rippleElement.animate({
@@ -29,10 +31,12 @@ var Ripple = class Ripple {
                 }, {
                     duration: time,
                     queue: false,
-                    complete: function() {}
-                })
-            }, 125)
-        })
-        return $rippleElement
+                    complete: function() {
+                        $rippleElement.remove();
+                    }
+                });
+            }, 125);
+        });
+        return $rippleElement;
     }
 };

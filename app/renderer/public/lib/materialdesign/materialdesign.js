@@ -1,55 +1,73 @@
-function doRippleIcon(item, x, y, width, height, rippleTime) {
-    return Ripple.makeRipple(item, x, y,height, width, rippleTime, 0)
-}
-
-(function ($) {
-    //checkbox
-    $.fn.checkbox = function (options = {
-        rippleTime: 300
+(function($) {
+    /*
+    * checkbox
+    *
+    * html properties:
+    * border-color
+    * fill-color
+    *
+    * events:
+    * checked-changed(checked - boolean, userInteraction - boolean)
+    */
+    $.fn.checkbox = function(options = {
+        rippleTime: 300,
+        rippleSize: 15
     }) {
-        var t = this
-        t.checked = false
-        var defaults = {
-            rippleTime: 300
-        }
-        options = $.extend(defaults, options)
+        var t = this,
+            defaults = {
+                rippleTime: 300,
+                rippleSize: 15
+            },
             //append elements
-        var mdSwitch = $('<div class="md-checkbox">').appendTo($(t))
-        var checkContainer = $('<div class="check-container">').appendTo(mdSwitch)
-        var fill = $('<div class="fill">').appendTo(checkContainer)
-        var path = $('<div class="fill2">').appendTo(checkContainer)
-        var border = $('<div class="border"></div>').appendTo(checkContainer)
-        var check1 = $('<div class="check">').appendTo(fill)
-        var checkIcon = $('<div class="check-icon"></div>').appendTo(check1)
+            mdSwitch = $('<div class="md-checkbox">').appendTo($(t)),
+            checkContainer = $('<div class="check-container">').appendTo(mdSwitch),
+            fill = $('<div class="fill">').appendTo(checkContainer),
+            path = $('<div class="fill2">').appendTo(checkContainer),
+            border = $('<div class="border"></div>').appendTo(checkContainer),
+            check1 = $('<div class="check">').appendTo(fill),
+            checkIcon = $('<div class="check-icon"></div>').appendTo(check1),
+            lastState = false,
+            lastBorderColor,
+            lastFillColor;
 
-        var lastState = t.checked
+        options = $.extend(defaults, options);
+        this.checked = lastState;
 
-        fill.css({
-            opacity: 0
-        });
-        path.css({
-            opacity: 0,
-            marginLeft: 0
-        });
+        //add ripple class for checkbox
+        $(t).addClass('ripple-icon');
 
-        setInterval(function () {
+        //trigger event when checked or unchecked
+        setInterval(function() {
+            var fillColor = $(t).attr('fill-color'),
+                borderColor = $(t).attr('border-color');
+
+            if (lastFillColor != fillColor) {
+                $(fill).css('background-color', fillColor);
+                $(fill2).css('background-color', fillColor);
+                lastFillColor = fillColor;
+            }
+            if (lastBorderColor != borderColor) {
+                $(fill2).css('border', '2px solid ' + borderColor);
+                lastBorderColor = borderColor;
+            }
+
             if (lastState != t.checked) {
-                lastState = t.checked
+                lastState = t.checked;
                 if (t.checked) {
-                    check()
+                    check();
                     $(t).triggerHandler('checked-changed', {
                         checked: true,
                         userInteraction: false
-                    })
+                    });
                 } else {
-                    uncheck()
+                    uncheck();
                     $(t).triggerHandler('checked-changed', {
                         checked: false,
                         userInteraction: false
-                    })
+                    });
                 }
             }
-        }, 1)
+        }, 1);
 
         function check() {
             fill.animate({
@@ -70,9 +88,9 @@ function doRippleIcon(item, x, y, width, height, rippleTime) {
                 duration: 350,
                 queue: true
             });
-            t.checked = true
-            lastState = true
 
+            t.checked = true;
+            lastState = t.checked;
         }
 
         function uncheck() {
@@ -94,172 +112,201 @@ function doRippleIcon(item, x, y, width, height, rippleTime) {
                 duration: 100,
                 queue: false
             });
-            t.checked = false
-            lastState = false
 
+            t.checked = false;
+            lastState = t.checked;
         }
-        mdSwitch.mousedown(function (e) {
+
+        mdSwitch.mousedown(function(e) {
             if (!t.checked) {
-                check()
-                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 14, 14, options.rippleTime)
+                check();
+                Ripple.makeRipple($(t), 9, 8, options.rippleSize, options.rippleSize, options.rippleTime, 0);
                 $(t).triggerHandler('checked-changed', {
                     checked: true,
                     userInteraction: true
-                })
+                });
             } else {
-                uncheck()
-                doRippleIcon($(t), $(t).width() / 2, $(t).height() / 2, 14, 14, options.rippleTime)
+                uncheck();
+                Ripple.makeRipple($(t), 9, 8, options.rippleSize, options.rippleSize, options.rippleTime, 0);
                 $(t).triggerHandler('checked-changed', {
                     checked: false,
                     userInteraction: true
-                })
-            }
-        })
-        return this
-    }
-
-    //preloader
-    $.fn.preloader = function () {
-        var t = this
-        $(t).html('\
-        <div class="md-preloader">\
-            <svg class="svg" xmlns="http://www.w3.org/2000/svg" version="1.1" height="100%" width="100%" viewbox="0 0 75 75">\
-                <circle class="preloader-circle" cx="37.5" cy="37.5" r="33.5" stroke="#000" stroke-width="10" />\
-            </svg>\
-        </div>')
-        var lastColor, lastThickness;
-        var loader = $(t).find('.md-preloader')
-        var circular = $(t).find('.svg')
-        var path = $(t).find('.preloader-circle')
-        setInterval(function () {
-            var color = $(t).attr('color')
-            var thickness = $(t).attr('thickness')
-
-            if (lastColor != color) {
-                path.css('stroke', color)
-                lastColor = color
-            }
-            if (lastThickness != thickness) {
-                path.css('stroke-width', thickness)
-                lastThickness = thickness
-            }
-        }, 1);
-
-        return this
-    }
-
-    //switch
-    $.fn.switch = function (options = {
-        rippleTime: 300
-    }) {
-        var t = this
-        t.switched = false
-
-        var defaults = {
-            rippleTime: 300
-        }
-        options = $.extend(defaults, options)
-
-        var mdSwitch = $('<div class="md-switch">').appendTo($(t))
-        var switchContainer = $('<div class="switch-container">').appendTo(mdSwitch)
-        var lever = $('<div class="lever">').appendTo(switchContainer)
-        var ellipse = $('<div class="ellipse">').appendTo(switchContainer)
-
-        var lastState
-        setInterval(function () {
-            if (lastState != t.switched) {
-                lastState = t.switched
-                if (t.switched) {
-                    check()
-                    $(t).triggerHandler('checked-changed', {
-                        checked: true,
-                        userInteraction: false
-                    })
-                } else {
-                    uncheck()
-                    $(t).triggerHandler('checked-changed', {
-                        checked: false,
-                        userInteraction: false
-                    })
-                }
-            }
-        }, 1)
-
-        function check() {
-            ellipse.animate({
-                backgroundColor: $(t).attr('lever-color-on')
-            }, {
-                queue: false,
-                duration: 200
-            });
-            ellipse.animate({
-                left: 22
-            }, {
-                queue: false,
-                duration: 200
-            });
-            lever.animate({
-                backgroundColor: $(t).attr('bg-color-on')
-            }, {
-                queue: false,
-                duration: 200
-            });
-            t.switched = true
-            lastState = true
-        }
-
-        function uncheck() {
-            ellipse.animate({
-                backgroundColor: $(t).attr('lever-color-off')
-            }, {
-                queue: false,
-                duration: 200
-            });
-            ellipse.animate({
-                left: -4
-            }, {
-                queue: false,
-                duration: 200
-            });
-            lever.animate({
-                backgroundColor: $(t).attr('bg-color-off')
-            }, {
-                queue: false,
-                duration: 200
-            });
-            t.switched = false
-            lastState = false
-        }
-
-        mdSwitch.mousedown(function () {
-            if (!t.switched) {
-                var ripple = doRippleIcon($(t), 7, 9, 17, 17, options.rippleTime)
-                $(ripple).animate({
-                    left: 33
-                }, {
-                    duration: 200,
-                    queue: false
-                })
-                check()
-                $(t).triggerHandler('checked-changed', {
-                    checked: true,
-                    userInteraction: true
-                })
-            } else {
-                var ripple = doRippleIcon($(t), 33, 9, 17, 17, options.rippleTime)
-                $(ripple).animate({
-                    left: 7
-                }, {
-                    duration: 200,
-                    queue: false
-                })
-                uncheck()
-                $(t).triggerHandler('checked-changed', {
-                    checked: true,
-                    userInteraction: true
-                })
+                });
             }
         });
-        return this
+        return this;
     }
-}(jQuery))
+
+    /*
+    * preloader
+    *
+    * html properties:
+    * color
+    * thickness
+    */
+    $.fn.preloader = function() {
+        var t = this,
+            lastColor,
+            lastThickness,
+            path = $(t).find('.path');
+
+            $(t).html('\
+            <svg class="circular" viewBox="25 25 50 50">\
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"/>\
+            </svg>');
+
+            setInterval(function() {
+                var color = $(t).attr('color'),
+                    thickness = $(t).attr('thickness');
+
+                if (lastColor != color) {
+                    $(t).html(`\
+                    <svg class="circular" viewBox="25 25 50 50">\
+                        <circle class="path" style="stroke: ${color}; stroke-width: ${thickness};" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"/>\
+                    </svg>`);
+                    lastColor = color;
+                }
+                if (lastThickness != thickness) {
+                    $(t).html(`\
+                    <svg class="circular" viewBox="25 25 50 50">\
+                        <circle class="path" style="stroke: ${color}; stroke-width: ${thickness};" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"/>\
+                    </svg>`);
+                    lastThickness = thickness;
+                }
+            }, 1);
+
+            return this;
+        }
+
+        /*
+        * switch
+        *
+        * html properties:
+        * primary-color
+        * accent-color
+        * lever-color-off - default: #F1F1F1
+        * bg-color-off - default: #818181
+        *
+        * events:
+        * toggled(state - boolean, userInteraction - boolean)
+        */
+        $.fn.switch = function(options = {
+            rippleTime: 300,
+            rippleSize: 15
+        }) {
+            this.switched = false
+            var defaults = {
+                    rippleTime: 300,
+                    rippleSize: 15
+                },
+                t = this,
+                mdSwitch = $('<div class="md-switch">').appendTo($(t)),
+                switchContainer = $('<div class="switch-container">').appendTo(mdSwitch),
+                lever = $('<div class="lever">').appendTo(switchContainer),
+                ellipse = $('<div class="ellipse">').appendTo(switchContainer),
+                lastState;
+
+            options = $.extend(defaults, options)
+
+            //add ripple class for switch
+            $(t).addClass('ripple-icon');
+
+            //trigger event when toggled
+            setInterval(function() {
+                if (lastState != t.switched) {
+                    lastState = t.switched;
+                    if (t.switched) {
+                        toggleOn();
+                        $(t).triggerHandler('toggled', {
+                            state: true,
+                            userInteraction: false
+                        });
+                    } else {
+                        toggleOff();
+                        $(t).triggerHandler('toggled', {
+                            state: false,
+                            userInteraction: false
+                        });
+                    }
+                }
+            }, 1);
+
+            function toggleOn() {
+                ellipse.animate({
+                    backgroundColor: $(t).attr('accent-color')
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                ellipse.animate({
+                    left: 22
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                lever.animate({
+                    backgroundColor: $(t).attr('primary-color')
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                t.switched = true;
+                lastState = t.switched;
+
+            }
+
+            function toggleOff() {
+                ellipse.animate({
+                    backgroundColor: '#F1F1F1'
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                ellipse.animate({
+                    left: -4
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                lever.animate({
+                    backgroundColor: '#818181'
+                }, {
+                    queue: false,
+                    duration: 200
+                });
+                t.switched = false;
+                lastState = t.switched;
+            }
+
+            mdSwitch.mousedown(function() {
+                if (!t.switched) {
+                    var ripple = Ripple.makeRipple($(t), 7, 9, options.rippleSize, options.rippleSize, options.rippleTime, 0);
+                    $(ripple).animate({
+                        left: 33
+                    }, {
+                        duration: 200,
+                        queue: false
+                    });
+                    toggleOn();
+                    $(t).triggerHandler('toggled', {
+                        state: true,
+                        userInteraction: true
+                    });
+                } else {
+                    var ripple = Ripple.makeRipple($(t), 33, 9, options.rippleSize, options.rippleSize, options.rippleTime, 0);
+                    $(ripple).animate({
+                        left: 7
+                    }, {
+                        duration: 200,
+                        queue: false
+                    })
+                    toggleOff();
+                    $(t).triggerHandler('toggled', {
+                        state: true,
+                        userInteraction: true
+                    });
+                }
+            });
+            return this;
+        }
+    }(jQuery))
