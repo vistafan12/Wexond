@@ -82,6 +82,7 @@ export default class Tab extends React.Component {
         this.page.getExtensions().loadExtensions(this.getIndex());
         this.page.focusSearchInput();
         var oldColor = null;
+
         $(this.refs.tab).mouseenter(function() {
             if (!t.isSelected()) {
                 oldColor = $(t.getTabbar().refs.tabbar).css('background-color');
