@@ -11,6 +11,7 @@ var app = remote.app,
     fs = require('fs');
 
 window.tabs = [];
+window.rp = require('request-promise');
 
 function checkFiles() {
     //check if directory called userdata exists

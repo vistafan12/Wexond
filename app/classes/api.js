@@ -12,6 +12,7 @@ class API {
         this.tab = new Tab(tab, this);
         this.page = new Page(tab.page.getPage(), this);
         this.webview = new WebView(webview, this);
+        this.parent = parent;
     }
 
     //global methods that manage whole window
@@ -35,6 +36,24 @@ class API {
     */
     getTitlebarColor() {
         return $(this.page.getTabbar().refs.tabBarContainer).css('background-color');
+    }
+    /*
+    * gets content of website
+    * callback (optional) - function(string)
+    */
+    requestUrl(url, callback = null) {
+        this.parent.rp(url).then(function(htmlString) {
+            if (typeof(callback) !== "undefined")
+                callback(htmlString);
+        }).catch(function(err) {
+            throw new Error(err);
+        });
+    }
+    /*
+    * return boolen, client is offline or online
+    */
+    isOnline() {
+        return navigator.onLine;
     }
 }
 /*
