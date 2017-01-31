@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from './page.js';
 import Titlebar from './titlebar.js';
+import {TweenMax, CSSPlugin} from 'gsap';
 
 export default class MDMenu extends React.Component {
     constructor() {
@@ -22,7 +23,7 @@ export default class MDMenu extends React.Component {
             var node = menuNodes[i];
             if (node) {
                 node.addEventListener('mousedown', function(e) {
-                    //TODO: make ripple
+                    makeRipple(node, true, 14);
                 });
             }
         }
@@ -36,9 +37,31 @@ export default class MDMenu extends React.Component {
             var node = extensionsNodes[i];
             if (node) {
                 node.addEventListener('mousedown', function(e) {
-                    //TODO: make ripple
+                    makeRippleMenuItem(node, e);
                 });
             }
+        }
+    }
+
+    show() {
+        this.refs.menu.css('display', 'block');
+        TweenMax.to(this.refs.menu, 0.2, {css:{top: 52, opacity: 1}});
+        this.openedMenu = true;
+    }
+
+    hide() {
+        var t = this;
+        TweenMax.to(this.refs.menu, 0.2, {css:{top: 28, opacity: 0}, onComplete: function() {
+            t.refs.menu.css('display', 'none');
+            t.openedMenu = false;
+        }});
+    }
+
+    menu() {
+        if (this.openedMenu) {
+            this.hide();
+        } else {
+            this.show();
         }
     }
 
@@ -126,56 +149,4 @@ export default class MDMenu extends React.Component {
 
         );
     }
-
-    show() {
-        /*
-        TODO: animations for menu show
-        $(this.refs.menu).css('display', 'block');
-        $(this.refs.menu).animate({
-            top: 52
-        }, {
-            duration: 200,
-            queue: false
-        });
-        $(this.refs.menu).animate({
-            opacity: 1
-        }, {
-            duration: 200,
-            queue: false
-        });
-        this.openedMenu = true;
-        */
-    }
-
-    hide() {
-        var t = this;
-        /*
-        TODO: animations for menu hide
-        $(this.refs.menu).animate({
-            top: 28
-        }, {
-            duration: 200,
-            queue: false
-        });
-        $(this.refs.menu).animate({
-            opacity: 0
-        }, {
-            duration: 200,
-            queue: false,
-            complete: function() {
-                $(this).css('display', 'none');
-                t.openedMenu = false;
-            }
-        });
-        */
-    }
-
-    menu() {
-        if (this.openedMenu) {
-            this.hide();
-        } else {
-            this.show();
-        }
-    }
-
 }

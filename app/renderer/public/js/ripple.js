@@ -9,7 +9,6 @@ var Ripple = class Ripple {
         rippleElement.className = 'ripple-effect';
         element.appendChild(rippleElement);
         rippleElement.css({left: xPos + 'px', top: yPos + 'px'});
-        console.log(rippleElement.style.left);
 
         TweenMax.to(rippleElement, time, {
             width: animateSize,
@@ -20,7 +19,8 @@ var Ripple = class Ripple {
                 TweenMax.to(rippleElement, time, {
                     opacity: 0,
                     onComplete: function() {
-                        rippleElement.parentNode.removeChild(rippleElement);
+                        if (rippleElement.parentNode != null)
+                            rippleElement.parentNode.removeChild(rippleElement);
                     }
                 });
             }, 50);
