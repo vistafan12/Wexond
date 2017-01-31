@@ -84,6 +84,9 @@ export default class Page extends React.Component {
                     }, 50);
                 }
             }
+            if (e.channel == 'LMB') {
+                t.refs.menu.hide();
+            }
         });
 
     }
