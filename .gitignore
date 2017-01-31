@@ -3,3 +3,5 @@ node_modules
 Wexond**
 npm-debug.log
 build
+.vs
+.vscode
