@@ -30,21 +30,15 @@ export default class Suggestions extends React.Component {
     * hides suggestions window
     */
     hide() {
-        /*
-        TODO: css
-        $(this.refs.suggestionsWindow).css('display', 'none');
-        $(this.props.getPage().getWebView()).removeClass('blur');
-        */
+        this.refs.suggestionsWindow.css('display', 'none');
+        this.props.getPage().getWebView().removeClass('blur');
     }
     /*
     * shows suggestions window
     */
     show() {
-        /*
-        TODO: css
-        $(this.refs.suggestionsWindow).css('display', 'block');
-        $(this.props.getPage().getWebView()).addClass('blur');
-        */
+        this.refs.suggestionsWindow.css('display', 'block');
+        this.props.getPage().getWebView().addClass('blur');
     }
     /*
     events
@@ -54,8 +48,6 @@ export default class Suggestions extends React.Component {
     }
 
     handleKeyDown(e) {
-        /*
-        TODO
         var key = event.keyCode || event.charCode;
         //blacklist: backspace, enter, ctrl, alt, shift, tab, caps lock, delete, space
         if (key != 8 && key != 13 && key != 17 && key != 18 && key != 16 && key != 9 && key != 20 && key != 46 && key != 32) {
@@ -64,73 +56,70 @@ export default class Suggestions extends React.Component {
         //arrow key up
         if (e.keyCode == 38) {
             e.preventDefault();
-            var selected = $(this.refs.suggestionsWindow).find('.selected');
-            //select first item from suggestions box
-            if (selected.length <= 0) {
-                var first = $(this.refs.suggestionsWindow).find('li');
-                first.removeClass('selected');
-                first.first().addClass("selected");
-                e.target.value = first.first().attr('link');
-                e.target.setSelectionRange(0, e.target.value.length);
-            } else {
-                e.target.setSelectionRange(0, e.target.value.length);
-                e.target.value = selected.prev().attr('link');
+            var selected = this.refs.suggestionsWindow.getElementsByClassName('selected')[0],
+                items = this.refs.suggestionsWindow.getElementsByTagName('li');
 
-                $(this.refs.suggestionsWindow).find('li').removeClass("selected");
-                if (selected.prev().length == 0) {
-                    selected.first().addClass("selected");
-                    e.target.value = selected.first().attr('link');
-                } else {
+            //select first item from suggestions box
+            if (selected == null) {
+                items[0].addClass("selected");
+                e.target.value = items[0].attr('link');
+            } else {
+                if (selected.prev() != null) {
+                    for (var i = 0; i < items.length; i++) {
+                        var node = items[i];
+                        if (node) {
+                            node.removeClass('selected');
+                        }
+                    }
                     selected.prev().addClass("selected");
+                    e.target.value = selected.prev().attr('link');
                 }
-                e.target.setSelectionRange(0, e.target.value.length);
             }
+            e.target.setSelectionRange(0, e.target.value.length);
 
         }
         //arrow key down
         if (e.keyCode == 40) {
             e.preventDefault();
-            var selected = $(this.refs.suggestionsWindow).find('.selected');
-            //select first item from suggestions box
-            if (selected.length <= 0) {
-                var first = $(this.refs.suggestionsWindow).find('li');
-                first.removeClass('selected');
-                first.first().addClass("selected");
-                e.target.value = first.first().attr('link');
-                e.target.setSelectionRange(0, e.target.value.length);
-            } else {
-                e.target.setSelectionRange(0, e.target.value.length);
-                e.target.value = selected.next().attr('link');
+            var selected = this.refs.suggestionsWindow.getElementsByClassName('selected')[0],
+                items = this.refs.suggestionsWindow.getElementsByTagName('li');
 
-                $(this.refs.suggestionsWindow).find('li').removeClass("selected");
-                if (selected.next().length == 0) {
-                    selected.last().addClass("selected");
-                    e.target.value = selected.last().attr('link');
-                } else {
+            //select first item from suggestions box
+            if (selected == null) {
+                items[0].addClass("selected");
+                e.target.value = items[0].attr('link');
+            } else {
+                if (selected.next() != null) {
+                    for (var i = 0; i < items.length; i++) {
+                        var node = items[i];
+                        if (node) {
+                            node.removeClass('selected');
+                        }
+                    }
                     selected.next().addClass("selected");
+                    e.target.value = selected.next().attr('link');
                 }
-                e.target.setSelectionRange(0, e.target.value.length);
             }
+            e.target.setSelectionRange(0, e.target.value.length);
         }
-        */
     }
     /*
     * gets suggestions from history and Internet
     */
     getSuggestions(e) {
-        /*
         var key = e.keyCode || e.charCode,
             t = this,
             webview = this.props.getPage().getWebView();
 
         if (key != 40 && key != 38) {
-            //get suggestions from history
             var inputText = e.target.value.toLowerCase().replace(getSelectionText(), "");
             if (inputText != "") {
-                $.ajax({
-                    type: "GET",
-                    url: historyPath,
-                    success: function(data) {
+                getHistoryData(function() {
+                    getSearchData();
+                });
+
+                function getHistoryData(callback = null) {
+                    requestUrl(historyPath, function(data) {
                         var json = data.toString();
                         //replace weird characters utf-8
                         json = json.replace("\ufeff", "");
@@ -202,20 +191,20 @@ export default class Suggestions extends React.Component {
                                 var uniqueLinks1 = [],
                                     uniqueLinks = [],
                                     tempLinks = [];
-                                $.each(links, function(i, el) {
-                                    tempLinks.push(el.split("&mdash")[0]);
-                                });
 
-                                $.each(tempLinks, function(i, el) {
-                                    if (!isInArray(el, uniqueLinks1)) {
-                                        uniqueLinks1.push(el);
+                                for (var i = 0; i < links.length; i++) {
+                                    tempLinks.push(links[i].split("&mdash")[0]);
+                                }
+                                for (var i = 0; i < tempLinks.length; i++) {
+                                    if (!isInArray(tempLinks[i], uniqueLinks1)) {
+                                        uniqueLinks1.push(tempLinks[i]);
                                     }
-                                });
-                                $.each(uniqueLinks1, function(i, el) {
-                                    if (!isInArray(el, uniqueLinks)) {
+                                }
+                                for (var i = 0; i < uniqueLinks1.length; i++) {
+                                    if (!isInArray(uniqueLinks1[i], uniqueLinks)) {
                                         uniqueLinks.push(links[i]);
                                     }
-                                });
+                                }
                                 //limit array length to 3
                                 if (uniqueLinks.length > 4) {
                                     uniqueLinks.length = 4;
@@ -227,131 +216,156 @@ export default class Suggestions extends React.Component {
                                 if (finalLength < 0) {
                                     finalLength = 0;
                                 }
+                                var histories = t.refs.suggestionsWindow.getElementsByClassName('history');
                                 //append missing items
-                                while ($(t.refs.suggestionsWindow).find('.history').length < finalLength) {
-                                    var s = $('<li data-ripple-color="#444" class="suggestions-li ripple history" link=""></li>').prependTo($(t.refs.suggestions));
-                                    s.click(function(e) {
+                                while (histories.length < finalLength) {
+                                    var item = document.createElement('li');
+                                    item.className = "suggestions-li ripple history";
+                                    item.attr('link', "");
+                                    t.refs.suggestions.insertBefore(item, t.refs.suggestionsWindow.getElementsByTagName('li')[0]);
+
+                                    item.addEventListener('click', function() {
                                         webview.loadURL('http://' + $(this).attr('link'));
                                     });
-                                    s.mousedown(function(e) {
+                                    item.addEventListener('mousedown', function() {
                                         //TODO: make ripple
                                     });
-                                    s.mouseover(function() {
-                                        $(t.refs.suggestionsWindow).find('.suggestions-li').removeClass("selected");
-                                        $(this).addClass("selected");
-                                        e.target.value = $(this).attr('link');
+                                    item.addEventListener('mouseover', function() {
+                                        var sItems = t.refs.suggestionsWindow.getElementsByClassName('suggestions-li');
+                                        for (var i = 0; i < sItems.length; i++) {
+                                            var node = sItems[i];
+                                            if (node) {
+                                                node.removeClass('selected');
+                                            }
+                                        }
+
+                                        this.addClass("selected");
+                                        e.target.value = this.attr('link');
                                     });
 
                                 }
                                 //remove excess items
-                                while ($(t.refs.suggestionsWindow).find('.history').length > finalLength) {
-                                    $(t.refs.suggestionsWindow).find('.history').first().remove();
+                                while (histories.length > finalLength) {
+                                    histories[0].parentNode.removeChild(histories[0]);
                                 }
                                 //change each item content to new link from array
-                                $(t.refs.suggestionsWindow).find('.history').each(function(i) {
+                                for (var i = 0; i < histories.length; i++) {
                                     var link = uniqueLinks[i].split('&mdash;')[0],
                                         title = uniqueLinks[i].split('&mdash;')[1];
-                                    $(this).html('<span class="link">' + link + ' </span>' + `<span class="title">&mdash; ${title}</span`);
-                                    $(this).attr('link', link);
-                                });
+
+                                    histories[i].innerHTML = '<span class="link">' + link + ' </span>' + `<span class="title">&mdash; ${title}</span`;
+                                    histories[i].attr('link', link);
+                                }
 
                                 if (t.canSuggest) {
                                     var link = uniqueLinks[0].split('&mdash;')[0];
-                                    autocomplete($(e.target), link);
+                                    autocomplete(e.target, link);
                                     t.canSuggest = false;
                                 }
                             } else {
-                                $(t.refs.suggestionsWindow).find('.history').each(function(i) {
-                                    $(this).remove();
-                                });
+                                var histories = t.refs.suggestionsWindow.getElementsByClassName('history');
+                                for (var i = 0; i < histories.length; i++) {
+                                    histories[i].parentNode.removeChild(histories[i]);
+                                }
                             }
 
                         } else {
+                            var histories = t.refs.suggestionsWindow.getElementsByClassName('history');
                             //if addressbar text is empty, clear all items
-                            $(t.refs.suggestionsWindow).find('.history').each(function(i) {
-                                $(this).remove();
-                            });
+                            for (var i = 0; i < histories.length; i++) {
+                                histories[i].parentNode.removeChild(histories[i]);
+                            }
                         }
-                        if (!($(t.refs.suggestionsWindow).find('.history').length <= 0)) {
+                        var histories = t.refs.suggestionsWindow.getElementsByClassName('history');
+                        if (!(histories.length <= 0)) {
                             //select first item from suggestions box
-                            var first = $(t.refs.suggestionsWindow).find('li');
-                            first.removeClass('selected');
-                            first.first().addClass("selected");
-                        }
-
-                    },
-                    complete: function() {
-                        //load suggestions from Google
-                        if (inputText != "" || inputText != null || typeof inputText !== "undefined") {
-                            $.ajax({
-                                type: "GET",
-                                url: "http://google.com/complete/search?client=firefox&q=" + inputText,
-                                success: function(data) {
-                                    var obj = JSON.parse(data);
-                                    var links = [];
-                                    //filter links
-                                    for (var i = 0; i < obj[1].length; i++) {
-                                        if (!isInArray(obj[1][i], links)) {
-                                            links.push(obj[1][i]);
-                                        }
-                                    }
-                                    if (links.length > 0) {}
-                                    //remove duplicates from array
-                                    var uniqueLinks = [];
-                                    $.each(links, function(i, el) {
-                                        if ($.inArray(el, uniqueLinks) === -1)
-                                            uniqueLinks.push(el);
-                                        }
-                                    );
-                                    //sort array by length
-                                    uniqueLinks.sort(function(a, b) {
-                                        return a.length - b.length;
-                                    });
-                                    //limit array length to 3
-                                    if (uniqueLinks.length > 5) {
-                                        uniqueLinks.length = 5;
-                                    }
-                                    var finalLength = uniqueLinks.length;
-                                    if (finalLength > 5) {
-                                        finalLength = 5;
-                                    }
-                                    if (finalLength < 0) {
-                                        finalLength = 0;
-                                    }
-                                    //append missing items
-                                    while ($(t.refs.suggestionsWindow).find('.internet').length < finalLength) {
-
-                                        var s = $('<li data-ripple-color="#444" class="suggestions-li ripple internet" link=""></li>').appendTo($(t.refs.suggestions));
-                                        s.click(function(e) {
-                                            webview.loadURL("http://www.google.com/search?q=" + $(this).attr('link'));
-                                        });
-                                        s.mousedown(function(e) {
-                                            //TODO: make ripple
-                                        });
-                                        s.mouseover(function() {
-                                            $(t.refs.suggestionsWindow).find('.suggestions-li').removeClass("selected");
-                                            $(this).addClass("selected");
-                                            e.target.value = $(this).attr('link');
-                                        });
-                                    }
-                                    //remove excess items
-                                    while ($(t.refs.suggestionsWindow).find('.internet').length > finalLength) {
-                                        $(t.refs.suggestionsWindow).find('.internet').first().remove();
-                                    }
-                                    //change each item content to new link from array
-                                    $(t.refs.suggestionsWindow).find('.internet').each(function(i) {
-                                        $(this).html('<span class="title">' + uniqueLinks[i] + '</span>');
-                                        $(this).attr('link', uniqueLinks[i]);
-                                    });
-
+                            var items = t.refs.suggestionsWindow.getElementsByTagName('li');
+                            for (var i = 0; i < items.length; i++) {
+                                var node = items[0];
+                                if (node) {
+                                    node.removeClass('selected');
                                 }
+                            }
+                            items[0].addClass("selected");
+                        }
+                        if (callback != null) {
+                            callback();
+                        }
+                    });
+                }
+                function getSearchData() {
+                    requestUrl("http://google.com/complete/search?client=firefox&q=" + inputText, function(data) {
+                        var obj = JSON.parse(data);
+                        var links = [];
+                        //filter links
+                        for (var i = 0; i < obj[1].length; i++) {
+                            if (!isInArray(obj[1][i], links)) {
+                                links.push(obj[1][i]);
+                            }
+                        }
+                        if (links.length > 0) {}
+                        //remove duplicates from array
+                        var uniqueLinks = [];
+                        for (var i = 0; i < links.length; i++) {
+                            if (!isInArray(links[i], uniqueLinks)) {
+                                uniqueLinks.push(links[i]);
+                            }
+                        }
+                        //sort array by length
+                        uniqueLinks.sort(function(a, b) {
+                            return a.length - b.length;
+                        });
+                        //limit array length to 3
+                        if (uniqueLinks.length > 5) {
+                            uniqueLinks.length = 5;
+                        }
+                        var finalLength = uniqueLinks.length;
+                        if (finalLength > 5) {
+                            finalLength = 5;
+                        }
+                        if (finalLength < 0) {
+                            finalLength = 0;
+                        }
+                        var internets = t.refs.suggestionsWindow.getElementsByClassName('internet');
+                        //append missing items
+                        while (internets.length < finalLength) {
+                            var item = document.createElement('li');
+                            item.className = "suggestions-li ripple internet";
+                            item.attr('link', "");
+                            t.refs.suggestions.appendChild(item);
+
+                            item.addEventListener('click', function() {
+                                webview.loadURL("http://www.google.com/search?q=" + this.attr('link'));
+                            });
+                            item.addEventListener('mousedown', function() {
+                                //TODO: make ripple
+                            });
+                            item.addEventListener('mouseover', function() {
+                                var sItems = t.refs.suggestionsWindow.getElementsByClassName('suggestions-li');
+                                for (var i = 0; i < sItems.length; i++) {
+                                    var node = sItems[i];
+                                    if (node) {
+                                        node.removeClass('selected');
+                                    }
+                                }
+
+                                this.addClass("selected");
+                                e.target.value = this.attr('link');
                             });
                         }
-                    }
-                });
+                        //remove excess items
+                        while (internets.length > finalLength) {
+                            internets[0].parentNode.removeChild(internets[0]);
+                        }
+                        //change each item content to new link from array
+                        for (var i = 0; i < internets.length; i++) {
+                            internets[i].innerHTML = '<span class="title">' + uniqueLinks[i] + '</span>';
+                            internets[i].attr('link', uniqueLinks[i]);
+                        }
+                    });
+                }
             }
         }
-        */
     }
     render() {
         return (

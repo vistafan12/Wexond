@@ -16,12 +16,14 @@ var Ripple = class Ripple {
             height: animateSize
         });
         function removeRipple() {
-            TweenMax.to(rippleElement, time, {
-                opacity: 0,
-                onComplete: function() {
-                    //$rippleElement.parentNode.removeChild($rippleElement);
-                }
-            });
+            setTimeout(function() {
+                TweenMax.to(rippleElement, time, {
+                    opacity: 0,
+                    onComplete: function() {
+                        rippleElement.parentNode.removeChild(rippleElement);
+                    }
+                });
+            }, 50);
         }
         element.addEventListener('mouseout', removeRipple);
         element.addEventListener('mouseup', removeRipple);

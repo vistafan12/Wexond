@@ -40,7 +40,7 @@ class API {
     /*
     * returns string - response from website
     */
-    requestUrl(url, callback) {
+    requestUrl(url) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", url, false );
         xmlHttp.send(null);
