@@ -63,7 +63,6 @@
     z-index: 1;
     -webkit-user-select: none;
     cursor: default;
-    transition: 0.2s background;
     transition: 0.2s color;
 }
 
@@ -72,18 +71,7 @@
     width: 1px;
     height: 100%;
     background-color: #fff;
-    left: 0px;
     opacity: 0.15;
-}
-
-.border-horizontal2 {
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    background-color: #fff;
-    opacity: 0.2;
-    top: 0;
-    left: 0px;
 }
 
 .addBtn {

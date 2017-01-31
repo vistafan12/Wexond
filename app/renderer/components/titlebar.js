@@ -59,7 +59,7 @@ export default class Titlebar extends React.Component {
     * color - String color
     */
     setBackground(color) {
-        $(this.refs.titlebar).css('background-color', color);
+        this.refs.titlebar.css('background-color', color);
         this.setForeground(Colors.getForegroundColor(color));
     }
     /*
@@ -72,18 +72,65 @@ export default class Titlebar extends React.Component {
             if (!tabs[i].selected)
                 tabs[i].setForeground(color, true);
             }
-        $(this.refs.tabbar.refs.tabbar).css('color', color);
-        $('.border-horizontal').css('background-color', color);
-        $('.border-horizontal2').css('background-color', color);
-        $('.border-bottom').css('background-color', color);
+        this.refs.tabbar.refs.tabbar.css('color', color);
+
+        var horizontalBorders = document.querySelectorAll('.border-horizontal'),
+            bottomBorders = document.querySelectorAll('.border-bottom'),
+            closeBtns = this.refs.tabbar.refs.tabbar.querySelectorAll('.closeBtn'),
+            addBtns = this.refs.tabbar.refs.tabbar.querySelectorAll('.addBtn'),
+            controls = this.refs.titlebar.querySelectorAll('.control');
+
+        for (var i = 0; i < horizontalBorders.length; i++) {
+            var node = horizontalBorders[i];
+            if (node) {
+                node.css('background-color', color);
+            }
+        }
+        for (var i = 0; i < bottomBorders.length; i++) {
+            var node = bottomBorders[i];
+            if (node) {
+                node.css('background-color', color);
+            }
+        }
+
         if (color == "white") {
-            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').addClass('white-icon');
-            $(this.refs.tabbar.refs.tabbar).find('.addBtn').addClass('white-icon');
-            $(this.refs.titlebar).find('.control').addClass('white-icon');
+            for (var i = 0; i < closeBtns.length; i++) {
+                var node = closeBtns[i];
+                if (node) {
+                    node.addClass('white-icon');
+                }
+            }
+            for (var i = 0; i < addBtns.length; i++) {
+                var node = addBtns[i];
+                if (node) {
+                    node.addClass('white-icon');
+                }
+            }
+            for (var i = 0; i < controls.length; i++) {
+                var node = controls[i];
+                if (node) {
+                    node.addClass('white-icon');
+                }
+            }
         } else if (color == "black") {
-            $(this.refs.tabbar.refs.tabbar).find('.closeBtn').removeClass('white-icon');
-            $(this.refs.tabbar.refs.tabbar).find('.addBtn').removeClass('white-icon');
-            $(this.refs.titlebar).find('.control').removeClass('white-icon');
+            for (var i = 0; i < closeBtns.length; i++) {
+                var node = closeBtns[i];
+                if (node) {
+                    node.removeClass('white-icon');
+                }
+            }
+            for (var i = 0; i < addBtns.length; i++) {
+                var node = addBtns[i];
+                if (node) {
+                    node.removeClass('white-icon');
+                }
+            }
+            for (var i = 0; i < controls.length; i++) {
+                var node = controls[i];
+                if (node) {
+                    node.removeClass('white-icon');
+                }
+            }
         }
     }
 

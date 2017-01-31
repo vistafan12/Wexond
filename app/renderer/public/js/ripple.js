@@ -1,42 +1,29 @@
 var Ripple = class Ripple {
-    static makeRipple(element, xpos, ypos, height, width, time, fadeoutopacity, bgcolor) {
-        var $rippleElement = $('<span class="ripple-effect" />'),
-            $buttonElement = element,
-            btnOffset = $buttonElement.offset(),
-            xPos = xpos,
+    static makeRipple(element, xpos, ypos, scale, time) {
+        var xPos = xpos,
             yPos = ypos,
             size = 0,
-            animateSize = parseInt(Math.max(width, height) * Math.PI);
-        $rippleElement.css({top: yPos, left: xPos, width: size, height: size, backgroundColor: bgcolor}).appendTo($buttonElement).animate({
+            animateSize = parseInt(Math.max(scale, scale) * Math.PI);
+
+        var rippleElement = document.createElement("span");
+        rippleElement.className = 'ripple-effect';
+        element.appendChild(rippleElement);
+        rippleElement.css({left: xPos + 'px', top: yPos + 'px'});
+        console.log(rippleElement.style.left);
+
+        TweenMax.to(rippleElement, time, {
             width: animateSize,
             height: animateSize
-        }, time, 'linear', function() {});
-        $(element).mouseup(function() {
-            setTimeout(function() {
-                $rippleElement.animate({
-                    opacity: fadeoutopacity
-                }, {
-                    duration: time,
-                    queue: false,
-                    complete: function() {
-                        $rippleElement.remove();
-                    }
-                });
-            }, 125);
         });
-        $(element).on('mouseout', function() {
-            setTimeout(function() {
-                $rippleElement.animate({
-                    opacity: fadeoutopacity
-                }, {
-                    duration: time,
-                    queue: false,
-                    complete: function() {
-                        $rippleElement.remove();
-                    }
-                });
-            }, 125);
-        });
-        return $rippleElement;
+        function removeRipple() {
+            TweenMax.to(rippleElement, time, {
+                opacity: 0,
+                onComplete: function() {
+                    //$rippleElement.parentNode.removeChild($rippleElement);
+                }
+            });
+        }
+        element.addEventListener('mouseout', removeRipple);
+        element.addEventListener('mouseup', removeRipple);
     }
 };

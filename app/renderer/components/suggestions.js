@@ -30,15 +30,21 @@ export default class Suggestions extends React.Component {
     * hides suggestions window
     */
     hide() {
+        /*
+        TODO: css
         $(this.refs.suggestionsWindow).css('display', 'none');
         $(this.props.getPage().getWebView()).removeClass('blur');
+        */
     }
     /*
     * shows suggestions window
     */
     show() {
+        /*
+        TODO: css
         $(this.refs.suggestionsWindow).css('display', 'block');
         $(this.props.getPage().getWebView()).addClass('blur');
+        */
     }
     /*
     events
@@ -46,7 +52,10 @@ export default class Suggestions extends React.Component {
     handleClick(self) {
         self.hide();
     }
+
     handleKeyDown(e) {
+        /*
+        TODO
         var key = event.keyCode || event.charCode;
         //blacklist: backspace, enter, ctrl, alt, shift, tab, caps lock, delete, space
         if (key != 8 && key != 13 && key != 17 && key != 18 && key != 16 && key != 9 && key != 20 && key != 46 && key != 32) {
@@ -103,11 +112,13 @@ export default class Suggestions extends React.Component {
                 e.target.setSelectionRange(0, e.target.value.length);
             }
         }
+        */
     }
     /*
     * gets suggestions from history and Internet
     */
     getSuggestions(e) {
+        /*
         var key = e.keyCode || e.charCode,
             t = this,
             webview = this.props.getPage().getWebView();
@@ -340,6 +351,7 @@ export default class Suggestions extends React.Component {
                 });
             }
         }
+        */
     }
     render() {
         return (

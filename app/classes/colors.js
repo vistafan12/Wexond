@@ -12,7 +12,12 @@ export default class Colors {
         if (brightness < 125) {
             return 'white';
         } else {
-            return 'black';
+            if (brightness > 200) {
+                return 'black';
+            } else {
+                return 'semiblack';
+            }
+
         }
     }
 

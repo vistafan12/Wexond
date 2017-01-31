@@ -1,21 +1,26 @@
 'use babel';
 import React from 'react';
+import {TweenMax, CSSPlugin} from "gsap";
+import Draggable from 'gsap/draggable';
 require('../public/js/main.js');
 export default class Tab extends React.Component {
     constructor() {
         super();
         //binds
         this.changeTitle = this.changeTitle.bind(this);
-        this.setPage = this.setPage.bind(this);
         this.changeFavicon = this.changeFavicon.bind(this);
         this.getIndex = this.getIndex.bind(this);
         this.isSelected = this.isSelected.bind(this);
         this.setBackground = this.setBackground.bind(this);
         this.setForeground = this.setForeground.bind(this);
+        this.getTab = this.getTab.bind(this);
+        this.onDragStart = this.onDragStart.bind(this);
+        this.onDrag = this.onDrag.bind(this);
         //global properties
         this.locked = false;
         this.animationDuration = 150;
-        this.page = null;
+        this.getPage = null;
+        this.tab = null;
         this.selected = false;
         this.foreground = '#212121';
         this.background = '#fff';
@@ -29,75 +34,84 @@ export default class Tab extends React.Component {
     lifecycle
     */
     componentDidMount() {
-        this.setPage(this.props.page);
-        var pass = {
-                changeTitle: this.changeTitle,
-                setPage: this.setPage,
-                changeFavicon: this.changeFavicon,
-                refs: this.refs,
-                getIndex: this.getIndex,
-                isSelected: this.isSelected,
-                setForeground: this.setForeground,
-                setBackground: this.setBackground,
-                selectTabByIndex: this.props.getTabBar().selectTabByIndex
-            },
+        this.getPage = this.props.page;
+        var pass = this.getTab,
             t = this,
             tabbar = this.props.getTabBar();
 
-        this.page.associateTab(pass);
-        window.tabs.push(this);
+        this.getPage().associateTab(pass);
+        tabs.push(this);
 
-        if (this.props.page.select) {
+        if (this.getPage().select) {
             tabbar.selectTab(this);
         } else {
             tabbar._deselectTab(this);
         }
-
+        TweenMax.set(t.tab, {css:{left: tabbar.getPositions()[tabs.indexOf(t)]}});
         tabbar.calcWidths(true);
-        tabbar.getPositions(function(lefts) {
-            $(t.refs.tab).css('left', lefts[lefts.length - 1]);
-        });
         tabbar.calcPositions(true, true);
-        this.makeDraggable(this);
+
         tabbar.getWidths(function(width) {
             if (width < t.props.maxTabWidth) {
-                $(t.refs.tab).css({width: 0, marginLeft: width});
+                t.tab.css({width: 0, marginLeft: width});
             } else {
-                $(t.refs.tab).css({width: 0});
+                t.tab.css({width: 0});
             }
-            $(t.refs.tab).animate({
-                width: width,
-                marginLeft: 0
-            }, {
-                duration: t.animationDuration,
-                queue: false,
-                complete: function() {
-                    tabbar.calcWidths(true);
-                    tabbar.calcPositions(true, true);
-                },
-                easing: 'easeOutQuint'
-            });
+            TweenMax.to(t.tab, tabsAnimationDuration, {width: width, ease: Circ.easeOut, onComplete: function() {
+                tabbar.calcWidths(true);
+                tabbar.calcPositions(true, true);
+            }});
+        });
 
-        });
-        this.page.getExtensions().loadExtensions(this.getIndex());
-        this.page.focusSearchInput();
-        var oldColor = null;
+        this.getPage().getExtensions().loadExtensions(this.getIndex());
+        this.getPage().focusSearchInput();
 
-        $(this.refs.tab).mouseenter(function() {
-            if (!t.isSelected()) {
-                oldColor = $(t.getTabbar().refs.tabbar).css('background-color');
-                $(this).css('background-color', 'rgba(255,255,255,0.2)');
-                $(t.refs.closeBtn).css('display', 'block');
-                $(t.refs.tabTitle).css('max-width', 'calc(100% - 64px)');
-            }
+        this.drag = Draggable.create(this.tab, {
+            onDragStart: t.onDragStart,
+            onRelease: t.onRelease,
+            onDrag: t.onDrag,
+            type: "left",
+            cursor: "default"
         });
-        $(this.refs.tab).mouseleave(function() {
-            if (!t.isSelected()) {
-                $(this).css('background-color', oldColor);
-                $(t.refs.closeBtn).css('display', 'none');
-                $(t.refs.tabTitle).css('max-width', 'calc(100% - 48px)');
-            }
-        });
+    }
+    /*
+    events
+    */
+    onDragStart() {
+        this.props.getTabBar().selectTab(this);
+    }
+    onRelease(e) {
+        this.props.getTabBar().calcPositions(true, true);
+    }
+    onDrag(e) {
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].tab.style.zIndex = 1;
+        }
+        this.tab.style.zIndex = 9999;
+        this.reorderTabs(this, e.pageX);
+    }
+    onMouseDown(self) {
+        self.props.getTabBar().selectTab(self);
+    }
+    onMouseEnter(self) {
+        if (!self.isSelected()) {
+            TweenMax.to(self.tab, 0.5, {backgroundColor: `rgba(255,255,255,${tabsHoverTransparency})`, ease: tabsAnimationEasing});
+            TweenMax.to(self.closeBtn, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
+            self.tabTitle.css('max-width', 'calc(100% - 64px)');
+        }
+    }
+    onMouseLeave(self) {
+        if (!self.isSelected()) {
+            TweenMax.to(self.tab, 0.5, {backgroundColor: 'rgba(255,255,255,0)', ease: tabsAnimationEasing});
+            TweenMax.to(self.closeBtn, 0.2, {opacity: 0, ease: tabsAnimationEasing});
+            self.tabTitle.css('max-width', 'calc(100% - 48px)');
+        }
+    }
+    onMouseLeaveCloseBtn(e) {
+        TweenMax.to(e.target, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
+    }
+    onMouseEnterCloseBtn(e) {
+        TweenMax.to(e.target, 0.2, {opacity: 1, ease: tabsAnimationEasing});
     }
     /*
     * returns Object tabbar
@@ -118,7 +132,7 @@ export default class Tab extends React.Component {
     setBackground(color) {
         this.background = color;
         if (this.selected) {
-            $(this.refs.tab).css('background-color', color);
+            this.tab.css('background-color', color);
         }
     }
     /*
@@ -129,10 +143,10 @@ export default class Tab extends React.Component {
         this.foreground = color;
 
         if (force) {
-            $(this.refs.tab).css('color', color);
+            this.tab.css('color', color);
         } else {
             if (this.selected) {
-                $(this.refs.tab).css('color', color);
+                this.tab.css('color', color);
             }
         }
     }
@@ -157,7 +171,7 @@ export default class Tab extends React.Component {
     * favicon - string
     */
     changeFavicon(favicon) {
-        $(this.refs.favicon).css({backgroundImage: `url(${favicon})`});
+        this.favicon.css({backgroundImage: `url(${favicon})`});
     }
     /*
     events
@@ -168,44 +182,10 @@ export default class Tab extends React.Component {
         self.props.getTabBar().removeTab(self);
     }
     /*
-    * sets this.page to new value
-    * page - object of page
+    * returns this
     */
-    setPage(page) {
-        this.page = page;
-    }
-    /*
-    * makes tab able to draggable
-    * self = this
-    */
-    makeDraggable(self) {
-        var tabRef = self.refs.tab,
-            tabs = window.tabs;
-        function handle_mousedown(e) {
-            if (e.target.tagName != 'I') {
-                self.props.getTabBar().selectTab(self);
-                window.my_dragging = {};
-                my_dragging.pageX0 = e.pageX;
-                my_dragging.pageY0 = e.pageY;
-                my_dragging.elem = this;
-                my_dragging.offset0 = $(this).offset();
-                function handle_dragging(e) {
-                    var left = my_dragging.offset0.left + (e.pageX - my_dragging.pageX0);
-                    $(my_dragging.elem).offset({left: left});
-                    for (var i = 0; i < tabs.length; i++) {
-                        tabs[i].refs.tab.style.zIndex = 1;
-                    }
-                    tabRef.style.zIndex = 9999;
-                    self.reorderTabs(self, e.pageX);
-                }
-                function handle_mouseup(e) {
-                    $(window).off('mousemove', handle_dragging).off('mouseup', handle_mouseup);
-                    self.props.getTabBar().calcPositions(true, true);
-                }
-                $(window).on('mouseup', handle_mouseup).on('mousemove', handle_dragging);
-            }
-        }
-        $(tabRef).mousedown(handle_mousedown);
+    getTab() {
+        return this;
     }
     /*
     * reorders tabs
@@ -213,8 +193,7 @@ export default class Tab extends React.Component {
     * cursorX - current cursor x position
     */
     reorderTabs(self, cursorX) {
-        var overTab = self.props.getTabBar().getTabFromMousePoint(self, cursorX),
-            tabs = window.tabs;
+        var overTab = self.props.getTabBar().getTabFromMousePoint(self, cursorX);
         if (overTab != null) {
             var indexTab = tabs.indexOf(self),
                 indexOverTab = tabs.indexOf(overTab);
@@ -225,12 +204,12 @@ export default class Tab extends React.Component {
     render() {
         if (this.state.render) {
             return (
-                <div ref="tab" className="tab draggable">
-                    <div className="border-horizontal"></div>
+                <div ref={(tab) => { this.tab = tab; }} onMouseDown={()=>this.onMouseDown(this)} onMouseEnter={()=>this.onMouseEnter(this)} onMouseLeave={()=>this.onMouseLeave(this)} style={{width: 100}} className="tab draggable">
+                    <div className="border-horizontal" style={{left: 0}}></div>
                     <div className="content">
-                        <div ref="favicon" className="favicon"></div>
-                        <div className="tabTitle" ref="tabTitle">{this.state.title}</div>
-                        <div className="closeBtn" ref="closeBtn" onClick={(e) => this.closeBtnClick(this, e)}></div>
+                        <div ref={(fav) => { this.favicon = fav; }} className="favicon"></div>
+                        <div className="tabTitle" ref={(title) => { this.tabTitle = title; }}>{this.state.title}</div>
+                        <div className="closeBtn" ref={(btn) => { this.closeBtn = btn; }} onMouseEnter={this.onMouseEnterCloseBtn} onMouseLeave={this.onMouseLeaveCloseBtn} onClick={(e) => this.closeBtnClick(this, e)}></div>
                     </div>
                 </div>
             );

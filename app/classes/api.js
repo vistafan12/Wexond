@@ -36,6 +36,21 @@ class API {
     getTitlebarColor() {
         return $(this.page.getTabbar().refs.tabBarContainer).css('background-color');
     }
+    /*
+    * returns string - response from website
+    */
+    requestUrl(url, callback) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", url, false );
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
+    /*
+    * return boolen, client is offline or online
+    */
+    isOnline() {
+        return navigator.onLine;
+    }
 }
 /*
 * class WebView(webview, api)

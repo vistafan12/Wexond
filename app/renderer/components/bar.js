@@ -7,25 +7,22 @@ export default class Bar extends React.Component {
         //binds
         this.handleInput = this.handleInput.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.setHoverColor = this.setHoverColor.bind(this);
         this.refresh = this.refresh.bind(this);
-        this.hoverColor = 'rgba(0, 0, 0, 0.2)';
     }
     /*
     lifecycle
     */
     componentDidMount() {
-        var t = this;
-        /*$(this.refs.bar).find('i').mouseover(function() {
-            $(this).css('background-color', t.hoverColor)
-        })
-        $(this.refs.bar).find('i').mouseout(function() {
-            $(this).css('background-color', 'transparent')
-        })*/
-        $(this.refs.bar).find('i').mousedown(function() {
-            //Ripple.makeRipple($(this), $(this).width() + 16,$(this).height() + 16, $(this).width() / 2,$(this).height() / 2, 200, 0, "#000");
-            makeRippleIconButton($(this));
-        });
+        var t = this,
+            nodes = this.refs.bar.getElementsByClassName('bar-icon');
+        for(var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            if (node) {
+                node.addEventListener('mousedown', function() {
+                    makeRippleIconButton(this);
+                });
+            }
+        }
     }
     /*
     events
@@ -70,17 +67,6 @@ export default class Bar extends React.Component {
     refresh() {
         this.props.getPage().reloadExtensions();
         this.props.getPage().getWebView().reload();
-    }
-    ripple(e) {
-        $(e.target).addClass('remove-background');
-        makeRippleIconButton($(e.target));
-    }
-    /*
-    * sets hover color
-    * color - String color
-    */
-    setHoverColor(color) {
-        this.hoverColor = color;
     }
 
     render() {

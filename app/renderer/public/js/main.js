@@ -8,9 +8,11 @@ var app = remote.app,
     extensionsPath = userData + '/extensions',
     isThere = require('is-there'),
     dir = require('node-dir'),
-    fs = require('fs');
-
-window.tabs = [];
+    fs = require('fs'),
+    tabsAnimationDuration = 0.3,
+    tabsAnimationEasing,
+    tabsHoverTransparency = 0.1,
+    tabs = [];
 
 function checkFiles() {
     //check if directory called userdata exists
@@ -27,6 +29,7 @@ function checkFiles() {
     }
 }
 
+//unregister all shortcuts to prevent errors
 globalShortcut.unregisterAll();
 
 if (process.env.ENV == 'dev') {

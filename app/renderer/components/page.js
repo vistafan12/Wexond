@@ -39,7 +39,7 @@ export default class Page extends React.Component {
         this.menu = new Menu();
         this.xToInspect = null;
         this.yToInspect = null;
-        this.tab = null;
+        this.getTab = null;
         this.extensions = null;
         //state
         this.state = {
@@ -50,29 +50,20 @@ export default class Page extends React.Component {
     /*
     * lifecycle
     */
-    componentDidUpdate() {
-        this.tab.setPage(this);
-    }
     componentDidMount() {
         this.prepareContextMenu();
-        var pageObj = {
-                getPage: this.getPage,
-                getWebView: this.getWebView,
-                associateTab: this.associateTab,
-                removePage: this.removePage,
-                resize: this.resize,
-                getExtensions: this.getExtensions,
-                select: this.props.select,
-                focusSearchInput: this.focusSearchInput
-            },
+        var pageObj = this.getPage,
             webview = this.refs.webview,
             bar = this.refs.bar,
             background = '#FAFAFA',
             t = this;
 
+        this.select = this.props.select;
+
         this.props.getApp().addTab(pageObj);
         this.extensions = new Extensions();
         this.resize();
+
         window.addEventListener('resize', this.onResize);
         webview.addEventListener('page-title-updated', this.pageTitleUpdated);
         webview.addEventListener('dom-ready', this.ready);
@@ -81,6 +72,7 @@ export default class Page extends React.Component {
 
         this.colors = new Colors(this.getWebView());
         this.colorInterval = setInterval(this.updateColors, 200);
+
         var lastLink = '';
         webview.addEventListener('ipc-message', function(e) {
             if (e.channel == 'scroll') {
@@ -254,17 +246,17 @@ export default class Page extends React.Component {
     }
     pageTitleUpdated(title) {
         var webview = this.refs.webview;
-        this.tab.changeTitle(title.title);
+        this.getTab().changeTitle(title.title);
         Storage.saveHistory(webview.getTitle(), webview.getURL());
     }
     frameFinishLoad() {
         var webview = this.refs.webview,
             bar = this.refs.bar;
         if (webview.getURL() != this.props.getApp().defaultURL)
-            $(bar.refs.searchInput).val(webview.getURL());
+            bar.refs.searchInput.value = webview.getURL();
         }
     faviconUpdated(favicons) {
-        this.tab.changeFavicon(favicons.favicons[0]);
+        this.getTab().changeFavicon(favicons.favicons[0]);
     }
     onResize() {
         this.resize();
@@ -274,17 +266,18 @@ export default class Page extends React.Component {
     */
     updateColors() {
         var t = this;
-        if (this.tab != null || typeof this.tab !== 'undefined')
-            if (this.tab.isSelected() && !remote.getCurrentWindow().isMinimized()) {
+        if (this.getTab() != null || typeof this.getTab() !== 'undefined')
+            if (this.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
                 this.colors.getColor(function(data) {
-                    if (t.tab.isSelected()) {
-                        if (t.refs.bar != null)
-                            $(t.refs.bar.refs.bar).css('background-color', data.background);
+                    if (t.getTab().isSelected()) {
+                        if (t.refs.bar != null) {
+                            t.refs.bar.refs.bar.css('background-color', data.background);
+                        }
                         t.changeForeground(data.foreground, data.foreground == 'white'
                             ? '#fff'
                             : '#444');
-                        t.tab.setBackground(data.background);
-                        t.tab.setForeground(data.foreground, false);
+                        t.getTab().setBackground(data.background);
+                        t.getTab().setForeground(data.foreground, false);
                         t.getTitlebar().setBackground(shadeColor(data.background, -0.2));
                     }
                 });
@@ -296,18 +289,34 @@ export default class Page extends React.Component {
     * ripple - String ripple color
     */
     changeForeground(color, ripple) {
-        this.tab.foreground = color;
+        this.getTab().foreground = color;
+        var barIcons = this.refs.bar.refs.bar.getElementsByClassName('bar-icon');
         if (color == 'white') {
-            $(this.refs.bar.refs.searchBox).css({backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', boxShadow: null});
-            $(this.refs.bar.refs.bar).find('.bar-icon').addClass('white-icon');
-            $(this.refs.bar.refs.searchInput).css({color: '#fff'});
-            this.refs.bar.setHoverColor('rgba(255, 255, 255, 0.2)');
-        } else if (color == 'black') {
-            $(this.refs.bar.refs.searchBox).css({backgroundColor: 'white', color: '#212121', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'});
-            $(this.refs.bar.refs.bar).find('.bar-icon').removeClass('white-icon');
-            $(this.refs.bar.refs.searchInput).css({color: '#212121'});
-            this.refs.bar.setHoverColor('rgba(0, 0, 0, 0.2)');
+            this.refs.bar.refs.searchBox.css({backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', boxShadow: null});
+            for (var i = 0; i < barIcons.length; i++) {
+                var node = barIcons[i];
+                if (node) {
+                    node.addClass('white-icon');
+                }
+            }
+            tabsHoverTransparency = 0.1;
+            this.refs.bar.refs.searchInput.css({color: '#fff'});
+        } else if (color == 'black' || color == 'semiblack') {
+            this.refs.bar.refs.searchBox.css({backgroundColor: 'white', color: '#212121', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'});
+            for (var i = 0; i < barIcons.length; i++) {
+                var node = barIcons[i];
+                if (node) {
+                    node.removeClass('white-icon');
+                }
+            }
+            this.refs.bar.refs.searchInput.css({color: '#212121'});
+            tabsHoverTransparency = 0.4;
         }
+        if (color == 'semiblack') {
+            this.refs.bar.refs.searchBox.css({backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', boxShadow: null});
+            this.refs.bar.refs.searchInput.css({color: '#212121'});
+        }
+
     }
     /*
     * disables page render
@@ -322,8 +331,8 @@ export default class Page extends React.Component {
     * focuses search input
     */
     focusSearchInput() {
-        if ($(this.refs.bar.refs.searchInput).val() == '') {
-            $(this.refs.bar.refs.searchInput).focus();
+        if (this.refs.bar.refs.searchInput.value == '') {
+            this.refs.bar.refs.searchInput.focus();
         }
     }
     /*
@@ -331,7 +340,7 @@ export default class Page extends React.Component {
     */
     reloadExtensions() {
         this.extensions.deleteExtensions();
-        this.extensions.loadExtensions(this.tab.getIndex());
+        this.extensions.loadExtensions(this.getTab().getIndex());
     }
     /*
     * gets extensions
@@ -359,7 +368,7 @@ export default class Page extends React.Component {
     * tab - tab object
     */
     associateTab(tab) {
-        this.tab = tab;
+        this.getTab = tab;
     }
     /*
     * gets search input

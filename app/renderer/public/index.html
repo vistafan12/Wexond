@@ -41,39 +41,11 @@
         }
     </style>
     <div id="app"></div>
-    <script>
-        if (typeof module === 'object') {
-            window.module = module;
-            module = undefined;
-        }
-    </script>
-    <script src="lib/jquery.min.js"></script>
     <script src="js/ripple.js"></script>
-    <script>
-        if (window.module) module = window.module;
-    </script>
-
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
-    <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='lib/jquery.min.js'></script><script src='js/utils.js'></script><script src='../../classes/api.js'></script></body></html>"></iframe>
+    <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='js/utils.js'></script><script src='../../classes/api.js'></script></body></html>"></iframe>
     <script>
-        function loadScripts(array) {
-            var loader = function(src, handler) {
-                var script = document.createElement("script");
-                script.src = src;
-                script.onload = script.onreadystatechange = function() {
-                    script.onreadystatechange = script.onload = null;
-                    handler();
-                }
-                var head = document.getElementsByTagName("head")[0];
-                (head || document.body).appendChild(script);
-            };
-            (function run() {
-                if (array.length != 0) {
-                    loader(array.shift(), run);
-                }
-            })();
-        }
         if (process.env.ENV == 'dev') {
             loadScripts(['http://localhost:8080/build/entry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
             require(`electron-connect`).client.create();

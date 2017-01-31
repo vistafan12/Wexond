@@ -14,21 +14,32 @@ export default class MDMenu extends React.Component {
     }
 
     componentDidMount() {
-        var t = this;
-        $(this.refs.menuItems).find('li').mousedown(function(e) {
-            var btnOffset = $(this).offset();
-            var xpos = e.pageX - btnOffset.left;
-            var ypos = e.pageY - btnOffset.top;
+        var t = this,
+            menuNodes = this.refs.menuItems.getElementsByTagName('li'),
+            extensionsNodes = this.refs.extensionsItems.getElementsByTagName('li');
 
-            Ripple.makeRipple($(this), xpos, ypos, $(this).height(), $(this).width(), 300, 0, "#000");
-        });
-        $(window).click(function() {
+        for (var i = 0; i < menuNodes.length; i++) {
+            var node = menuNodes[i];
+            if (node) {
+                node.addEventListener('mousedown', function(e) {
+                    //TODO: make ripple
+                });
+            }
+        }
+
+        window.addEventListener('click', function() {
             t.hide();
         });
-        $(this.refs.divider).css('height', $(this.refs.menu).height() - 16);
-        $(this.refs.extensionsItems).find('li').mousedown(function() {
-            makeRipple($(this), true, 14, 150);
-        });
+        this.refs.divider.css('height', this.refs.menu.clientHeight - 16);
+
+        for (var i = 0; i <  extensionsNodes.length; i++) {
+            var node = extensionsNodes[i];
+            if (node) {
+                node.addEventListener('mousedown', function(e) {
+                    //TODO: make ripple
+                });
+            }
+        }
     }
 
     render() {
@@ -117,7 +128,8 @@ export default class MDMenu extends React.Component {
     }
 
     show() {
-        //require('remote').getCurrentWindow().toggleDevTools();setFullScreen(true);
+        /*
+        TODO: animations for menu show
         $(this.refs.menu).css('display', 'block');
         $(this.refs.menu).animate({
             top: 52
@@ -132,10 +144,13 @@ export default class MDMenu extends React.Component {
             queue: false
         });
         this.openedMenu = true;
+        */
     }
 
     hide() {
         var t = this;
+        /*
+        TODO: animations for menu hide
         $(this.refs.menu).animate({
             top: 28
         }, {
@@ -152,6 +167,7 @@ export default class MDMenu extends React.Component {
                 t.openedMenu = false;
             }
         });
+        */
     }
 
     menu() {

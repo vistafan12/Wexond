@@ -8,6 +8,7 @@ export default class Extensions {
     */
     deleteExtensions() {
         for (var i = 0; i < this.loadedExts.length; i++) {
+            //TODO
             $(this.loadedExts[i]).remove();
         }
         for (var i = 0; i < this.apis.length; i++) {
@@ -22,6 +23,7 @@ export default class Extensions {
     * id - int
     * callback - function (default: null)
     */
+    //TODO
     loadExtensions(id, callback = null) {
         var t = this;
         //get all .JSON files in folder to an array
