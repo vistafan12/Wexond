@@ -12,6 +12,7 @@ class API {
         this.tab = new Tab(tab, this);
         this.page = new Page(tab.page.getPage(), this);
         this.webview = new WebView(webview, this);
+        this.parent = parent;
     }
 
     //global methods that manage whole window
