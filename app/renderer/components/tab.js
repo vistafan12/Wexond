@@ -15,6 +15,7 @@ export default class Tab extends React.Component {
         this.setForeground = this.setForeground.bind(this);
         this.getTab = this.getTab.bind(this);
         this.onDragStart = this.onDragStart.bind(this);
+        this.onRelease = this.onRelease.bind(this);
         this.onDrag = this.onDrag.bind(this);
         //global properties
         this.locked = false;
@@ -73,6 +74,14 @@ export default class Tab extends React.Component {
             type: "left",
             cursor: "default"
         });
+        var closed = false;
+        this.tab.addEventListener("click", function(e) {
+            if (e.which == 2 && !closed) {
+                closed = true;
+                t.props.getTabBar().removeTab(t);
+            }
+        });
+
     }
     /*
     events
@@ -112,6 +121,11 @@ export default class Tab extends React.Component {
     }
     onMouseEnterCloseBtn(e) {
         TweenMax.to(e.target, 0.2, {opacity: 1, ease: tabsAnimationEasing});
+    }
+    closeBtnClick(self, e) {
+        e.stopPropagation();
+        e.preventDefault();
+        self.props.getTabBar().removeTab(self);
     }
     /*
     * returns Object tabbar
@@ -172,14 +186,6 @@ export default class Tab extends React.Component {
     */
     changeFavicon(favicon) {
         this.favicon.css({backgroundImage: `url(${favicon})`});
-    }
-    /*
-    events
-    */
-    closeBtnClick(self, e) {
-        e.stopPropagation();
-        e.preventDefault();
-        self.props.getTabBar().removeTab(self);
     }
     /*
     * returns this
