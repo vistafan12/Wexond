@@ -5,13 +5,14 @@
 */
 class API {
     constructor(tab, parent) {
-        var instance = tab.page.getPage(),
-            webview = tab.page.getWebView();
+        var webview = tab.getPage().getWebView();
 
         this.webviews = [];
+
         this.tab = new Tab(tab, this);
-        this.page = new Page(tab.page.getPage(), this);
+        this.page = new Page(tab.getPage(), this);
         this.webview = new WebView(webview, this);
+
         this.parent = parent;
     }
 
@@ -75,26 +76,14 @@ class WebView {
 */
 class Page {
     constructor(page, api) {
-        //event listeners and methods for instance
         this.page = page;
+        //event listeners and methods for instance
     }
     /*
     * returns app
     */
     getApp() {
         return this.page.props.getApp();
-    }
-    /*
-    * returns tabbar in app
-    */
-    getTabbar() {
-        return this.page.getTabbar();
-    }
-    /*
-    * returns titlebar
-    */
-    getTitlebar() {
-        return this.page.getTitlebar();
     }
 }
 /*
