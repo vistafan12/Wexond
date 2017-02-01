@@ -3,21 +3,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Page from './page.js';
 import Titlebar from './titlebar.js';
+import Extension from './extension.js';
 import {TweenMax, CSSPlugin} from 'gsap';
 
 export default class MDMenu extends React.Component {
     constructor() {
         super();
+        //binds
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.menu = this.menu.bind(this);
         this.openedMenu = false;
+        //global properties
+        this.state = {
+            extensionsToCreate: []
+        }
     }
 
     componentDidMount() {
         var t = this,
-            menuNodes = this.refs.menuItems.getElementsByTagName('li'),
-            extensionsNodes = this.refs.extensionsItems.getElementsByTagName('li');
+            menuNodes = this.refs.menuItems.getElementsByTagName('li');
 
         for (var i = 0; i < menuNodes.length; i++) {
             var node = menuNodes[i];
@@ -32,15 +37,6 @@ export default class MDMenu extends React.Component {
             t.hide();
         });
         this.refs.divider.css('height', this.refs.menu.clientHeight - 16);
-
-        for (var i = 0; i <  extensionsNodes.length; i++) {
-            var node = extensionsNodes[i];
-            if (node) {
-                node.addEventListener('mousedown', function(e) {
-                    makeRippleMenuItem(node, e);
-                });
-            }
-        }
     }
 
     show() {
@@ -110,41 +106,11 @@ export default class MDMenu extends React.Component {
 
                     </ul>
                     <div ref="divider" className="divider"></div>
-                    <ul ref="extensionsItems" className="extensions-items">
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                        <li className="ripple-icon">
-
-                        </li>
-                    </ul>
+                    <div ref="extensionsItems" className="extensions-items">
+                        {this.state.extensionsToCreate.map(function(object, i) {
+                            return <Extension key={i} object={object}></Extension>;
+                        })}
+                    </div>
             </div>
 
         );

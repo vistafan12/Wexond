@@ -40,7 +40,6 @@
     float: left;
 }
 .extensions-items {
-    list-style: none;
     padding: 0;
     margin: 0;
     height: 386px;
@@ -49,10 +48,9 @@
     overflow-x: hidden;
     overflow-y: scroll;
 }
-.extensions-items li {
+.extension {
     padding: 0;
     margin: 0;
-    background-image: url('../img/menu/settings.png');
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -62,7 +60,6 @@
     margin-top: 6px;
     margin-right: 9px;
     margin-left: 4px;
-    opacity: 0.8;
 }
 .menu-items li {
     max-width: 100%;

@@ -65,7 +65,7 @@ export default class Bar extends React.Component {
         self.props.getPage().getWebView().goForward();
     }
     refresh() {
-        this.props.getPage().reloadExtensions();
+        this.props.getPage().loadExtensions();
         this.props.getPage().getWebView().reload();
     }
 

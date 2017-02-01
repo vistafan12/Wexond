@@ -18,7 +18,7 @@ export default class Page extends React.Component {
         this.getSearchInput = this.getSearchInput.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
         this.resize = this.resize.bind(this);
-        this.reloadExtensions = this.reloadExtensions.bind(this);
+        this.loadExtensions = this.loadExtensions.bind(this);
         this.getExtensions = this.getExtensions.bind(this);
         this.onResize = this.onResize.bind(this);
         this.pageTitleUpdated = this.pageTitleUpdated.bind(this);
@@ -341,9 +341,12 @@ export default class Page extends React.Component {
     /*
     * reloads only extensions that are related to current page
     */
-    reloadExtensions() {
+    loadExtensions() {
+        var t = this;
         this.extensions.deleteExtensions();
-        this.extensions.loadExtensions(this.getTab().getIndex());
+        this.extensions.loadExtensions(this.getTab().getIndex(), function(data) {
+            t.extensions.addExtensionToMenu(data, t.refs.menu);
+        });
     }
     /*
     * gets extensions

@@ -116,6 +116,14 @@ export default class Suggestions extends React.Component {
             if (inputText != "") {
                 getHistoryData(function() {
                     getSearchData();
+                    var items1 = t.refs.suggestionsWindow.getElementsByTagName('li');
+                    for (var i = 0; i < items1.length; i++) {
+                        var node = items1[i];
+                        if (node) {
+                            node.removeClass('selected');
+                        }
+                    }
+                    items1[0].addClass('selected');
                 });
 
                 function getHistoryData(callback = null) {
@@ -156,21 +164,19 @@ export default class Suggestions extends React.Component {
                                 var oldLink = links.sort(function(a, b) {
                                     return a.length - b.length;
                                 })[0];
-                                var newLink = links.sort(function(a, b) {
-                                    return a.length - b.length;
-                                })[0];
+                                var newLink = oldLink;
                                 //get important part of link ex. wexond.tk for better suggestions
                                 if (!newLink.startsWith("wexond:")) {
                                     newLink = newLink.substr(0, newLink.indexOf('/'));
-                                    var compareOldLink = oldLink.replace("/", "").split("&mdash")[0];
-                                    var compareNewLink = newLink.replace("/", "").split("&mdash")[0];
+                                    var compareOldLink = oldLink.split("&mdash")[0].replace("/", "");
+                                    var compareNewLink = newLink.split("&mdash")[0].replace("/", "");
                                     if (compareOldLink != compareNewLink) {
                                         links.push(newLink + "&mdash;" + oldLink.split("&mdash;")[1]);
                                     }
                                 }
                                 //sort links by length
                                 links.sort(function(a, b) {
-                                    return b.length - a.length;
+                                    return b.split("&mdash;")[0].length - a.split("&mdash;")[0].length;
                                 });
                                 //get most similar link to addressbar text
                                 for (var i = 0; i < links.length; i++) {
@@ -193,7 +199,7 @@ export default class Suggestions extends React.Component {
                                     tempLinks = [];
 
                                 for (var i = 0; i < links.length; i++) {
-                                    tempLinks.push(links[i].split("&mdash")[0]);
+                                    tempLinks.push(links[i].split("&mdash")[0].replace("/", ""));
                                 }
                                 for (var i = 0; i < tempLinks.length; i++) {
                                     if (!isInArray(tempLinks[i], uniqueLinks1)) {

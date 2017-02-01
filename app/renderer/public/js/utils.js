@@ -1,4 +1,4 @@
-var iconRippleTime = 0.250;
+var iconRippleTime = 0.25;
 var rippleTime = 0.4;
 
 function isURL(s) {
@@ -33,7 +33,7 @@ function makeRippleIconButton(item) {
     Ripple.makeRipple(item, item.offsetWidth / 2, item.offsetHeight / 2, 12, iconRippleTime);
 }
 
-function makeRipple(item, isFromCenter = true, scale = 12, e = null, time = 250) {
+function makeRipple(item, isFromCenter = true, scale = 12, e = null, time = 0.25) {
     if (isFromCenter) {
         Ripple.makeRipple(item, (item.clientWidth / 2), (item.clientHeight / 2), scale, time);
     } else {
@@ -144,21 +144,16 @@ function requestUrl(url, callback = null) {
                 callback(xmlHttp.responseText);
             }
         }
-    }; 
+    };
 }
 
-Element.prototype.hasClass = function(cls) {
-  return !!this.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-}
 Element.prototype.addClass = function (cls) {
-    if (!this.hasClass(cls)) this.className += " " + cls;
+    this.classList.add(cls);
 }
 Element.prototype.removeClass = function (cls) {
-    if (this.hasClass(cls)) {
-      var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-      this.className = this.className.replace(reg,' ');
-    }
+    this.classList.remove(cls);
 }
+
 
 Element.prototype.css = function (data, value = null) {
     if (typeof(data) === 'object') {

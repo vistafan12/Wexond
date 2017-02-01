@@ -51,8 +51,8 @@ export default class Extensions {
                                     version: jsonObject.version,
                                     description: jsonObject.description,
                                     icon: jsonObject.icon,
-                                    popupPage: jsonObject.popuppage,
-                                    settingsPage: jsonObject.settingspage,
+                                    popupPage: jsonObject.popupPage,
+                                    settingsPage: jsonObject.settingsPage,
                                     scripts: jsonObject.scripts
                                 };
 
@@ -61,7 +61,17 @@ export default class Extensions {
                                     requestUrl(fileUrl, function(data) {
                                         if (typeof(callback) === 'function') {
                                             jsonData.code = data;
-                                            callback(jsonData);
+                                            var icon = directory + "/" + jsonData.icon;
+                                            callback({
+                                                name: jsonData.name,
+                                                version: jsonData.version,
+                                                description: jsonData.description,
+                                                icon: icon.replace(/\\/g,"/"),
+                                                popupPage: jsonData.popuppage,
+                                                settingsPage: jsonData.settingsPage,
+                                                scripts: jsonData.scripts,
+                                                directory: directory
+                                            });
                                         }
                                         var iframe = document.getElementById('extensions-iframe'),
                                             script = document.createElement('script'),
@@ -77,7 +87,6 @@ export default class Extensions {
                                             } a${id}(${id});`;
                                         innerDoc.getElementsByTagName('head')[0].appendChild(script);
                                         t.loadedExts.push(script);
-
                                     });
                                 }
                             });
@@ -86,6 +95,15 @@ export default class Extensions {
                 });
             }
         });
-
+    }
+    /*
+    * adds extension to menu
+    * extension - Object
+    * menu - MDMenu
+    */
+    addExtensionToMenu(extension, menu) {
+        var newState = menu.state;
+        newState.extensionsToCreate.push(extension);
+        menu.setState(newState);
     }
 }
