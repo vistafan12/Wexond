@@ -19,7 +19,7 @@ export default class Bar extends React.Component {
             var node = nodes[i];
             if (node) {
                 node.addEventListener('mousedown', function() {
-                    makeRippleIconButton(this);
+                    makeRippleBarButton(this);
                 });
             }
         }

@@ -29,7 +29,7 @@ export default class MDMenu extends React.Component {
             var node = menuNodes[i];
             if (node) {
                 node.addEventListener('mousedown', function(e) {
-                    makeRipple(node, true, 14);
+                    makeRippleFromMouse(e.target, e);
                 });
             }
         }

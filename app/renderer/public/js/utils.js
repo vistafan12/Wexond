@@ -1,5 +1,5 @@
 var iconRippleTime = 0.25;
-var rippleTime = 0.4;
+var rippleTime = 0.8;
 
 function isURL(s) {
     var regexp = /[a-zA-Z-0-9]+\.[a-zA-Z-0-9]{2,3}/;
@@ -23,24 +23,19 @@ function autocomplete(input, text) {
         }
     }
 
-function makeRippleMenuItem(menuItem, e) {
-    var relX = e.pageX - menuItem.offsetLeft;
-    var relY = e.pageY - menuItem.offsetTop;
-    Ripple.makeRipple(menuItem, relX, relY, menuItem.clientWidth, rippleTime);
+function makeRippleFromMouse(item, e) {
+    var pos = mousePositionElement(e);
+    var relX = pos.x;
+    var relY = pos.y;
+    Ripple.makeRipple(item, relX, relY, item.clientWidth, rippleTime, item.clientHeight);
 }
 
-function makeRippleIconButton(item) {
+function makeRippleBarButton(item) {
     Ripple.makeRipple(item, item.offsetWidth / 2, item.offsetHeight / 2, 12, iconRippleTime);
 }
 
-function makeRipple(item, isFromCenter = true, scale = 12, e = null, time = 0.25) {
-    if (isFromCenter) {
-        Ripple.makeRipple(item, (item.clientWidth / 2), (item.clientHeight / 2), scale, time);
-    } else {
-        var relX = e.pageX - item.offsetLeft;
-        var relY = e.pageY - $(item).offsetTop;
-        Ripple.makeRipple($(menuItem), relX, relY, item.clientWidth, time);
-    }
+function makeRippleFromCenter(item, scale = 12, time = 0.25) {
+    Ripple.makeRipple(item, (item.clientWidth / 2), (item.clientHeight / 2), scale, time);
 }
 function isInArray(value, array) {
     return array.indexOf(value) > -1;
@@ -48,6 +43,58 @@ function isInArray(value, array) {
 
 function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+function mousePositionElement(e) {
+	var mousePosDoc = mousePositionDocument(e);
+	var target = mouseTarget(e);
+	var targetPos = findPos(target);
+	var posx = mousePosDoc.x - targetPos.left;
+	var posy = mousePosDoc.y - targetPos.top;
+	return {
+		x : posx,
+		y : posy
+	};
+}
+function mouseTarget(e) {
+	var targ;
+	if (!e) var e = window.event;
+	if (e.target) targ = e.target;
+	else if (e.srcElement) targ = e.srcElement;
+	if (targ.nodeType == 3)
+		targ = targ.parentNode;
+	return targ;
+}
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		do {
+			curleft += obj.offsetLeft;
+			curtop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+	}
+	return {
+		left : curleft,
+		top : curtop
+	};
+}
+function mousePositionDocument(e) {
+	var posx = 0;
+	var posy = 0;
+	if (!e) {
+		var e = window.event;
+	}
+	if (e.pageX || e.pageY) {
+		posx = e.pageX;
+		posy = e.pageY;
+	}
+	else if (e.clientX || e.clientY) {
+		posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	return {
+		x : posx,
+		y : posy
+	};
 }
 function shadeColor(hex, lum) {
     hex = String(hex).replace(/[^0-9a-f]/gi, '');

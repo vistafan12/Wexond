@@ -18,7 +18,7 @@ export default class Extension extends React.Component {
     events
     */
     onClick(e, self) {
-        makeRipple(e.target, true, 14);
+        makeRippleFromCenter(e.target, 14);
     }
 
     render() {
