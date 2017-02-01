@@ -13,8 +13,9 @@ export default class MDMenu extends React.Component {
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.menu = this.menu.bind(this);
-        this.openedMenu = false;
+        this.removeExtensions = this.removeExtensions.bind(this);
         //global properties
+        this.openedMenu = false;
         this.state = {
             extensionsToCreate: []
         }
@@ -59,6 +60,10 @@ export default class MDMenu extends React.Component {
         } else {
             this.show();
         }
+    }
+
+    removeExtensions() {
+        this.setState({extensionsToCreate: []});
     }
 
     render() {

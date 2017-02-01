@@ -344,6 +344,7 @@ export default class Page extends React.Component {
     loadExtensions() {
         var t = this;
         this.extensions.deleteExtensions();
+        this.refs.menu.removeExtensions();
         this.extensions.loadExtensions(this.getTab().getIndex(), function(data) {
             t.extensions.addExtensionToMenu(data, t.refs.menu);
         });
