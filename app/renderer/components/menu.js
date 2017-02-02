@@ -38,7 +38,8 @@ export default class MDMenu extends React.Component {
             t.refs.menu.css({display: 'block', right: offset + 'px'});
         });
         window.addEventListener('click', function() {
-            t.hide();
+            if (t.openedMenu)
+                t.hide();
         });
         this.refs.divider.css('height', this.refs.menu.clientHeight - 16);
     }

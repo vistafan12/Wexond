@@ -90,7 +90,8 @@ export default class Page extends React.Component {
             }
 
         });
-
+        this.refs.bar.openedMenu = true;
+        this.refs.bar.show();
     }
     /*
     * open new tab with url
@@ -257,9 +258,14 @@ export default class Page extends React.Component {
     frameFinishLoad() {
         var webview = this.refs.webview,
             bar = this.refs.bar;
-        if (webview.getURL() != this.props.getApp().defaultURL)
+        if (webview.getURL() != this.props.getApp().defaultURL) {
             bar.refs.searchInput.value = webview.getURL();
+            bar.openedMenu = false;
+        } else {
+            bar.openedMenu = true;
+            bar.show();
         }
+    }
     faviconUpdated(favicons) {
         this.getTab().changeFavicon(favicons.favicons[0]);
     }

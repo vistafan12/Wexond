@@ -8,6 +8,8 @@ export default class Bar extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.show = this.show.bind(this);
+        this.hide = this.hide.bind(this);
     }
     /*
     lifecycle
@@ -25,15 +27,28 @@ export default class Bar extends React.Component {
         }
         document.body.onmousemove = function(e) {
             if (e.pageY <= 32) {
-                t.refs.bar.css('display', 'block');
-                TweenMax.to(t.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+                t.show();
             }
             if (e.pageY > 82 && !t.openedMenu) {
-                TweenMax.to(t.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
-                    t.refs.bar.css('display', 'none');
-                }});
+                t.hide();
             }
         };
+    }
+    /*
+    * shows bar
+    */
+    show() {
+        this.refs.bar.css('display', 'block');
+        TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+    }
+    /*
+    * hides bar
+    */
+    hide() {
+        var t = this;
+        TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
+            t.refs.bar.css('display', 'none');
+        }});
     }
     /*
     events
