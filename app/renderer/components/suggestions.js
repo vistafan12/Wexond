@@ -31,14 +31,14 @@ export default class Suggestions extends React.Component {
     */
     hide() {
         this.refs.suggestionsWindow.css('display', 'none');
-        this.props.getPage().getWebView().removeClass('blur');
+        this.props.getPage().refs.bar.openedMenu = false;
     }
     /*
     * shows suggestions window
     */
     show() {
         this.refs.suggestionsWindow.css('display', 'block');
-        this.props.getPage().getWebView().addClass('blur');
+        this.props.getPage().refs.bar.openedMenu = true;
     }
     /*
     events

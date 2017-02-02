@@ -8,7 +8,7 @@ export default class Extension extends React.Component {
         this.data = null;
         this.state = {
             backgroundImage: null
-        }
+        };
     }
     componentDidMount() {
         this.data = this.props.object;

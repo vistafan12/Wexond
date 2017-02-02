@@ -1,8 +1,20 @@
 .webview {
     position: relative;
-    top: calc(42px);
 }
 
 #extensions-iframe {
     display: none;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(0, 0, 0, 0.3);
 }

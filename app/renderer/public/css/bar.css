@@ -1,11 +1,17 @@
 .bar {
     height: 42px;
     background: #fff;
-    width: 100%;
+    width: calc(100% - 16px);
+    max-width: 512px;
+    left: 8px;
     position: absolute;
     z-index: 2;
-    top: 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.14);
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.24);
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .searchInput {
@@ -13,26 +19,12 @@
     border: none;
     font-size: 14px;
     top: 50%;
+    margin-left: 20px;
+    width: calc(100% - 175px);
     transform: translateY(-50%);
-    margin-left: 8px;
     position: absolute;
-    left: 0;
-    width: calc(100% - 48px);
     background-color: transparent;
-}
-
-.searchBox {
-    width: calc(100% - 164px);
-    position: relative;
-    border-radius: 2px;
-    margin-left: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 30px;
-    background-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    float: left;
-    transition: 0.2s background;
+    overflow: hidden;
 }
 
 .bar-icon {

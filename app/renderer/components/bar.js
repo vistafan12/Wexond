@@ -23,6 +23,17 @@ export default class Bar extends React.Component {
                 });
             }
         }
+        document.body.onmousemove = function(e) {
+            if (e.pageY <= 32) {
+                t.refs.bar.css('display', 'block');
+                TweenMax.to(t.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+            }
+            if (e.pageY > 82 && !t.openedMenu) {
+                TweenMax.to(t.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
+                    t.refs.bar.css('display', 'none');
+                }});
+            }
+        };
     }
     /*
     events
@@ -75,9 +86,7 @@ export default class Bar extends React.Component {
                 <div className="bar-icon back ripple-bar-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
                 <div className="bar-icon forward ripple-bar-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
                 <div className="bar-icon refresh ripple-bar-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
-                <div ref="searchBox" className="searchBox">
-                    <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
-                </div>
+                <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 <div className="bar-icon menu-icon ripple-bar-icon" onMouseDown={this.ripple} onClick={(e) => {
                     e.stopPropagation();
                     this.props.getPage().getMenu().menu();

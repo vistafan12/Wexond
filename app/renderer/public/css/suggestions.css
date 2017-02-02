@@ -1,25 +1,26 @@
 .suggestions-window {
-    height: calc(100vh - 42px);
-    width: 100vw;
-    background-color: rgba(255, 255, 255, 0.85);
+    height: auto;
+    width: 100%;
+    max-width: 512px;
     position: absolute;
-    top: 42px;
-    z-index: 99999;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.24);
+    border-radius: 3px;
+    background: white;
+    z-index: 9999;
     display: none;
 }
 
-.blur {
-    -webkit-filter: blur(5px);
-}
-
 .suggestions {
-    max-width: 768px;
-    width: calc(100% - 220px);
+    width: calc(100% - 16px);
     margin: 0;
+    margin-left: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     padding: 0;
     position: relative;
-    top: 32px;
-    left: 130px;
     list-style: none;
 }
 
@@ -27,9 +28,9 @@
     width: calc(100%);
     padding: 8px;
     margin: 0;
-    padding-left: 32px;
     -webkit-user-select: none;
     cursor: default;
+    font-size: 14px;
 }
 
 .selected {
