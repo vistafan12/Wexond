@@ -90,7 +90,7 @@ export default class Page extends React.Component {
             }
 
         });
-        this.refs.bar.openedMenu = true;
+        this.refs.bar.locked = true;
         this.refs.bar.show();
     }
     /*
@@ -260,9 +260,9 @@ export default class Page extends React.Component {
             bar = this.refs.bar;
         if (webview.getURL() != this.props.getApp().defaultURL) {
             bar.refs.searchInput.value = webview.getURL();
-            bar.openedMenu = false;
+            bar.locked = false;
         } else {
-            bar.openedMenu = true;
+            bar.locked = true;
             bar.show();
         }
     }

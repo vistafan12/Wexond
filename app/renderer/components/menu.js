@@ -34,7 +34,7 @@ export default class MDMenu extends React.Component {
             }
         }
         window.addEventListener('resize', function() {
-            var offset = window.innerWidth / 2 - t.props.getPage().refs.bar.refs.bar.offsetWidth + t.refs.menu.offsetWidth - 24;
+            var offset = window.innerWidth / 2 - this.props.getPage().refs.bar.refs.bar.offsetWidth / 2;
             t.refs.menu.css({display: 'block', right: offset + 'px'});
         });
         window.addEventListener('click', function() {
@@ -48,7 +48,7 @@ export default class MDMenu extends React.Component {
         TweenMax.to(this.refs.menu, 0.2, {css:{top: 58, opacity: 1}});
         this.openedMenu = true;
         this.props.getPage().refs.bar.openedMenu = true;
-        var offset = window.innerWidth / 2 - this.props.getPage().refs.bar.refs.bar.offsetWidth + 280 - 24;
+        var offset = window.innerWidth / 2 - this.props.getPage().refs.bar.refs.bar.offsetWidth / 2;
         this.refs.menu.css({display: 'block', right: offset + 'px'});
     }
 

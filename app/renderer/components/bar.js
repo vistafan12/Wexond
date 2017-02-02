@@ -25,30 +25,34 @@ export default class Bar extends React.Component {
                 });
             }
         }
-        document.body.onmousemove = function(e) {
+        document.body.addEventListener('mousemove', function(e) {
             if (e.pageY <= 32) {
                 t.show();
             }
-            if (e.pageY > 82 && !t.openedMenu) {
+            if (e.pageY > 82 && !t.openedMenu && !t.locked) {
                 t.hide();
             }
-        };
+        });
     }
     /*
     * shows bar
     */
     show() {
-        this.refs.bar.css('display', 'block');
-        TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+        if (this.refs.bar != null) {
+            this.refs.bar.css('display', 'block');
+            TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+        }
     }
     /*
     * hides bar
     */
     hide() {
         var t = this;
-        TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
-            t.refs.bar.css('display', 'none');
-        }});
+        if (this.refs.bar != null) {
+            TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
+                t.refs.bar.css('display', 'none');
+            }});
+        }
     }
     /*
     events
@@ -65,6 +69,7 @@ export default class Bar extends React.Component {
             suggestions = this.props.getPage().getSuggestions();
         //if enter key was pressed
         if (e.which == 13) {
+            this.locked = false;
             suggestions.hide();
             if (!e.target.value.startsWith("wexond://")) {
                 if (isURL(e.target.value)) {

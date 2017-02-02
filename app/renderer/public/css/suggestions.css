@@ -1,7 +1,7 @@
 .suggestions-window {
     height: auto;
     width: 100%;
-    max-width: 512px;
+    max-width: 768px;
     position: absolute;
     top: 58px;
     left: 50%;

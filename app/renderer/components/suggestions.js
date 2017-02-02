@@ -125,7 +125,8 @@ export default class Suggestions extends React.Component {
                             node.removeClass('selected');
                         }
                     }
-                    items1[0].addClass('selected');
+                    if (items1[0] != null)
+                        items1[0].addClass('selected');
                 });
 
                 function getHistoryData(callback = null) {

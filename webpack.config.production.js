@@ -43,15 +43,7 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: true
-            },
-            output: {
-                comments: false
-            }
-        })
+
     ],
 
     resolve: {

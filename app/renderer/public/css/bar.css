@@ -2,7 +2,7 @@
     height: 42px;
     background: #fff;
     width: calc(100% - 16px);
-    max-width: 512px;
+    max-width: 768px;
     left: 8px;
     position: absolute;
     z-index: 2;
