@@ -24,49 +24,26 @@ module.exports = {
     },
 
     module: {
-        preLoaders: [
-            {
-                test: /(\.js$|\.jsx$)/,
-                include: path.resolve(__dirname, "app"),
-                loader: "eslint"
-            }
-        ],
-        loaders: [
+        rules: [
             {
                 test: /\.css$/,
                 include: path.resolve(__dirname, "app/renderer/public/css"),
-                loaders: ['style', 'css']
-            }, {
-                test: /\.json$/,
-                include: path.resolve(__dirname),
-                loaders: ['json']
+                use: ['style-loader', 'css-loader']
             }, {
                 test: /(\.js$|\.jsx$)/,
                 include: path.resolve(__dirname, "app"),
-                loader: 'babel',
-                query: {
-                    presets: ['react', 'es2015']
-                }
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['react', 'es2015']
+                    }
+                }]
             }
         ]
     },
 
-    eslint: {
-        configFile: '.eslintrc'
-    },
-
-    resolve: {
-        modulesDirectories: ['node_modules'],
-        extensions: ['', '.js', '.jsx']
-    },
-
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'ENV': JSON.stringify('production')
-            }
-        }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: true
@@ -75,5 +52,10 @@ module.exports = {
                 comments: false
             }
         })
-    ]
+    ],
+
+    resolve: {
+        modules: ['node_modules'],
+        extensions: ['.js', '.jsx']
+    }
 }
