@@ -248,10 +248,7 @@ export default class Suggestions extends React.Component {
                                     t.refs.suggestions.insertBefore(item, t.refs.suggestionsWindow.getElementsByTagName('li')[0]);
 
                                     item.addEventListener('click', function() {
-                                        webview.loadURL('http://' + $(this).attr('link'));
-                                    });
-                                    item.addEventListener('mousedown', function() {
-                                        //TODO: make ripple
+                                        webview.loadURL('http://' + this.attr('link'));
                                     });
                                     item.addEventListener('mouseover', function() {
                                         var sItems = t.refs.suggestionsWindow.getElementsByClassName('suggestions-li');
