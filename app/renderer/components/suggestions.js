@@ -170,7 +170,10 @@ export default class Suggestions extends React.Component {
                                 var newLink = oldLink;
                                 //get important part of link ex. wexond.tk for better suggestions
                                 if (!newLink.startsWith("wexond:")) {
-                                    newLink = newLink.substr(0, newLink.indexOf('/'));
+                                    if (newLink.substring(newLink.length-1) == "/")
+                                    {
+                                        newLink = newLink.substring(0, newLink.length-1);
+                                    }
                                     var compareOldLink = oldLink.split("&mdash")[0].replace("/", "");
                                     var compareNewLink = newLink.split("&mdash")[0].replace("/", "");
                                     if (compareOldLink != compareNewLink) {
@@ -199,19 +202,27 @@ export default class Suggestions extends React.Component {
                                 //remove duplicates from array
                                 var uniqueLinks1 = [],
                                     uniqueLinks = [],
-                                    tempLinks = [];
+                                    tempLinks = [],
+                                    tempTitles = [],
+                                    uniqueTitles = [];
 
                                 for (var i = 0; i < links.length; i++) {
-                                    tempLinks.push(links[i].split("&mdash")[0].replace("/", ""));
+                                    tempLinks.push(links[i].split("&mdash")[0]);
+                                    tempTitles.push(links[i].split("&mdash")[1]);
                                 }
                                 for (var i = 0; i < tempLinks.length; i++) {
                                     if (!isInArray(tempLinks[i], uniqueLinks1)) {
                                         uniqueLinks1.push(tempLinks[i]);
                                     }
                                 }
+                                for (var i = 0; i < tempTitles.length; i++) {
+                                    if (!isInArray(tempTitles[i], uniqueTitles)) {
+                                        uniqueTitles.push(tempTitles[i]);
+                                    }
+                                }
                                 for (var i = 0; i < uniqueLinks1.length; i++) {
-                                    if (!isInArray(uniqueLinks1[i], uniqueLinks)) {
-                                        uniqueLinks.push(links[i]);
+                                    if (!isInArray(uniqueLinks1[i] + '&mdash' + uniqueTitles[i], uniqueLinks)) {
+                                        uniqueLinks.push(uniqueLinks1[i] + '&mdash' + uniqueTitles[i]);
                                     }
                                 }
                                 //limit array length to 3
@@ -224,6 +235,9 @@ export default class Suggestions extends React.Component {
                                 }
                                 if (finalLength < 0) {
                                     finalLength = 0;
+                                }
+                                for (var i = 0; i < uniqueLinks1.length; i++) {
+                                    console.log(uniqueLinks1[i]);
                                 }
                                 var histories = t.refs.suggestionsWindow.getElementsByClassName('history');
                                 //append missing items
