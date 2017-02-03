@@ -9,6 +9,7 @@ export default class Titlebar extends React.Component {
         //binds
         this.setBackground = this.setBackground.bind(this);
         this.setForeground = this.setForeground.bind(this);
+        this.maximizeOrRestore = this.maximizeOrRestore.bind(this);
         //global properties
         this.foreground = '#fff';
         this.state = {
@@ -37,9 +38,11 @@ export default class Titlebar extends React.Component {
         if (remote.getCurrentWindow().isMaximized()) {
             //restore window
             remote.getCurrentWindow().unmaximize();
+            document.body.css({top: '0px'});
         } else {
             //maximize window
             remote.getCurrentWindow().maximize();
+            document.body.css({top: '4px'});
         }
     }
     /*
