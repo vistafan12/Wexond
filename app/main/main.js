@@ -4,8 +4,8 @@ var {app, BrowserWindow} = require('electron'),
     path = require('path');
 
 /*
-    * registry
-    */
+* registry
+*/
 /*
     HKEY_CLASSES_ROOT
     	.html
@@ -23,10 +23,12 @@ var {app, BrowserWindow} = require('electron'),
     				`command
     					Default (REG_SZ) -> "C:\Users\Mikolaj\Desktop\Wexond\Compiled\Wexond.exe" "1.0" "%1"
     */
+    
 global.start = {
     args: process.argv,
     file: false
 };
+
 let mainWindow;
 
 app.on('window-all-closed', () => {

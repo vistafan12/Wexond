@@ -25,7 +25,6 @@ export default class App extends React.Component {
     */
     componentDidMount() {
         var _args = remote.getGlobal('start').args;
-        _args.push('C:/Users/Mikolaj/Desktop/test.html');
         for (var i = 0; i < _args.length; i++) {
             _args[i] = _args[i].replace(/\\/g, "/");
             try {
