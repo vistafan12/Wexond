@@ -18,7 +18,8 @@ export default class App extends React.Component {
             tabsToCreate: []
         };
         //properties
-        this.defaultURL = 'about:blank';
+        //this.defaultURL = 'about:blank';
+        this.defaultURL = 'wexond://newtab';
     }
     /*
     lifecycle

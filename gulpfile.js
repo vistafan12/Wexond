@@ -8,6 +8,6 @@ gulp.task('default', function() {
         'main.js', 'bootstrapper.js', 'package.json', 'gulpfile.js'
     ], electron.restart);
     gulp.watch([
-        'index.html', 'package.json', 'app/**/*.css', 'app/**/*.js'
+        'index.html','package.json', 'app/**/*.css', 'app/**/*.js'
     ], electron.reload);
 });

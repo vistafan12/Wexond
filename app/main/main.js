@@ -23,7 +23,7 @@ var {app, BrowserWindow} = require('electron'),
     				`command
     					Default (REG_SZ) -> "C:\Users\Mikolaj\Desktop\Wexond\Compiled\Wexond.exe" "1.0" "%1"
     */
-    
+
 global.start = {
     args: process.argv,
     file: false
