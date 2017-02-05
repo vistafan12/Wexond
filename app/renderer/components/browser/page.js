@@ -436,7 +436,7 @@ export default class Page extends React.Component {
                 <div className="page" ref="page">
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
-                    <webview preload="../../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
+                    <webview preload="../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
                     <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.openNewTab(u, s)}></MDMenu>
                 </div>
             );

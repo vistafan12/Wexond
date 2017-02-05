@@ -65,3 +65,29 @@ app.on('ready', function () {
     });
     createWindow();
 });
+
+/*
+* registry
+*/
+/*
+    HKEY_CLASSES_ROOT
+    	.html
+    		`OpenWithProgids
+    			+Wexond.html (REG_SZ)
+    	Wexond.html
+    		`Application
+    			+ApplicationCompany (REG_SZ) -> Nersent
+    			+ApplicationDescription (REG_SZ) -> Search the internet
+    			+ApplicationIcon(REG_SZ) -> C:\Users\Mikolaj\Desktop\Wexond\logo.ico
+    		`DefaultIcon
+    			Default (REG_SZ) -> C:\Users\Mikolaj\Desktop\Wexond\logo.ico
+    		`shell
+    			`open
+    				`command
+    					Default (REG_SZ) -> "C:\Users\Mikolaj\Desktop\Wexond\Compiled\Wexond.exe" "1.0" "%1"
+*/
+
+global.start = {
+    args: process.argv,
+    file: false
+};

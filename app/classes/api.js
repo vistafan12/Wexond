@@ -43,7 +43,7 @@ class API {
     */
     requestUrl(url) {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", url, false );
+        xmlHttp.open("GET", url, false);
         xmlHttp.send(null);
         return xmlHttp.responseText;
     }
@@ -52,6 +52,24 @@ class API {
     */
     isOnline() {
         return navigator.onLine;
+    }
+    /*
+    * get start
+    */
+    getStart() {
+        return remote.getGlobal('start');
+    }
+    /*
+    * get start args
+    */
+    getStartArgs() {
+        return remote.getGlobal('start').args;
+    }
+    /*
+    * get opened file (default false)
+    */
+    getOpenedFile() {
+        return remote.getGlobal('start').file;
     }
 }
 /*
