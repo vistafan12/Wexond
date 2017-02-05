@@ -6,7 +6,8 @@ module.exports = {
     devtool: "eval-source-map",
     entry: {
         entry: './app/renderer/entry.js',
-        main: './app/main/main.js'
+        main: './app/main/main.js',
+        history: './app/renderer/components/history/history.js'
     },
     node: {
         __dirname: false,
@@ -44,7 +45,10 @@ module.exports = {
 
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.DefinePlugin({
+          'process.env.ENV': JSON.stringify('dev')
+        })
     ],
 
     resolve: {

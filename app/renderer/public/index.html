@@ -7,26 +7,26 @@
     <style>
         @font-face {
             font-family: Roboto;
-            src: url('fonts/Roboto.ttf');
+            src: url('global/fonts/Roboto.ttf');
         }
 
         @font-face {
             font-family: Roboto-Medium;
-            src: url('fonts/Roboto-Medium.ttf');
+            src: url('global/fonts/Roboto-Medium.ttf');
         }
 
         @font-face {
             font-family: Roboto-Light;
-            src: url('fonts/Roboto-Light.ttf');
+            src: url('global/fonts/Roboto-Light.ttf');
         }
     </style>
-    <link rel="stylesheet" href="css/tabbar.css" />
-    <link rel="stylesheet" href="css/browser.css" />
-    <link rel="stylesheet" href="css/suggestions.css" />
-    <link rel="stylesheet" href="css/bar.css" />
-    <link rel="stylesheet" href="css/titlebar.css" />
-    <link rel="stylesheet" href="css/ripple.css" />
-    <link rel="stylesheet" href="css/menu.css" />
+    <link rel="stylesheet" href="browser/css/tabbar.css" />
+    <link rel="stylesheet" href="browser/css/browser.css" />
+    <link rel="stylesheet" href="browser/css/suggestions.css" />
+    <link rel="stylesheet" href="browser/css/bar.css" />
+    <link rel="stylesheet" href="browser/css/titlebar.css" />
+    <link rel="stylesheet" href="materialdesign/css/ripple.css" />
+    <link rel="stylesheet" href="browser/css/menu.css" />
 </head>
 
 <body>
@@ -36,18 +36,17 @@
             padding: 0;
             font-family: 'Roboto';
             position: relative;
-            overflow:hidden;
+            overflow: hidden;
         }
     </style>
     <div id="app"></div>
-    <script src="js/ripple.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
-    <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='js/utils.js'></script><script src='../../classes/api.js'></script></body></html>"></iframe>
+    <script src="../components/materialdesign/ripple.js"></script>
+    <script src="global/js/utils.js"></script>
+    <script src="global/js/main.js"></script>
+    <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='global/js/utils.js'></script><script src='../../classes/api.js'></script></body></html>"></iframe>
     <script>
         if (process.env.ENV == 'dev') {
             loadScripts(['http://localhost:8080/build/entry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
-            require(`electron-connect`).client.create();
         } else {
             require('../../../build/entry.bundle.js');
         }

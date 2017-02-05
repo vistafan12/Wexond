@@ -66,7 +66,7 @@ export default class Extensions {
                                                 name: jsonData.name,
                                                 version: jsonData.version,
                                                 description: jsonData.description,
-                                                icon: icon.replace(/\\/g, "/"),
+                                                icon: icon.replace(/\\/g,"/"),
                                                 popupPage: jsonData.popuppage,
                                                 settingsPage: jsonData.settingsPage,
                                                 scripts: jsonData.scripts,
@@ -75,9 +75,7 @@ export default class Extensions {
                                         }
                                         var iframe = document.getElementById('extensions-iframe'),
                                             script = document.createElement('script'),
-                                            innerDoc = (iframe.contentDocument)
-                                                ? iframe.contentDocument
-                                                : iframe.contentWindow.document;
+                                            innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
 
                                         iframe.contentWindow.parent = window;
 
