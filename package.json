@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "electron build/main.bundle.js",
+    "start": "webpack --config webpack.config.history.js && electron build/main.bundle.js",
     "watch": "webpack && webpack-dev-server --hot --inline --port 8080",
     "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
     "win32": "webpack --config webpack.config.production.js -p && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",

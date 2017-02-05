@@ -6,8 +6,7 @@ module.exports = {
     devtool: "eval-source-map",
     entry: {
         entry: './app/renderer/entry.js',
-        main: './app/main/main.js',
-        history: './app/renderer/components/history/history.js'
+        main: './app/main/main.js'
     },
     node: {
         __dirname: false,
@@ -28,7 +27,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                include: path.resolve(__dirname, "app/renderer/public/css"),
+                include: path.resolve(__dirname, "app/renderer/public"),
                 use: ['style-loader', 'css-loader']
             }, {
                 test: /(\.js$|\.jsx$)/,
