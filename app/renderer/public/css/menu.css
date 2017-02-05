@@ -12,6 +12,7 @@
     opacity: 0;
     display: none;
 }
+
 .menu-items {
     width: 220px;
     list-style: none;
@@ -19,19 +20,20 @@
     font-size: 0;
     float: left;
 }
+
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+    width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0);
 }
 
-::-webkit-scrollbar-thumb
-{
-  background: rgba(0, 0, 0, 0.3);
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
 }
+
 .divider {
     width: 1px;
     background-color: #eee;
@@ -39,6 +41,7 @@
     margin-top: 8px;
     float: left;
 }
+
 .extensions-items {
     padding: 0;
     margin: 0;
@@ -48,6 +51,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
 .extension {
     padding: 0;
     margin: 0;
@@ -61,6 +65,7 @@
     margin-right: 9px;
     margin-left: 4px;
 }
+
 .menu-items li {
     max-width: 100%;
     height: auto;

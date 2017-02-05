@@ -17,7 +17,7 @@ export default class Bar extends React.Component {
     componentDidMount() {
         var t = this,
             nodes = this.refs.bar.getElementsByClassName('bar-icon');
-        for(var i = 0; i < nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             if (node) {
                 node.addEventListener('mousedown', function() {
@@ -40,7 +40,12 @@ export default class Bar extends React.Component {
     show() {
         if (this.refs.bar != null) {
             this.refs.bar.css('display', 'block');
-            TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+            TweenMax.to(this.refs.bar, 0.2, {
+                css: {
+                    top: 8,
+                    opacity: 1
+                }
+            });
         }
     }
     /*
@@ -49,9 +54,15 @@ export default class Bar extends React.Component {
     hide() {
         var t = this;
         if (this.refs.bar != null) {
-            TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
-                t.refs.bar.css('display', 'none');
-            }});
+            TweenMax.to(this.refs.bar, 0.2, {
+                css: {
+                    top: -8,
+                    opacity: 0
+                },
+                onComplete: function() {
+                    t.refs.bar.css('display', 'none');
+                }
+            });
         }
     }
     /*

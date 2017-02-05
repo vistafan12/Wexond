@@ -13,17 +13,17 @@ $('#unselect-btn').click(unSelectAll);
 $('#cancel-btn').click(unSelectAll);
 
 function unSelectAll() {
-    $('.checkbox').each(function (i) {
+    $('.checkbox').each(function(i) {
         this.instance.checked = false;
     });
 }
 
-$('.icon-button').mousedown(function () {
+$('.icon-button').mousedown(function() {
     Ripple.makeRipple($(this), $(this).width() / 2, $(this).height() / 2, $(this).height(), $(this).width(), 300, 0, "#fff");
 });
 
-$('#delete-btn').click(function () {
-    $('.item').each(function () {
+$('#delete-btn').click(function() {
+    $('.item').each(function() {
         if (this.list.checkbox[0].instance.checked) {
             var i = $('.item').index($(this));
             $(this).remove();
@@ -32,10 +32,10 @@ $('#delete-btn').click(function () {
             console.log(i);
             jsonObj.history.reverse();
             jsonObj.history.splice(i, 1);
-            jsonObj.history.sort(function (a, b) {
+            jsonObj.history.sort(function(a, b) {
                 return parseFloat(a.id) - parseFloat(b.id);
             });
-            removeHistory(function () {
+            removeHistory(function() {
                 saveHistory(JSON.stringify(jsonObj));
             });
         }
@@ -45,10 +45,9 @@ $('#delete-btn').click(function () {
         };
     });
 
-
 });
 
-$('.flat-button').mousedown(function (e) {
+$('.flat-button').mousedown(function(e) {
     var relX = e.pageX - $(this).offset().left;
     var relY = e.pageY - $(this).offset().top;
     Ripple.makeRipple($(this), relX, relY, $(this).height() + 16, $(this).width() + 16, 300, 0, "#fff");
@@ -57,9 +56,7 @@ $('.flat-button').mousedown(function (e) {
 function verifyCheckboxes() {
     if (checkedCount > 0) {
         $('.selected-items-text').html('Selected items: ' + checkedCount);
-        $('.selected').css({
-            display: 'block'
-        }).animate({
+        $('.selected').css({display: 'block'}).animate({
             opacity: 1
         }, {
             duration: 150,
@@ -71,16 +68,14 @@ function verifyCheckboxes() {
         }, {
             duration: 150,
             queue: false,
-            complete: function () {
-                $(this).css({
-                    display: 'none'
-                });
+            complete: function() {
+                $(this).css({display: 'none'});
             }
         });
     }
 }
 
-$('.search-input').on('input', function () {
+$('.search-input').on('input', function() {
     if ($(this).val() == "") {
         $('.hint').css('visibility', 'visible');
     } else {
@@ -96,7 +91,7 @@ $('.search-input').on('input', function () {
 
 function loadHistory(search = "") {
 
-    $.each(jsonObj.history, function (i, el) {
+    $.each(jsonObj.history, function(i, el) {
         if (!isInArray(jsonObj.history[i].date, dates)) {
             dates.push(jsonObj.history[i].date);
         }
@@ -182,7 +177,6 @@ function loadHistory(search = "") {
         };
         cards.push(card);
 
-
         for (var i = jsonObj.history.length - 1; i >= 0; i--) {
             var d2 = new Date(jsonObj.history[i].date);
             var date1 = d2.toString();
@@ -199,7 +193,7 @@ function loadHistory(search = "") {
 
     }
     console.log($('.card .item').length);
-    $('.card').each(function (i) {
+    $('.card').each(function(i) {
         if ($(this).find('.item').length <= 1) {
             $(this).remove();
         }
@@ -226,7 +220,7 @@ function addItem(card, i) {
 
     checkbox[0].instance = checkbox.checkbox();
 
-    checkbox.on('checked-changed', function (e, data) {
+    checkbox.on('checked-changed', function(e, data) {
         if (data.checked) {
             checkedCount += 1;
         } else {
@@ -260,19 +254,10 @@ function addItem(card, i) {
 }
 loadHistory();
 
-setInterval(function () {
+setInterval(function() {
     if ($(window).width() < 1024) {
-        $('.center').css({
-            width: 'calc(100% - 64px)',
-            marginLeft: 32,
-            marginRight: 32
-        });
-        $('.content').css({
-            width: 'calc(100% - 48px)',
-            marginLeft: 24,
-            marginRight: 24,
-            marginBottom: 24
-        });
+        $('.center').css({width: 'calc(100% - 64px)', marginLeft: 32, marginRight: 32});
+        $('.content').css({width: 'calc(100% - 48px)', marginLeft: 24, marginRight: 24, marginBottom: 24});
     } else {
         $('.center').css({
             width: '85%',
@@ -280,10 +265,6 @@ setInterval(function () {
             marginLeft: 'auto',
             marginRight: 'auto'
         });
-        $('.content').css({
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginBottom: 24
-        });
+        $('.content').css({marginLeft: 'auto', marginRight: 'auto', marginBottom: 24});
     }
 }, 1);

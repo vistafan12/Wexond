@@ -12,7 +12,9 @@ export default class Extension extends React.Component {
     }
     componentDidMount() {
         this.data = this.props.object;
-        this.setState({backgroundImage: 'url(' + this.data.icon + ')'});
+        this.setState({
+            backgroundImage: 'url(' + this.data.icon + ')'
+        });
     }
     /*
     events
@@ -23,9 +25,9 @@ export default class Extension extends React.Component {
 
     render() {
         return (
-            <div onMouseDown={(e)=> this.onClick(e, this)} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
-
-            </div>
+            <div onMouseDown={(e) => this.onClick(e, this)} className="ripple-icon extension" style={{
+                backgroundImage: this.state.backgroundImage
+            }}></div>
         );
     }
 }

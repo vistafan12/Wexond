@@ -1,6 +1,6 @@
 var Ripple = class Ripple {
     static makeRipple(element, xpos, ypos, scale, time, scaleY = null) {
-        if (scaleY == null){
+        if (scaleY == null) {
             scaleY = scale
         }
         var xPos = xpos,
@@ -11,7 +11,10 @@ var Ripple = class Ripple {
         var rippleElement = document.createElement("span");
         rippleElement.className = 'ripple-effect';
         element.appendChild(rippleElement);
-        rippleElement.css({left: xPos + 'px', top: yPos + 'px'});
+        rippleElement.css({
+            left: xPos + 'px',
+            top: yPos + 'px'
+        });
 
         TweenMax.to(rippleElement, time, {
             width: animateSize,
@@ -24,8 +27,8 @@ var Ripple = class Ripple {
                     onComplete: function() {
                         if (rippleElement.parentNode != null)
                             rippleElement.parentNode.removeChild(rippleElement);
-                    }
-                });
+                        }
+                    });
             }, 50);
         }
         element.addEventListener('mouseout', removeRipple);

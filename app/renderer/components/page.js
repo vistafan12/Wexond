@@ -97,7 +97,7 @@ export default class Page extends React.Component {
     * open new tab with url
     */
     openNewTab(u, select) {
-      this.props.getApp().addPage({url: u, select: select});
+        this.props.getApp().addPage({url: u, select: select});
     }
     /*
     * appends and prepares context menu items

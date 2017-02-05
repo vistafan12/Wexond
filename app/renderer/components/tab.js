@@ -48,7 +48,11 @@ export default class Tab extends React.Component {
         } else {
             tabbar._deselectTab(this);
         }
-        TweenMax.set(t.tab, {css:{left: tabbar.getPositions()[tabs.indexOf(t)]}});
+        TweenMax.set(t.tab, {
+            css: {
+                left: tabbar.getPositions()[tabs.indexOf(t)]
+            }
+        });
         tabbar.calcWidths(true);
         tabbar.calcPositions(true, true);
 
@@ -58,10 +62,14 @@ export default class Tab extends React.Component {
             } else {
                 t.tab.css({width: 0});
             }
-            TweenMax.to(t.tab, tabsAnimationDuration, {width: width, ease: Circ.easeOut, onComplete: function() {
-                tabbar.calcWidths(true);
-                tabbar.calcPositions(true, true);
-            }});
+            TweenMax.to(t.tab, tabsAnimationDuration, {
+                width: width,
+                ease: Circ.easeOut,
+                onComplete: function() {
+                    tabbar.calcWidths(true);
+                    tabbar.calcPositions(true, true);
+                }
+            });
         });
 
         var extensions = this.getPage().getExtensions();
@@ -107,23 +115,41 @@ export default class Tab extends React.Component {
     }
     onMouseEnter(self) {
         if (!self.isSelected()) {
-            TweenMax.to(self.tab, 0.5, {backgroundColor: `rgba(255,255,255,${tabsHoverTransparency})`, ease: tabsAnimationEasing});
-            TweenMax.to(self.closeBtn, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
+            TweenMax.to(self.tab, 0.5, {
+                backgroundColor: `rgba(255,255,255,${tabsHoverTransparency})`,
+                ease: tabsAnimationEasing
+            });
+            TweenMax.to(self.closeBtn, 0.2, {
+                opacity: 0.6,
+                ease: tabsAnimationEasing
+            });
             self.tabTitle.css('max-width', 'calc(100% - 64px)');
         }
     }
     onMouseLeave(self) {
         if (!self.isSelected()) {
-            TweenMax.to(self.tab, 0.5, {backgroundColor: 'rgba(255,255,255,0)', ease: tabsAnimationEasing});
-            TweenMax.to(self.closeBtn, 0.2, {opacity: 0, ease: tabsAnimationEasing});
+            TweenMax.to(self.tab, 0.5, {
+                backgroundColor: 'rgba(255,255,255,0)',
+                ease: tabsAnimationEasing
+            });
+            TweenMax.to(self.closeBtn, 0.2, {
+                opacity: 0,
+                ease: tabsAnimationEasing
+            });
             self.tabTitle.css('max-width', 'calc(100% - 48px)');
         }
     }
     onMouseLeaveCloseBtn(e) {
-        TweenMax.to(e.target, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
+        TweenMax.to(e.target, 0.2, {
+            opacity: 0.6,
+            ease: tabsAnimationEasing
+        });
     }
     onMouseEnterCloseBtn(e) {
-        TweenMax.to(e.target, 0.2, {opacity: 1, ease: tabsAnimationEasing});
+        TweenMax.to(e.target, 0.2, {
+            opacity: 1,
+            ease: tabsAnimationEasing
+        });
     }
     closeBtnClick(self, e) {
         e.stopPropagation();
@@ -213,12 +239,24 @@ export default class Tab extends React.Component {
     render() {
         if (this.state.render) {
             return (
-                <div ref={(tab) => { this.tab = tab; }} onMouseDown={()=>this.onMouseDown(this)} onMouseEnter={()=>this.onMouseEnter(this)} onMouseLeave={()=>this.onMouseLeave(this)} style={{width: 100}} className="tab draggable">
-                    <div className="border-horizontal" style={{left: 0}}></div>
+                <div ref={(tab) => {
+                    this.tab = tab;
+                }} onMouseDown={() => this.onMouseDown(this)} onMouseEnter={() => this.onMouseEnter(this)} onMouseLeave={() => this.onMouseLeave(this)} style={{
+                    width: 100
+                }} className="tab draggable">
+                    <div className="border-horizontal" style={{
+                        left: 0
+                    }}></div>
                     <div className="content">
-                        <div ref={(fav) => { this.favicon = fav; }} className="favicon"></div>
-                        <div className="tabTitle" ref={(title) => { this.tabTitle = title; }}>{this.state.title}</div>
-                        <div className="closeBtn" ref={(btn) => { this.closeBtn = btn; }} onMouseEnter={this.onMouseEnterCloseBtn} onMouseLeave={this.onMouseLeaveCloseBtn} onClick={(e) => this.closeBtnClick(this, e)}></div>
+                        <div ref={(fav) => {
+                            this.favicon = fav;
+                        }} className="favicon"></div>
+                        <div className="tabTitle" ref={(title) => {
+                            this.tabTitle = title;
+                        }}>{this.state.title}</div>
+                        <div className="closeBtn" ref={(btn) => {
+                            this.closeBtn = btn;
+                        }} onMouseEnter={this.onMouseEnterCloseBtn} onMouseLeave={this.onMouseLeaveCloseBtn} onClick={(e) => this.closeBtnClick(this, e)}></div>
                     </div>
                 </div>
             );

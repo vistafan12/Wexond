@@ -24,8 +24,33 @@ export default class App extends React.Component {
     lifecycle
     */
     componentDidMount() {
+        var _args = remote.getGlobal('start').args;
+        _args.push('C:/Users/Mikolaj/Desktop/test.html');
+        for (var i = 0; i < _args.length; i++) {
+            _args[i] = _args[i].replace(/\\/g, "/");
+            try {
+                var isdir = fs.lstatSync(_args[i]).isFile();
+                if (isdir) {
+                    //get file type
+                    var _type = _args[i].split('.').pop();
+                    if (_type != "exe") {
+                        if (_args[i] != "build/main.bundle.js") {
+                            if (_args[i] != null || _args[i] != undefined) {
+                                remote.getGlobal('start').file = _args[i];
+                                console.log(_args[i]);
+                            }
+                        }
+                    }
+                }
+            } catch (err) {}
+        }
+        console.log("     " + remote.getGlobal('start').args);
         var t = this;
-        this.addPage();
+        var _url = this.defaultURL;
+        if (remote.getGlobal('start').file != false) {
+            _url = "file:///" + remote.getGlobal('start').file;
+        }
+        this.addPage({url: _url, select: true});
         globalShortcut.register('CmdOrCtrl+T', () => {
             if (remote.getCurrentWindow().isFocused())
                 t.addPage();

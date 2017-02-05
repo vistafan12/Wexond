@@ -92,9 +92,12 @@ export default class TabBar extends React.Component {
             tab.tab.style.zIndex = 9999;
             tab.getPage().refs.page.css({position: 'relative', opacity: 1, marginLeft: 0, height: '100%'});
             tab.setForeground(Colors.getForegroundColor(tab.background), false);
-            TweenMax.set(tab.tab, {backgroundColor: tab.background, 'color': tab.foreground});
+            TweenMax.set(tab.tab, {
+                backgroundColor: tab.background,
+                'color': tab.foreground
+            });
             tab.selected = true;
-            tab.closeBtn.css('opacity' , 0.6);
+            tab.closeBtn.css('opacity', 0.6);
             tab.tabTitle.css('max-width', 'calc(100% - 64px)');
         }
     }
@@ -106,12 +109,9 @@ export default class TabBar extends React.Component {
         if (tab != null && tab.getPage() != null) {
             tab.tab.style.zIndex = 1;
             tab.getPage().refs.page.css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999});
-            tab.tab.css({
-                backgroundColor: 'transparent',
-                color: this.props.getApp().refs.titlebar.foreground
-            });
+            tab.tab.css({backgroundColor: 'transparent', color: this.props.getApp().refs.titlebar.foreground});
             tab.selected = false;
-            tab.closeBtn.css('opacity' , 0);
+            tab.closeBtn.css('opacity', 0);
             tab.tabTitle.css('max-width', 'calc(100% - 48px)');
         }
     }
@@ -180,12 +180,16 @@ export default class TabBar extends React.Component {
                     t.calcWidths(true);
                     t.calcPositions(true, true);
                 } else {
-                    TweenMax.to(tab.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
-                        newState.render = false;
-                        tab.setState(newState);
-                        t.calcWidths(true);
-                        t.calcPositions(true, true);
-                    }});
+                    TweenMax.to(tab.tab, tabsAnimationDuration, {
+                        width: 0,
+                        ease: tabsAnimationEasing,
+                        onComplete: function() {
+                            newState.render = false;
+                            tab.setState(newState);
+                            t.calcWidths(true);
+                            t.calcPositions(true, true);
+                        }
+                    });
                     tab.getPage().removePage();
                     t.calcWidths(true);
                     t.calcPositions(true, true);
@@ -193,10 +197,14 @@ export default class TabBar extends React.Component {
             }
         } else {
             t.calcPositions(true, true);
-            TweenMax.to(tab.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
-                newState.render = false;
-                tab.setState(newState);
-            }});
+            TweenMax.to(tab.tab, tabsAnimationDuration, {
+                width: 0,
+                ease: tabsAnimationEasing,
+                onComplete: function() {
+                    newState.render = false;
+                    tab.setState(newState);
+                }
+            });
             tab.getPage().removePage();
             t.timer = 0;
         }
@@ -245,7 +253,10 @@ export default class TabBar extends React.Component {
                 tabWidthTemp = this.maxTabWidth;
             }
             if (animation)
-                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {width: tabWidthTemp, ease: tabsAnimationEasing});
+                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {
+                    width: tabWidthTemp,
+                    ease: tabsAnimationEasing
+                });
             else
                 tabs[i].tab.style.width = tabWidthTemp + 'px';
 
@@ -308,14 +319,24 @@ export default class TabBar extends React.Component {
         for (var i = 0; i < tabs.length; i++) {
             tabs[i].locked = false;
             if (animateTabs) {
-                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {css:{left: lefts[i]}, ease: tabsAnimationEasing});
+                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {
+                    css: {
+                        left: lefts[i]
+                    },
+                    ease: tabsAnimationEasing
+                });
             } else {
                 tabs[i].tab.style.left = lefts[i] + 'px';
             }
             tabCountTemp += 1;
         }
         if (animateAddButton) {
-            TweenMax.to(addbtn, tabsAnimationDuration, {css:{left: a}, ease: tabsAnimationEasing});
+            TweenMax.to(addbtn, tabsAnimationDuration, {
+                css: {
+                    left: a
+                },
+                ease: tabsAnimationEasing
+            });
         } else {
             addbtn.style.left = a + 'px';
         }
@@ -344,9 +365,15 @@ export default class TabBar extends React.Component {
             a += tabs[i].tab.offsetWidth;
         }
 
-        TweenMax.to(callingTab.tab, tabsAnimationDuration + 0.05, {css:{left: a}, ease: tabsAnimationEasing, onComplete: function() {
-            callingTab.locked = false;
-        }});
+        TweenMax.to(callingTab.tab, tabsAnimationDuration + 0.05, {
+            css: {
+                left: a
+            },
+            ease: tabsAnimationEasing,
+            onComplete: function() {
+                callingTab.locked = false;
+            }
+        });
     }
     /*
     * returns this
@@ -366,7 +393,10 @@ export default class TabBar extends React.Component {
 }
                     <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
                         <div className="addbtn-icon"></div>
-                        <div className="border-horizontal" style={{left: 0, opacity: 0.2}}></div>
+                        <div className="border-horizontal" style={{
+                            left: 0,
+                            opacity: 0.2
+                        }}></div>
                     </div>
 
                 </div>

@@ -45,56 +45,49 @@ function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 function mousePositionElement(e) {
-	var mousePosDoc = mousePositionDocument(e);
-	var target = mouseTarget(e);
-	var targetPos = findPos(target);
-	var posx = mousePosDoc.x - targetPos.left;
-	var posy = mousePosDoc.y - targetPos.top;
-	return {
-		x : posx,
-		y : posy
-	};
+    var mousePosDoc = mousePositionDocument(e);
+    var target = mouseTarget(e);
+    var targetPos = findPos(target);
+    var posx = mousePosDoc.x - targetPos.left;
+    var posy = mousePosDoc.y - targetPos.top;
+    return {x: posx, y: posy};
 }
 function mouseTarget(e) {
-	var targ;
-	if (!e) var e = window.event;
-	if (e.target) targ = e.target;
-	else if (e.srcElement) targ = e.srcElement;
-	if (targ.nodeType == 3)
-		targ = targ.parentNode;
-	return targ;
+    var targ;
+    if (!e)
+        var e = window.event;
+    if (e.target)
+        targ = e.target;
+    else if (e.srcElement)
+        targ = e.srcElement;
+    if (targ.nodeType == 3)
+        targ = targ.parentNode;
+    return targ;
 }
 function findPos(obj) {
-	var curleft = curtop = 0;
-	if (obj.offsetParent) {
-		do {
-			curleft += obj.offsetLeft;
-			curtop += obj.offsetTop;
-		} while (obj = obj.offsetParent);
-	}
-	return {
-		left : curleft,
-		top : curtop
-	};
+    var curleft = curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    }
+    return {left: curleft, top: curtop};
 }
 function mousePositionDocument(e) {
-	var posx = 0;
-	var posy = 0;
-	if (!e) {
-		var e = window.event;
-	}
-	if (e.pageX || e.pageY) {
-		posx = e.pageX;
-		posy = e.pageY;
-	}
-	else if (e.clientX || e.clientY) {
-		posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-	}
-	return {
-		x : posx,
-		y : posy
-	};
+    var posx = 0;
+    var posy = 0;
+    if (!e) {
+        var e = window.event;
+    }
+    if (e.pageX || e.pageY) {
+        posx = e.pageX;
+        posy = e.pageY;
+    } else if (e.clientX || e.clientY) {
+        posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+        posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+    return {x: posx, y: posy};
 }
 function shadeColor(hex, lum) {
     hex = String(hex).replace(/[^0-9a-f]/gi, '');
@@ -183,10 +176,8 @@ function requestUrl(url, callback = null) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, true);
     xmlHttp.send(null);
-    xmlHttp.onreadystatechange = function()
-    {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        {
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             if (callback != null) {
                 callback(xmlHttp.responseText);
             }
@@ -194,22 +185,20 @@ function requestUrl(url, callback = null) {
     };
 }
 
-Element.prototype.addClass = function (cls) {
+Element.prototype.addClass = function(cls) {
     this.classList.add(cls);
 }
-Element.prototype.removeClass = function (cls) {
+Element.prototype.removeClass = function(cls) {
     this.classList.remove(cls);
 }
 
-
-Element.prototype.css = function (data, value = null) {
+Element.prototype.css = function(data, value = null) {
     if (typeof(data) === 'object') {
         Object.assign(this.style, data);
     } else {
         if (value != null) {
             this.style[data] = value;
-        }
-        else {
+        } else {
             return this.style[data];
         }
     }
@@ -238,6 +227,6 @@ Element.prototype.next = function() {
 Element.prototype.prev = function() {
     var nodes = Array.prototype.slice.call(this.parentNode.children),
         index = nodes.indexOf(this);
-        prevElement = nodes[index - 1];
+    prevElement = nodes[index - 1];
     return prevElement;
 }

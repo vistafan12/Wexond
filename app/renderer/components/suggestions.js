@@ -40,7 +40,12 @@ export default class Suggestions extends React.Component {
         this.refs.suggestionsWindow.css('display', 'block');
         this.props.getPage().refs.bar.openedMenu = true;
         this.props.getPage().refs.bar.refs.bar.css('display', 'block');
-        TweenMax.to(this.props.getPage().refs.bar.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+        TweenMax.to(this.props.getPage().refs.bar.refs.bar, 0.2, {
+            css: {
+                top: 8,
+                opacity: 1
+            }
+        });
     }
     /*
     events
@@ -127,7 +132,8 @@ export default class Suggestions extends React.Component {
                     }
                     if (items1[0] != null)
                         items1[0].addClass('selected');
-                });
+                    }
+                );
 
                 function getHistoryData(callback = null) {
                     requestUrl(historyPath, function(data) {
@@ -170,9 +176,8 @@ export default class Suggestions extends React.Component {
                                 var newLink = oldLink;
                                 //get important part of link ex. wexond.tk for better suggestions
                                 if (!newLink.startsWith("wexond:")) {
-                                    if (newLink.substring(newLink.length-1) == "/")
-                                    {
-                                        newLink = newLink.substring(0, newLink.length-1);
+                                    if (newLink.substring(newLink.length - 1) == "/") {
+                                        newLink = newLink.substring(0, newLink.length - 1);
                                     }
                                     var compareOldLink = oldLink.split("&mdash")[0].replace("/", "");
                                     var compareNewLink = newLink.split("&mdash")[0].replace("/", "");
