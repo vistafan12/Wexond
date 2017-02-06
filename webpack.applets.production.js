@@ -4,7 +4,8 @@ const webpack = require('webpack');
 module.exports = {
     devtool: "eval-source-map",
     entry: {
-        history: './app/renderer/components/history/history.js'
+        history: './app/renderer/components/history/history.js',
+        newtab: './app/renderer/components/newtab/newtab.js'
     },
     node: {
         __dirname: false,
