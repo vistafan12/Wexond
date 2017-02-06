@@ -4,10 +4,19 @@ var historyPath = app.getPath('userData') + '/userdata/history.json',
     userdataPath = app.getPath('userData') + '/userdata',
     remote = require('electron').remote,
     fs = require('fs'),
-    os = require('os');
+    os = require('os'),
+    env = "dev";
 
 global.getHistoryData = function() {
     return JSON.parse(fs.readFileSync(historyPath));
+}
+
+ipcRenderer.on('env', function (e, data) {
+    env = data;
+});
+
+global.getEnv = function() {
+    return env;
 }
 
 global.saveHistory = function(json) {

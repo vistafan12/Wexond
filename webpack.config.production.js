@@ -44,6 +44,9 @@ module.exports = {
 
     plugins: [
         /* TODO: UglifyJs is not working with Babel 6 new webpack.optimize.UglifyJsPlugin() */
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify('production')
+        })
     ],
 
     resolve: {

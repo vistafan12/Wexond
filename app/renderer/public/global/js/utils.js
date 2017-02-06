@@ -161,22 +161,12 @@ function hexToRgb(hex) {
         }
         : null;
 }
-function loadScripts(array) {
-    var loader = function(src, handler) {
-        var script = document.createElement("script");
-        script.src = src;
-        script.onload = script.onreadystatechange = function() {
-            script.onreadystatechange = script.onload = null;
-            handler();
-        }
-        var head = document.getElementsByTagName("head")[0];
-        (head || document.body).appendChild(script);
-    };
-    (function run() {
-        if (array.length != 0) {
-            loader(array.shift(), run);
-        }
-    })();
+function loadScripts(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        var script = document.createElement('script');
+        script.src = arr[i];
+        document.body.appendChild(script);
+    }
 }
 
 function requestUrl(url, callback = null) {

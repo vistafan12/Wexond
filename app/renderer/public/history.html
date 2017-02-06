@@ -28,8 +28,20 @@
     <div id="app">
     </div>
     <!-- TODO: scripts -->
-
-    <script src="history/build/history.bundle.js"></script>
+    <script>
+    function loadScripts(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            var script = document.createElement('script');
+            script.src = arr[i];
+            document.body.appendChild(script);
+        }
+    }
+    if (getEnv() == 'dev') {
+        loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+    } else {
+        loadScripts(['build/history.bundle.js']);
+    }
+    </script>
 </body>
 
 </html>

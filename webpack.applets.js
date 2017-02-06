@@ -12,8 +12,20 @@ module.exports = {
     },
 
     output: {
-        path: path.join(__dirname, 'app/renderer/public/history/build'),
+        path: path.join(__dirname, 'build'),
         filename: '[name].bundle.js'
+    },
+
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify('dev')
+        })
+    ],
+
+    devServer: {
+        contentBase: './',
+        publicPath: 'http://localhost:8181/build/'
     },
 
     module: {
