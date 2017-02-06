@@ -19,7 +19,7 @@ export default class App extends React.Component {
             tabsToCreate: []
         };
         //properties
-        this.defaultURL = 'wexond://newtab';
+        this.defaultURL = 'wexond://newtab/';
     }
     /*
     lifecycle
