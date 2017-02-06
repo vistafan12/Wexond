@@ -35,9 +35,6 @@ html, body {
     background-attachment: fixed;
     background-size: cover;
     background-image: url('../img/dark.jpg');
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/dark.jpg', sizingMethod='scale');*/
-    /*filter: blur(10px);
-     filter: progid: DXImageTransform.Microsoft.Blur(PixelRadius='10');*/
 }
 
 .bookmarks {
