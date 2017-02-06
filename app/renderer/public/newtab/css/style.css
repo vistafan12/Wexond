@@ -19,8 +19,7 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
     font-family: 'Roboto';
-    background-color: #fff;
-    /*#FAFAFA;*/
+    background-color: #FAFAFA;
     color: #444;
 }
 
@@ -34,7 +33,6 @@ html, body {
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-    background-image: url('../img/dark.jpg');
 }
 
 .bookmarks {
