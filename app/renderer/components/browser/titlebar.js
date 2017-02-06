@@ -75,11 +75,11 @@ export default class Titlebar extends React.Component {
             }
         this.refs.tabbar.refs.tabbar.css('color', color);
 
-        var bottomBorders = document.getElementsByClassName('border-bottom'),
-            horizontalBorders = document.getElementsByClassName('border-horizontal'),
-            closeBtns = document.getElementsByClassName('closeBtn'),
-            addBtns = document.getElementsByClassName('addBtn'),
-            controls = document.getElementsByClassName('control');
+        var bottomBorders = this.refs.tabbar.refs.tabbar.getElementsByClassName('border-bottom'),
+            horizontalBorders = this.refs.tabbar.refs.tabbar.getElementsByClassName('border-horizontal'),
+            closeBtns = this.refs.tabbar.refs.tabbar.getElementsByClassName('closeBtn'),
+            addBtns = this.refs.tabbar.refs.tabbar.getElementsByClassName('addBtn'),
+            controls = this.refs.titlebar.getElementsByClassName('control');
 
         for (var i = 0; i < horizontalBorders.length; i++) {
             var node = horizontalBorders[i];

@@ -106,6 +106,8 @@ export default class Bar extends React.Component {
                 <div className="bar-icon back ripple-bar-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
                 <div className="bar-icon forward ripple-bar-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
                 <div className="bar-icon refresh ripple-bar-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
+                <div className="border-horizontal" style={{backgroundColor: '#212121', position:'relative', float: 'left', marginLeft: 12, height: 'calc(100% - 24px)'}}></div>
+                <div className="search-icon" style={{marginLeft: 12}}></div>
                 <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 <div className="bar-icon menu-icon ripple-bar-icon" onMouseDown={this.ripple} onClick={(e) => {
                     e.stopPropagation();

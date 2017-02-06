@@ -22,13 +22,14 @@
     border: none;
     font-size: 14px;
     top: 50%;
-    margin-left: 20px;
+    margin-left: 8px;
     width: calc(100% - 175px);
     transform: translateY(-50%);
     position: absolute;
     background-color: transparent;
     overflow: hidden;
 }
+
 
 .bar-icon {
     width: 26px;
@@ -56,6 +57,19 @@
 
 .refresh {
     background-image: url(../img/bar/refresh.png);
+}
+.search-icon {
+    float: left;
+    position: relative;
+    background-size: 18px 18px;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+    width: 18px;
+    height: 18px;
+    background-image: url(../../history/img/search.png);
 }
 
 .menu-icon {
