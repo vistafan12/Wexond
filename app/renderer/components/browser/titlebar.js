@@ -75,11 +75,11 @@ export default class Titlebar extends React.Component {
             }
         this.refs.tabbar.refs.tabbar.css('color', color);
 
-        var horizontalBorders = document.querySelectorAll('.border-horizontal'),
-            bottomBorders = document.querySelectorAll('.border-bottom'),
-            closeBtns = this.refs.tabbar.refs.tabbar.querySelectorAll('.closeBtn'),
-            addBtns = this.refs.tabbar.refs.tabbar.querySelectorAll('.addBtn'),
-            controls = this.refs.titlebar.querySelectorAll('.control');
+        var bottomBorders = document.getElementsByClassName('border-bottom'),
+            horizontalBorders = document.getElementsByClassName('border-horizontal'),
+            closeBtns = document.getElementsByClassName('closeBtn'),
+            addBtns = document.getElementsByClassName('addBtn'),
+            controls = document.getElementsByClassName('control');
 
         for (var i = 0; i < horizontalBorders.length; i++) {
             var node = horizontalBorders[i];
@@ -87,6 +87,9 @@ export default class Titlebar extends React.Component {
                 node.css('background-color', color);
             }
         }
+        if (color == 'white')
+            horizontalBorders[horizontalBorders.length - 1].css('background-color', 'black');
+
         for (var i = 0; i < bottomBorders.length; i++) {
             var node = bottomBorders[i];
             if (node) {

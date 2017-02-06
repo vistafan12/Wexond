@@ -1,6 +1,7 @@
 'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Toolbar from '../materialdesign/toolbar.js';
 
 export default class History extends React.Component {
     constructor() {
@@ -8,7 +9,7 @@ export default class History extends React.Component {
     }
     render() {
         return (
-            <div>hello world</div>
+            <Toolbar></Toolbar>
         );
     }
 }

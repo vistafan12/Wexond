@@ -69,7 +69,8 @@
 .border-horizontal {
     position: absolute;
     width: 1px;
-    height: 100%;
+    top: 8px;
+    height: calc(100% - 16px);
     background-color: #fff;
     opacity: 0.15;
 }
