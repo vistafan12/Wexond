@@ -8,7 +8,7 @@ export default class History extends React.Component {
     }
     render() {
         return (
-            <div>hello worlds</div>
+            <div>hello world</div>
         );
     }
 }

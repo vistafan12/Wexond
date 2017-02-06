@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "electron build/main.bundle.js",
+    "start": "cross-env ENV=dev electron build/main.bundle.js",
     "applets": "webpack --config webpack.applets.js && webpack-dev-server --hot --inline --config webpack.applets.js --port 8181",
     "browser": "webpack && webpack-dev-server --hot --inline --port 8080",
     "all": "webpack --config webpack.config.production.js -p && electron-packager . --all Wexond --overwrite",
@@ -27,6 +27,7 @@
     "asar": "latest",
     "babel-core": "latest",
     "babel-loader": "latest",
+    "cross-env": "^3.1.4",
     "css-loader": "latest",
     "electron-packager": "latest",
     "json-loader": "latest",

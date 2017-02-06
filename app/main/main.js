@@ -36,7 +36,7 @@ function createWindow() {
     });
     mainWindow.on('unresponsive', function () {});
 
-    if (process.env.NODE_ENV == 'dev') {
+    if (process.env.ENV == 'dev') {
         mainWindow.webContents.openDevTools();
     }
 }

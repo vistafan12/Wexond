@@ -36,11 +36,17 @@
             document.body.appendChild(script);
         }
     }
-    if (getEnv() == 'dev') {
-        loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
-    } else {
-        loadScripts(['build/history.bundle.js']);
-    }
+    var id = setInterval(function() {
+        var env = getEnv();
+        if (env != "s") {
+            if (env == 'dev') {
+                loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+            } else {
+                loadScripts(['build/history.bundle.js']);
+            }
+            clearInterval(id);
+        }
+    }, 1);
     </script>
 </body>
 

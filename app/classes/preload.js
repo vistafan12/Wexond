@@ -5,7 +5,7 @@ var historyPath = app.getPath('userData') + '/userdata/history.json',
     remote = require('electron').remote,
     fs = require('fs'),
     os = require('os'),
-    env = "dev";
+    env = "s";
 
 global.getHistoryData = function() {
     return JSON.parse(fs.readFileSync(historyPath));
