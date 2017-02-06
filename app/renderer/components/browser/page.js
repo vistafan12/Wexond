@@ -306,29 +306,9 @@ export default class Page extends React.Component {
         this.getTab().foreground = color;
         var barIcons = this.refs.bar.refs.bar.getElementsByClassName('bar-icon');
         if (color == 'white') {
-            //this.refs.bar.refs.searchBox.css({backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', boxShadow: null});
-            /*for (var i = 0; i < barIcons.length; i++) {
-                var node = barIcons[i];
-                if (node) {
-                    node.addClass('white-icon');
-                }
-            }*/
             tabsHoverTransparency = 0.1;
-            //this.refs.bar.refs.searchInput.css({color: '#fff'});
         } else if (color == 'black' || color == 'semiblack') {
-            //this.refs.bar.refs.searchBox.css({backgroundColor: 'white', color: '#212121', boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'});
-            /*for (var i = 0; i < barIcons.length; i++) {
-                var node = barIcons[i];
-                if (node) {
-                    node.removeClass('white-icon');
-                }
-            }*/
-            //this.refs.bar.refs.searchInput.css({color: '#212121'});
             tabsHoverTransparency = 0.4;
-        }
-        if (color == 'semiblack') {
-            //this.refs.bar.refs.searchBox.css({backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', boxShadow: null});
-            //this.refs.bar.refs.searchInput.css({color: '#212121'});
         }
 
     }
