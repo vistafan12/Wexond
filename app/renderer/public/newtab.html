@@ -37,7 +37,17 @@
             document.body.appendChild(script);
         }
     }
-    loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+    var id = setInterval(function() {
+        var env = getEnv();
+        if (env != "s") {
+            if (env == 'dev') {
+                loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+            } else {
+                loadScripts(['build/newtab.bundle.js']);
+            }
+            clearInterval(id);
+        }
+    }, 1);
     </script>
 </body>
 
