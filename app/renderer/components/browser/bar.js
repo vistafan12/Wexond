@@ -10,6 +10,7 @@ export default class Bar extends React.Component {
         this.refresh = this.refresh.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
+        this.ripple = this.ripple.bind(this);
     }
     /*
     lifecycle
@@ -98,6 +99,11 @@ export default class Bar extends React.Component {
     refresh() {
         this.props.getPage().loadExtensions();
         this.props.getPage().getWebView().reload();
+    }
+    ripple(e) {
+        var ripple = Ripple.createRipple(e.target, {
+        }, createRippleCenter(e.target, 13));
+        Ripple.makeRipple(ripple);
     }
 
     render() {

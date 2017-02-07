@@ -23,20 +23,6 @@ function autocomplete(input, text) {
         }
     }
 
-function makeRippleFromMouse(item, e) {
-    var pos = mousePositionElement(e);
-    var relX = pos.x;
-    var relY = pos.y;
-    Ripple.makeRipple(item, relX, relY, item.clientWidth, rippleTime, item.clientHeight);
-}
-
-function makeRippleBarButton(item) {
-    Ripple.makeRipple(item, item.offsetWidth / 2, item.offsetHeight / 2, 12, iconRippleTime);
-}
-
-function makeRippleFromCenter(item, scale = 12, time = 0.25) {
-    Ripple.makeRipple(item, (item.clientWidth / 2), (item.clientHeight / 2), scale, time);
-}
 function isInArray(value, array) {
     return array.indexOf(value) > -1;
 }

@@ -17,13 +17,15 @@ export default class Extension extends React.Component {
     /*
     events
     */
-    onClick(e, self) {
-        makeRippleFromCenter(e.target, 14);
+    onMouseDown(e, self) {
+        var ripple = Ripple.createRipple(e.target, {
+        }, createRippleCenter(e.target));
+        Ripple.makeRipple(ripple);
     }
 
     render() {
         return (
-            <div onMouseDown={(e)=> this.onClick(e, this)} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
+            <div onMouseDown={(e)=> this.onMouseDown(e, this)} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
 
             </div>
         );
