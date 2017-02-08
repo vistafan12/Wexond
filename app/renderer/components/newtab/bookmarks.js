@@ -10,9 +10,9 @@ export default class Bookmarks extends React.Component {
         this.getContainerWidth = this.getContainerWidth.bind(this);
         //global properties
         this.state = {
-            marginLeft: 8,
+            marginLeft: 32,
             itemWidth: 172,
-            contwidth: 472
+            contWidth: 472
         };
         this.bookmarks = [];
 
@@ -28,29 +28,32 @@ export default class Bookmarks extends React.Component {
     }
     resize() {
         var p = true;
-        var count = 5;
+        var count = 4;
 
-        /*while(p) {
+        while(p) {
             var w = this.getContainerWidth(count, this.state.marginLeft, this.state.itemWidth);
-            if (w > this.state.contWidth) {
+            if (window.innerWidth < w) {
                 count--;
             } else {
                 this.setState({contWidth: w});
-                p = true;
+                p = false;
             }
             if (count < 1) {
-                p = true;
+                p = false;
                 console.log("error");
             }
         }
-        //console.log(window.innerWidth);*/
+
+        /*for(var i = 5; i > 0; i--) {
+            console.log(this.getContainerWidth(i, this.state.marginLeft, this.state.itemWidth));
+        }*/
     }
     getContainerWidth(count, mleft, width) {
         return count * mleft + count * width;
     }
     render() {
         return (
-            <div className="bookmarks" style={{width: this.state.contwidth}}>
+            <div className="bookmarks" style={{width: this.state.contWidth}}>
                 {this.props.children.map((child, index) =>
                   React.cloneElement(child, {ref: (ref) => { this.bookmarks[index] = ref }})
                 )}
