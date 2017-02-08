@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "cross-env ENV=dev electron build/main.bundle.js",
+    "start": "cross-env NODE_ENV=dev electron build/main.bundle.js",
     "applets": "webpack --config webpack.applets.js && webpack-dev-server --hot --inline --config webpack.applets.js --port 8181",
     "browser": "webpack && webpack-dev-server --hot --inline --port 8080",
     "build-package":"webpack --config webpack.config.production.js -p && webpack --config webpack.applets.production.js -p",

@@ -194,7 +194,7 @@ export default class Page extends React.Component {
 
         webview.getWebContents().removeListener('context-menu', this.onContextMenu);
         webview.getWebContents().on('context-menu', this.onContextMenu, false);
-        webview.getWebContents().send('env', process.env.ENV);
+        webview.getWebContents().send('env', process.env.NODE_ENV);
 
     }
     onContextMenu(e, params) {
