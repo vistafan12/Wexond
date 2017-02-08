@@ -30,24 +30,25 @@
     </div>
     <!-- TODO: scripts -->
     <script>
-    function loadScripts(arr) {
-        for (var i = 0; i < arr.length; i++) {
-            var script = document.createElement('script');
-            script.src = arr[i];
-            document.body.appendChild(script);
-        }
-    }
-    var id = setInterval(function() {
-        var env = getEnv();
-        if (env != "s") {
-            if (env == 'dev') {
-                loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
-            } else {
-                loadScripts(['build/newtab.bundle.js']);
+        function loadScripts(arr) {
+            for (var i = 0; i < arr.length; i++) {
+                var script = document.createElement('script');
+                script.src = arr[i];
+                document.body.appendChild(script);
             }
-            clearInterval(id);
         }
-    }, 1);
+        /*var id = setInterval(function() {
+            var env = getEnv();
+            if (env != "s") {
+                if (env == 'dev') {
+                    loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+                } else {
+                    loadScripts(['build/newtab.bundle.js']);
+                }
+                clearInterval(id);
+            }
+        }, 1);*/
+        loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
     </script>
 </body>
 
