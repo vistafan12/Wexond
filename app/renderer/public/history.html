@@ -39,7 +39,7 @@
     var id = setInterval(function() {
         var env = getEnv();
         if (env != "s") {
-            if (env == 'dev') {
+            if (env != 'production') {
                 loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
             } else {
                 loadScripts(['build/history.bundle.js']);

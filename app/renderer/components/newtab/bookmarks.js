@@ -5,31 +5,32 @@ import ReactDOM from 'react-dom';
 export default class Bookmarks extends React.Component {
     constructor() {
         super();
+        //binds
+        this.resize = this.resize.bind(this);
+        this.getContainerWidth = this.getContainerWidth.bind(this);
+        //global properties
         this.state = {
             marginLeft: 8,
             itemWidth: 172,
             contwidth: 472
         };
         this.bookmarks = [];
-        this.onResize = this.onResize.bind(this);
-        this.getContainerWidth = this.getContainerWidth.bind(this);
+
     }
     componentDidMount() {
-        this.onResize();
-        window.addEventListener('resize', function (e) {
-            this.onResize();
-        });
+        this.resize();
+        window.addEventListener('resize', this.resize);
 
-        for(var i = 0; i < this.bookmarks.length; i++) {
+        /*for(var i = 0; i < this.bookmarks.length; i++) {
             console.log(this.bookmarks[i].test());
-        }
+        }*/
 
     }
-    onResize(e) {
+    resize() {
         var p = true;
         var count = 5;
 
-        while(p) {
+        /*while(p) {
             var w = this.getContainerWidth(count, this.state.marginLeft, this.state.itemWidth);
             if (w > this.state.contWidth) {
                 count--;
@@ -42,7 +43,7 @@ export default class Bookmarks extends React.Component {
                 console.log("error");
             }
         }
-        //console.log(window.innerWidth);
+        //console.log(window.innerWidth);*/
     }
     getContainerWidth(count, mleft, width) {
         return count * mleft + count * width;

@@ -46,7 +46,7 @@
     <script src="materialdesign/js/ripple.js"></script>
     <iframe ref="iframe" id="extensions-iframe" srcdoc="<html><body><script src='global/js/utils.js'></script><script src='../../classes/api.js'></script></body></html>"></iframe>
     <script>
-        if (process.env.NODE_ENV == 'dev') {
+        if (process.env.NODE_ENV != 'production') {
             loadScripts(['http://localhost:8080/build/entry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
         } else {
             require('../../../build/entry.bundle.js');

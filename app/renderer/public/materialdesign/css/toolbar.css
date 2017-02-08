@@ -24,7 +24,7 @@
     margin-right: 16px;
 }
 
-.left-icon:nth-child(1) {
+.toolbar > .left-icon:nth-child(1) {
     margin-left: 16px;
 }
 

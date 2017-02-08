@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev electron build/main.bundle.js",
+    "start": "electron build/main.bundle.js",
     "applets": "webpack --config webpack.applets.js && webpack-dev-server --hot --inline --config webpack.applets.js --port 8181",
     "browser": "webpack && webpack-dev-server --hot --inline --port 8080",
     "build-package":"webpack --config webpack.config.production.js -p && webpack --config webpack.applets.production.js -p",
@@ -18,7 +18,7 @@
   "dependencies": {
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
-    "electron": "latest",
+    "electron": "^1.4.15",
     "gsap": "latest",
     "node-dir": "latest",
     "react": "latest",
@@ -28,7 +28,7 @@
     "asar": "latest",
     "babel-core": "latest",
     "babel-loader": "latest",
-    "cross-env": "^3.1.4",
+    "cross-env": "latest",
     "css-loader": "latest",
     "electron-packager": "latest",
     "json-loader": "latest",

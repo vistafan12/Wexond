@@ -37,18 +37,17 @@
                 document.body.appendChild(script);
             }
         }
-        /*var id = setInterval(function() {
+        var id = setInterval(function() {
             var env = getEnv();
             if (env != "s") {
-                if (env == 'dev') {
+                if (env != 'production') {
                     loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
                 } else {
                     loadScripts(['build/newtab.bundle.js']);
                 }
                 clearInterval(id);
             }
-        }, 1);*/
-        loadScripts(['http://localhost:8181/build/newtab.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
+        }, 1);
     </script>
 </body>
 

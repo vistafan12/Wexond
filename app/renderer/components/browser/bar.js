@@ -18,14 +18,6 @@ export default class Bar extends React.Component {
     componentDidMount() {
         var t = this,
             nodes = this.refs.bar.getElementsByClassName('bar-icon');
-        for(var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
-            if (node) {
-                node.addEventListener('mousedown', function() {
-                    makeRippleBarButton(this);
-                });
-            }
-        }
         document.body.addEventListener('mousemove', function(e) {
             if (e.pageY <= 32) {
                 t.show();

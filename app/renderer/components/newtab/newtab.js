@@ -7,8 +7,10 @@ import Item from './item.js';
 export default class Newtab extends React.Component {
     constructor() {
         super();
+        //binds
+        
+        //global properties
         this.state = {
-            text: "xd co",
             bookmarks: [{"name":"Facebook", "url":"https://facebook.com"},{"name":"Youtube", "url":"https://youtube.com"}]
         };
     }
@@ -16,7 +18,7 @@ export default class Newtab extends React.Component {
 
     }
     render() {
-        const listItems = this.state.bookmarks.map((number, index) => <Item key={index}></Item>);
+        const listItems = this.state.bookmarks.map((value, index) => <Item data={value} key={index}></Item>);
         return (
             <div>
                 <div className="bgizmage">
@@ -28,13 +30,6 @@ export default class Newtab extends React.Component {
         );
     }
 }
-/*
-<div className="bookmarks">
-    <a href="http://www.facebook.com" className="bookmark ripple" style={{backgroundColor: "#3b5998"}}>
-      <img className="icon noselectable" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"/>
-      <div className="title noselectable">Facebook</div>
-    </a>
-</div>*/
 
 ReactDOM.render(
     <Newtab/>, document.getElementById('app'));
