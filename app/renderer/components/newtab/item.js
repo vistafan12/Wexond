@@ -12,7 +12,7 @@ export default class Item extends React.Component {
         };
     }
     componentDidMount() {
-        console.log(this.props);
+
     }
     render() {
         return (

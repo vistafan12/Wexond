@@ -28,9 +28,9 @@ export default class Bookmarks extends React.Component {
     }
     resize() {
         var p = true;
-        var count = 4;
+        var count = this.props.maxInLine;
 
-        while(p) {
+        while (p) {
             var w = this.getContainerWidth(count, this.state.marginLeft, this.state.itemWidth);
             if (window.innerWidth < w) {
                 count--;
@@ -53,10 +53,16 @@ export default class Bookmarks extends React.Component {
     }
     render() {
         return (
-            <div className="bookmarks" style={{width: this.state.contWidth}}>
-                {this.props.children.map((child, index) =>
-                  React.cloneElement(child, {ref: (ref) => { this.bookmarks[index] = ref }})
-                )}
+            <div className="bookmarks" style={{
+                width: this.state.contWidth
+            }}>
+                {this.props.children.map((child, index) => React.cloneElement(child, {
+                    ref: (ref) => {
+                        if (child.type.name == "Item") {
+                            this.bookmarks[index] = ref;
+                        }
+                    }
+                }))}
             </div>
         );
     }

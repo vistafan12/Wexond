@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Bookmarks from './bookmarks.js';
 import Item from './item.js';
+import AddItem from './additem.js';
 
 export default class Newtab extends React.Component {
     constructor() {
@@ -65,13 +66,15 @@ export default class Newtab extends React.Component {
                 fontColor={this.state.bookmarks[index].fontColor}>
             </Item>
         );
+
         return (
             <div>
                 <div className="bgizmage">
-                    <Bookmarks ref="bookmarks">
+                    <Bookmarks maxInLine={4} ref="bookmarks">
                         {listItems}
                     </Bookmarks>
                 </div>
+                <AddItem></AddItem>
             </div>
         );
     }
