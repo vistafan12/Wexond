@@ -11,10 +11,14 @@ export default class Item extends React.Component {
         this.state = {
         };
     }
+    componentDidMount() {
+        console.log(this.props);
+    }
     render() {
         return (
-            <a href="http://www.facebook.com" className="item">
-                <div></div>
+            <a href={this.props.url} className="item" style={{backgroundColor: this.props.color, color: this.props.fontColor}}>
+                <img className="icon noselectable" src={this.props.icon} />
+                <div className="title noselectable">{this.props.name}</div>
             </a>
         );
     }
