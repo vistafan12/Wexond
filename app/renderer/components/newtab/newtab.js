@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom';
 import Cards from './cards.js';
 import Item from './item.js';
 import AddItem from './additem.js';
+import Dialog from './dialog.js';
 
 export default class Newtab extends React.Component {
     constructor() {
         super();
         //binds
-
+        this.getNewtab = this.getNewtab.bind(this);
         //global properties
         this.state = {
             cards: [
@@ -52,7 +53,10 @@ export default class Newtab extends React.Component {
         };
     }
     componentDidMount() {
-
+        console.log(this.refs);
+    }
+    getNewtab() {
+        return this;
     }
     render() {
         const listItems = this.state.cards.map((value, index) =>
@@ -70,12 +74,14 @@ export default class Newtab extends React.Component {
 
         return (
             <div>
-                <div className="bgizmage">
+                <div className="bgizmage" ref="bgizmage">
                     <Cards maxInLine={4} ref="cards">
                         {listItems}
                     </Cards>
                 </div>
-                <AddItem></AddItem>
+                <div className="dark" ref="dark"></div>
+                <AddItem ref="additem" getParent={this.getNewtab}></AddItem>
+                <Dialog ref="dialog" getParent={this.getNewtab}></Dialog>
             </div>
         );
     }

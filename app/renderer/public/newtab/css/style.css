@@ -36,32 +36,6 @@ html, body {
     background-size: cover;
 }
 
-.cards {
-    width: 472px;
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    /*top: 50%;
-    transform: translateY(-50%);*/
-    margin-top: 160px;
-}
-
-.cards .item {
-    width: 172px;
-    height: 96px;
-    position: relative;
-    float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 32px;
-    margin-bottom: 32px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    border-radius: 2px;
-}
-
 .additem {
     width: 64px;
     height: 64px;
@@ -90,23 +64,7 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 34px 34px;
-}
-
-.cards .item .icon {
-    width: 32px;
-    height: 32px;
-    margin-top: -12px;
-    position: absolute;
-    user-select: none;
-}
-
-.cards .item .title {
-    position: absolute;
-    color: #ffffff;
-    margin-top: 20px;
-    user-select: none;
-    text-align: center;
-    user-select: none;
+    transition: all 0.2s;
 }
 
 .clear {
