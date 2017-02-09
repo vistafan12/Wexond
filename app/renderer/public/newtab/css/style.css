@@ -36,7 +36,7 @@ html, body {
     background-size: cover;
 }
 
-.bookmarks {
+.cards {
     width: 472px;
     list-style: none;
     padding: 0;
@@ -48,7 +48,7 @@ html, body {
     margin-top: 160px;
 }
 
-.bookmarks .item {
+.cards .item {
     width: 172px;
     height: 96px;
     position: relative;
@@ -92,7 +92,7 @@ html, body {
     background-size: 34px 34px;
 }
 
-.bookmarks .item .icon {
+.cards .item .icon {
     width: 32px;
     height: 32px;
     margin-top: -12px;
@@ -100,7 +100,7 @@ html, body {
     user-select: none;
 }
 
-.bookmarks .item .title {
+.cards .item .title {
     position: absolute;
     color: #ffffff;
     margin-top: 20px;

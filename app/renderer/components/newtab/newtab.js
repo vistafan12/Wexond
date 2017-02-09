@@ -1,7 +1,7 @@
 'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Bookmarks from './bookmarks.js';
+import Cards from './cards.js';
 import Item from './item.js';
 import AddItem from './additem.js';
 
@@ -12,7 +12,7 @@ export default class Newtab extends React.Component {
 
         //global properties
         this.state = {
-            bookmarks: [
+            cards: [
                 {
                     "name":"Facebook",
                      "url":"https://facebook.com",
@@ -55,15 +55,15 @@ export default class Newtab extends React.Component {
 
     }
     render() {
-        const listItems = this.state.bookmarks.map((value, index) =>
+        const listItems = this.state.cards.map((value, index) =>
             <Item
                 data={value}
                 key={index}
-                name={this.state.bookmarks[index].name}
-                url={this.state.bookmarks[index].url}
-                icon={this.state.bookmarks[index].icon}
-                color={this.state.bookmarks[index].color}
-                fontColor={this.state.bookmarks[index].fontColor}
+                name={this.state.cards[index].name}
+                url={this.state.cards[index].url}
+                icon={this.state.cards[index].icon}
+                color={this.state.cards[index].color}
+                fontColor={this.state.cards[index].fontColor}
                 rippleColor={"#fff"}>
             </Item>
         );
@@ -71,9 +71,9 @@ export default class Newtab extends React.Component {
         return (
             <div>
                 <div className="bgizmage">
-                    <Bookmarks maxInLine={4} ref="bookmarks">
+                    <Cards maxInLine={4} ref="cards">
                         {listItems}
-                    </Bookmarks>
+                    </Cards>
                 </div>
                 <AddItem></AddItem>
             </div>

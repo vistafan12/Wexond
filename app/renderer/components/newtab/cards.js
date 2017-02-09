@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Bookmarks extends React.Component {
+export default class Cards extends React.Component {
     constructor() {
         super();
         //binds
@@ -45,7 +45,7 @@ export default class Bookmarks extends React.Component {
     }
     render() {
         return (
-            <div ref="bookmarks" className="bookmarks" style={{
+            <div ref="cards" className="cards" style={{
                 width: this.state.contWidth
             }}>
                 {this.props.children.map((child, index) => React.cloneElement(child, {
