@@ -19,12 +19,8 @@ export default class Bookmarks extends React.Component {
     }
     componentDidMount() {
         this.resize();
+
         window.addEventListener('resize', this.resize);
-
-        /*for(var i = 0; i < this.bookmarks.length; i++) {
-            console.log(this.bookmarks[i].test());
-        }*/
-
     }
     resize() {
         var p = true;
@@ -43,17 +39,13 @@ export default class Bookmarks extends React.Component {
                 console.log("error");
             }
         }
-
-        /*for(var i = 5; i > 0; i--) {
-            console.log(this.getContainerWidth(i, this.state.marginLeft, this.state.itemWidth));
-        }*/
     }
     getContainerWidth(count, mleft, width) {
         return count * mleft + count * width;
     }
     render() {
         return (
-            <div className="bookmarks" style={{
+            <div ref="bookmarks" className="bookmarks" style={{
                 width: this.state.contWidth
             }}>
                 {this.props.children.map((child, index) => React.cloneElement(child, {

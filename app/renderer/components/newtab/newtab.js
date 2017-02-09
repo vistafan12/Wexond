@@ -63,7 +63,8 @@ export default class Newtab extends React.Component {
                 url={this.state.bookmarks[index].url}
                 icon={this.state.bookmarks[index].icon}
                 color={this.state.bookmarks[index].color}
-                fontColor={this.state.bookmarks[index].fontColor}>
+                fontColor={this.state.bookmarks[index].fontColor}
+                rippleColor={"#fff"}>
             </Item>
         );
 
