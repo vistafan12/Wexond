@@ -4,3 +4,18 @@
 @import url("ripple.css");
 @import url("switch.css");
 @import url("toolbar.css");
+@import url("card.css");
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto.ttf');
+}
+
+@font-face {
+    font-family: Roboto-Medium;
+    src: url('../fonts/Roboto-Medium.ttf');
+}
+
+@font-face {
+    font-family: Roboto-Light;
+    src: url('../fonts/Roboto-Light.ttf');
+}
