@@ -64,7 +64,7 @@ export default class Newtab extends React.Component {
                 rippleColor={"#fff"}>
             </Item>
         );
-
+        //TODO: inputs
         return (
             <div>
                 <div className="bgizmage" ref="bgizmage">
@@ -74,7 +74,9 @@ export default class Newtab extends React.Component {
                 </div>
                 <div className="dark" ref="dark"></div>
                 <AddItem ref="additem" getParent={this.getNewtab}></AddItem>
-                <Dialog ref="dialog" getParent={this.getNewtab}></Dialog>
+                <Dialog ref="dialog" getParent={this.getNewtab}>
+
+                </Dialog>
             </div>
         );
     }

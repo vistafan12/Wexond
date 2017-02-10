@@ -5,14 +5,13 @@
     top: 0;
     left: 0;
     background-color: #000;
-    opacity: 0.8;
-    transition: all 0.3s;
+    opacity: 0; /*0.8*/
     display: none;
 }
 
 .dialog {
-    width: 60%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
     background-color: #fafafa;
     border-radius: 2px;
     position: fixed;
@@ -20,7 +19,22 @@
     left: 0;
     right: 0;
     margin: 0 auto;
+    margin-top: -50%;
     top: 50%;
     transform: translateY(-50%);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    opacity: 0;
+    display: none;
+}
+
+.dialog .title {
+    font-family: 'Roboto-Medium';
+    font-size: 20px;
+    text-align: left;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+.dialog .cont {
+    padding: 20px;
 }

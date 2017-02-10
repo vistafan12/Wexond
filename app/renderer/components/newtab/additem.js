@@ -28,11 +28,11 @@ export default class AddItem extends React.Component {
         if (!this.state.active) {
             this.setState({active: true});
             this.setState({imgRotate: 'rotate(45deg)'});
-            //this.props.dialog.show();
             this.props.getParent().refs.dialog.show();
         } else {
             this.setState({active: false});
             this.setState({imgRotate: 'rotate(0deg)'});
+            this.props.getParent().refs.dialog.hide();
         }
     }
     render() {
