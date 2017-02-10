@@ -1,4 +1,4 @@
-body {
+.body {
     margin: 0;
     padding: 0;
     background-color: #F5F5F5;
@@ -6,7 +6,7 @@ body {
     font-weight: 300;
 }
 
-#1 {
+.t1 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
