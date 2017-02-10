@@ -44,6 +44,7 @@ export default class MDMenu extends React.Component {
                 t.hide();
         });
         this.refs.divider.css('height', this.refs.menu.clientHeight - 16);
+        TweenMax.set(this.refs.menu, {css:{display: 'none'}});
     }
 
     show() {

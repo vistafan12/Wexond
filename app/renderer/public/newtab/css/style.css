@@ -49,6 +49,7 @@ html, body {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     cursor: pointer;
     transition: all 0.3s;
+
 }
 
 .additem:hover {
@@ -65,6 +66,7 @@ html, body {
     background-position: center;
     background-size: 34px 34px;
     transition: all 0.2s;
+
 }
 
 .clear {

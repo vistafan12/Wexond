@@ -104,7 +104,7 @@ function mousePositionDocument(e) {
 		y : posy
 	};
 }
-function createRippleMouse(item, e, time = 1) {
+function createRippleMouse(item, e, time = 1.5) {
     var pos = mousePositionElement(e);
     var relX = pos.x;
     var relY = pos.y;

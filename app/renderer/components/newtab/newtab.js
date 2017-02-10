@@ -41,19 +41,12 @@ export default class Newtab extends React.Component {
                      "icon": "https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w300",
                      "color": "#0084ff",
                      "fontColor": "#fff"
-                 },
-                 {
-                    "name":"HERE COME DAT BOI SHIT WADDUP",
-                    "url":"https://www.youtube.com/watch?v=pCOb6Fykxz0",
-                    "icon": "https://reductress.com/wp-content/uploads/2016/06/dat-boi-frog-820x500.jpg",
-                    "color": "#009300",
-                    "fontColor": "#fff"
-                }
+                 }
             ]
         };
     }
     componentDidMount() {
-        console.log(this.refs);
+
     }
     getNewtab() {
         return this;

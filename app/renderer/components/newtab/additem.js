@@ -19,9 +19,9 @@ export default class AddItem extends React.Component {
 
     }
     ripple(e) {
-        var ripple = Ripple.createRipple(e.target, {
-            backgroundColor: "#000"
-        }, createRippleCenter(e.target, 64, 1));
+        var ripple = Ripple.createRipple(this.refs.root, {
+            backgroundColor: "#fff"
+        }, createRippleMouse(this.refs.root, e));
         Ripple.makeRipple(ripple);
     }
     handleClick(e) {
@@ -37,7 +37,7 @@ export default class AddItem extends React.Component {
     }
     render() {
         return (
-            <div className="additem ripple" onClick={this.handleClick} onMouseDown={this.ripple}>
+            <div ref="root" className="additem ripple" onClick={this.handleClick} onMouseDown={this.ripple}>
                 <div ref="img" style={{transform: this.state.imgRotate}} className="img"></div>
             </div>
         );

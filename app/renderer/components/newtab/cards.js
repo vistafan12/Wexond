@@ -7,41 +7,33 @@ export default class Cards extends React.Component {
         super();
         //binds
         this.resize = this.resize.bind(this);
-        this.getContainerWidth = this.getContainerWidth.bind(this);
         //global properties
         this.state = {
-            marginLeft: 32,
-            itemWidth: 172,
-            contWidth: 472
+            contWidth: 0
         };
         this.bookmarks = [];
 
     }
     componentDidMount() {
         this.resize();
-
         window.addEventListener('resize', this.resize);
     }
     resize() {
-        var p = true;
-        var count = this.props.maxInLine;
+        var maxInLine = this.props.maxInLine,
+            marginLeft = 8,
+            i = 0,
+            itemWidth = parseInt(this.bookmarks[0].refs.root.offsetWidth, 10);
 
-        while (p) {
-            var w = this.getContainerWidth(count, this.state.marginLeft, this.state.itemWidth);
-            if (window.innerWidth < w) {
-                count--;
-            } else {
-                this.setState({contWidth: w});
-                p = false;
-            }
-            if (count < 1) {
-                p = false;
-                console.log("error");
-            }
+        var width = (itemWidth + marginLeft) * this.bookmarks.length;
+        while ((itemWidth + marginLeft) * (maxInLine - i) > window.innerWidth) {
+            i += 1;
         }
-    }
-    getContainerWidth(count, mleft, width) {
-        return count * mleft + count * width;
+        if (width / (itemWidth + marginLeft) > maxInLine - i) {
+
+            width = (maxInLine - i) * (itemWidth + marginLeft);
+        }
+
+        this.setState({contWidth: width});
     }
     render() {
         return (
