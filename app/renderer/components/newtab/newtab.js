@@ -46,7 +46,20 @@ export default class Newtab extends React.Component {
         };
     }
     componentDidMount() {
+        try {
+            if(getNewtabData().length < 2) {
+                resetNewtabData();
 
+            } else {
+                //newTabAddCard();
+                newTabAddCard(0, "warto wiedzieć");
+                newTabAddCard(1, "nersent");
+                //newTabRemoveCard(1);
+            }
+        } catch(ex) {
+            console.log(ex);
+            resetNewtabData();
+        }
     }
     getNewtab() {
         return this;
