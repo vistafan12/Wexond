@@ -24,8 +24,8 @@
 
 .left {
     float: left;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 .toolbar-icon {
@@ -49,8 +49,8 @@
 
 .right {
     float: right;
-    margin-right: 16px;
-    margin-left: 16px;
+    margin-right: 4px;
+    margin-left: 4px;
 }
 
 .right:nth-child(1) {
@@ -60,7 +60,7 @@
 .toolbar > .title {
     float: left;
     font-size: 20px;
-    margin-left: 20px;
+    margin-left: 32px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);

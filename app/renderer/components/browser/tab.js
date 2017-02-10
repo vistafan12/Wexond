@@ -164,9 +164,17 @@ export default class Tab extends React.Component {
 
         if (force) {
             this.tab.css('color', color);
+            if (color == 'white')
+                this.closeBtn.addClass('white-icon');
+            else
+                this.closeBtn.removeClass('white-icon');
         } else {
             if (this.selected) {
                 this.tab.css('color', color);
+                if (color == 'white')
+                    this.closeBtn.addClass('white-icon');
+                else
+                    this.closeBtn.removeClass('white-icon');
             }
         }
     }

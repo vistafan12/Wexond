@@ -5,3 +5,13 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
 }
+
+#1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 768px;
+    width: calc(100% - 72px);
+    height: 100%;
+    float: left;
+}

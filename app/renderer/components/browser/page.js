@@ -287,12 +287,12 @@ export default class Page extends React.Component {
                         if (t.refs.bar != null) {
                             //t.refs.bar.refs.bar.css('background-color', data.background);
                         }
+                        t.getTitlebar().setBackground(shadeColor(data.background, -0.2));
                         t.changeForeground(data.foreground, data.foreground == 'white'
                             ? '#fff'
                             : '#444');
                         t.getTab().setBackground(data.background);
                         t.getTab().setForeground(data.foreground, false);
-                        t.getTitlebar().setBackground(shadeColor(data.background, -0.2));
                     }
                 });
             }

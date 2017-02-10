@@ -52,7 +52,7 @@ var Ripple = class Ripple {
 function createRippleCenter(item, scale = 15, time = 0.4) {
     return {x: item.clientWidth / 2, y: item.clientHeight / 2, scale: scale, time: time}
 }
-function createRippleMouse(item, e, time = 1) {
+function createRippleMouse(item, e, time = 1.3) {
     var relX = e.pageX - item.getBoundingClientRect().left;
     var relY = e.pageY - item.getBoundingClientRect().top;
     return {x: relX, y: relY, scale: item.clientWidth, time: time, scaleY: item.clientHeight}
