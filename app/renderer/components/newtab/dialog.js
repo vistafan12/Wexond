@@ -97,7 +97,7 @@ export default class Dialog extends React.Component {
     render() {
         return (
             <div className="dialog" ref="dialog">
-                <div className="title">Add new card</div>
+                <div className="dialog-title">Add new card</div>
                 <div className="cont">
                     {
                         this.props.children

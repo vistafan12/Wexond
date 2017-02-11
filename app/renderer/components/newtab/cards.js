@@ -11,29 +11,30 @@ export default class Cards extends React.Component {
         this.state = {
             contWidth: 0
         };
-        this.bookmarks = [];
-
+        this.cards = [];
     }
     componentDidMount() {
         this.resize();
         window.addEventListener('resize', this.resize);
     }
     resize() {
-        var maxInLine = this.props.maxInLine,
-            marginLeft = 8,
-            i = 0,
-            itemWidth = parseInt(this.bookmarks[0].refs.root.offsetWidth, 10);
+        try {
+            var maxInLine = this.props.maxInLine,
+                marginLeft = 8,
+                i = 0,
+                itemWidth = parseInt(this.cards[0].refs.root.offsetWidth, 10);
 
-        var width = (itemWidth + marginLeft) * this.bookmarks.length;
-        while ((itemWidth + marginLeft) * (maxInLine - i) > window.innerWidth) {
-            i += 1;
-        }
-        if (width / (itemWidth + marginLeft) > maxInLine - i) {
+            var width = (itemWidth + marginLeft) * this.cards.length;
+            while ((itemWidth + marginLeft) * (maxInLine - i) > window.innerWidth) {
+                i += 1;
+            }
+            if (width / (itemWidth + marginLeft) > maxInLine - i) {
 
-            width = (maxInLine - i) * (itemWidth + marginLeft);
-        }
+                width = (maxInLine - i) * (itemWidth + marginLeft);
+            }
 
-        this.setState({contWidth: width});
+            this.setState({contWidth: width});
+        } catch (err) {}
     }
     render() {
         return (
@@ -43,7 +44,7 @@ export default class Cards extends React.Component {
                 {this.props.children.map((child, index) => React.cloneElement(child, {
                     ref: (ref) => {
                         if (child.type.name == "Item") {
-                            this.bookmarks[index] = ref;
+                            this.cards[index] = ref;
                         }
                     }
                 }))}

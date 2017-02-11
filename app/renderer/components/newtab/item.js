@@ -20,7 +20,7 @@ export default class Item extends React.Component {
     }
     render() {
         return (
-            <a ref="root" href={this.props.url} className="item ripple" style={{backgroundColor: this.props.color, color: this.props.fontColor}} onMouseDown={this.ripple}>
+            <a ref="root" href={this.props.url} className="card-item ripple" style={{backgroundColor: this.props.color, color: this.props.fontColor}} onMouseDown={this.ripple}>
                 <img className="icon noselectable" src={this.props.icon} />
                 <div className="title noselectable">{this.props.name}</div>
             </a>

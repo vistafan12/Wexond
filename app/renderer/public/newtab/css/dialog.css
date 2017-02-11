@@ -27,7 +27,7 @@
     display: none;
 }
 
-.dialog .title {
+.dialog .dialog-title {
     font-family: 'Roboto-Medium';
     font-size: 20px;
     text-align: left;
@@ -40,6 +40,7 @@
 
 .dialog .cont {
     padding: 20px;
+    padding-bottom: 0px;
 }
 
 .footer {

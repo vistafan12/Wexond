@@ -8,7 +8,7 @@
     margin-top: 160px;
 }
 
-.cards .item {
+.card-item {
     width: 172px;
     height: 96px;
     position: relative;
@@ -22,24 +22,32 @@
     border-radius: 2px;
 }
 
-.cards .item .icon {
+.card-item .icon {
     width: 32px;
     height: 32px;
     margin-top: -12px;
     position: absolute;
     user-select: none;
     -webkit-touch-callout: none;
-     -webkit-user-select: none;
-     pointer-events: none;
+    -webkit-user-select: none;
+    pointer-events: none;
 }
 
-.cards .item .title {
+.card-item .title {
     position: absolute;
-    color: #ffffff;
     margin-top: 20px;
     user-select: none;
     text-align: center;
     user-select: none;
     -webkit-touch-callout: none;
-     -webkit-user-select: none;;
+    -webkit-user-select: none;
+    font-size: 16px;
+}
+
+.card-item-test {
+    position: relative;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
 }

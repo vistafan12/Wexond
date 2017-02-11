@@ -13,68 +13,78 @@ export default class Newtab extends React.Component {
         this.getNewtab = this.getNewtab.bind(this);
         this._add = this._add.bind(this);
         this._cancel = this._cancel.bind(this);
+        this._update = this._update.bind(this);
         //global properties
         this.state = {
             cards: [
-                {
-                    "name":"Facebook",
-                     "url":"https://facebook.com",
-                     "icon": "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png",
-                     "color": "#3b5998",
-                     "fontColor": "#fff"
-                 },
-                 {
-                     "name":"Youtube",
-                     "url":"https://youtube.com",
-                     "icon": "https://cdn3.iconfinder.com/data/icons/social-icons-5/607/YouTube_Play.png",
-                     "color": "#c12025",
-                     "fontColor": "#fff"
-                 },
-                 {
-                     "name":"Nersent",
-                      "url":"http://89.38.146.104",
-                      "icon": "http://89.38.146.104/img/nersent.png",
-                      "color": "#3f51b5",
-                      "fontColor": "#fff"
-                  },
-                  {
-                     "name":"Messenger",
-                     "url":"https://www.messenger.com",
-                     "icon": "https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w300",
-                     "color": "#0084ff",
-                     "fontColor": "#fff"
-                 }
-            ]
+
+            ],
+                tcName:"",
+                tcUrl:"",
+                tcIcon: "",
+                tcColor: "",
+                tcFontColor: ""
         };
-    }
-    componentDidMount() {
         try {
             if(getNewtabData().length < 2) {
                 resetNewtabData();
             } else {
-                /*newTabAddCard("nersent", "nersent.tk", "cos", "#ff0000", "#fff", function() {
-                    newTabAddCard("test", "aha.tk", "wtf", "#ff00ff", "#555", function() {
-                        console.log("koniec");
-                    });
-                });*/
+                var _json = getNewtabData();
+                for(var i = 0; i < _json.newtabdata.length; i++) {
+                    this.state.cards.push(_json.newtabdata[i]);
+                }
             }
         } catch(ex) {
             console.log(ex);
             resetNewtabData();
         }
     }
-    _add() {
+    componentDidMount() {
 
+    }
+    _add() {
+        var _title = this.refs.title.value,
+        _url = this.refs.url.value,
+        _icon = this.refs.icon.value,
+        _color = this.refs.color.value,
+        _fontcolor = this.refs.fontcolor.value;
+        if (_title.length > 0) {
+            if (_url.length > 0) {
+                if (_icon.length > 0) {
+                    if (_color.length > 0) {
+                        if (_fontcolor > 0) {
+                            newTabAddCard(_title, _url, _icon, _color, _fontcolor, function() {
+
+                            });
+                        }
+                    }
+                }
+            }
+        }
     }
     _cancel() {
         this.refs.dialog.hide();
         this.refs.additem.setState({active: false});
         this.refs.additem.setState({imgRotate: 'rotate(0deg)'});
+        this.refs.title.value = null;
+        this.refs.url.value = null;
+        this.refs.icon.value = null;
+    }
+    _update() {
+        var _title = this.refs.title.value,
+        _icon = this.refs.icon.value,
+        _color = this.refs.color.value,
+        _fontcolor = this.refs.fontcolor.value;
+        this.setState({tcName: _title});
+        this.setState({tcIcon: _icon});
+        this.setState({tcColor: _color});
+        this.setState({tcFontColor: _fontcolor});
     }
     getNewtab() {
         return this;
     }
     render() {
+        console.log(this.state.cards);
         const listItems = this.state.cards.map((value, index) =>
             <Item
                 data={value}
@@ -95,10 +105,22 @@ export default class Newtab extends React.Component {
                         {listItems}
                     </Cards>
                 </div>
-                <div className="dark" ref="dark"></div>
+                <div className="dark" ref="dark" onClick={this._cancel}></div>
                 <AddItem ref="additem" getParent={this.getNewtab}></AddItem>
                 <Dialog ref="dialog" getParent={this.getNewtab} onOk={this._add} onCancel={this._cancel} ok="ADD" cancel="CANCEL">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sodales sem eu sapien dictum, ac consequat ante finibus. Ut condimentum sem non diam dictum pulvinar. Integer quis est justo. Maecenas arcu nisi, fringilla ut laoreet vel, fringilla quis eros. Praesent purus felis, varius et nulla eget, efficitur molestie tellus. Sed consectetur in diam lacinia gravida. Curabitur consectetur enim ac nisi mattis pharetra vel nec nisi. In eget porta dui, condimentum rhoncus eros. Etiam sagittis pulvinar nisl, ut fringilla velit porta in. Sed tincidunt ac turpis ut viverra. Mauris est magna, hendrerit eleifend venenatis id, faucibus et
+                    <input type="text" className="testinput" ref="title" placeholder="Title" onKeyUp={this._update}/>
+                    <br /><br />
+                    <input type="text" className="testinput" ref="url" placeholder="Url"></input>
+                    <br /><br />
+                    <input type="text" className="testinput" ref="icon" placeholder="Icon" onKeyUp={this._update}></input>
+                    <br /><br />
+                    <input type="text" className="testinput" ref="color" placeholder="Background color" onKeyUp={this._update}></input>
+                    <br /><br />
+                    <input type="text" className="testinput" ref="fontcolor" placeholder="Font color" onKeyUp={this._update}></input>
+                    <div ref="root" className="card-item card-item-test" style={{backgroundColor: this.state.tcColor, color: this.state.tcFontColor}}>
+                        <img className="icon noselectable" src={this.state.tcIcon}/>
+                        <div className="title noselectable">{this.state.tcName}</div>
+                    </div>
                 </Dialog>
             </div>
         );
