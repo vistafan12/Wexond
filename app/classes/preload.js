@@ -16,48 +16,74 @@ global.getNewtabData = function() {
     return JSON.parse(fs.readFileSync(newTabDataPath));
 }
 
-global.saveNewtabData = function(json) {
-    fs.writeFile(newTabDataPath, json, function(err) {
-        if (err) {
-            return console.log(err);
+global.resetNewtabData = function() {
+    var _json = {
+        "newtabdata": []
+    }
+    _json = JSON.stringify(_json);
+    global.saveNewtabData(_json);
+}
+
+global.newTabAddCard = function(_id, _name, _url, _icon, _color, _fontColor, callback) {
+    var _json = global.getNewtabData();
+    _json.newtabdata.push({
+        "id": _id.toString(),
+        "name": _name.toString(),
+        "url": _url.toString(),
+        "icon": _icon.toString(),
+        "color": _color.toString(),
+        "fontColor": _fontColor.toString()
+    })
+    _json = JSON.stringify(_json);
+    global.saveNewtabData(_json, function() {
+        if (global.isFunction(callback)) {
+            callback();
         }
     });
 }
 
-global.newTabAddCard = function(id, name, url, icon, color, fontColor) {
-    var _json = global.getNewtabData();
-    _json.newtabdata.push(
-        {
-            "id": id.toString()
-            /*"name": '"' + name + '"',
-            "url": '"' + url + '"',
-            "icon": '"' + icon + '"',
-            "color": '"' + color + '"',
-            "fontColor": '"' + fontColor + '"'*/
+global.saveNewtabData = function(json, callback) {
+    fs.writeFile(newTabDataPath, json, function(err) {
+        if (err) {
+            return console.log(err);
         }
-    );
-    _json = JSON.stringify(_json);
-    global.saveNewtabData(_json);
+        if (global.isFunction(callback)) {
+            callback();
+        }
+    });
 }
 
-global.newTabRemoveCard = function(id) {
-    var _json = global.getNewtabData();
-
-/*    for(var i = 0; i < _json.newtabdata.length; i++) {
-        console.log(_json.newtabdata[i].id);
-    }*/
-    delete _json.newtabdata[0];
-    console.log(_json);
-}
-
-global.resetNewtabData = function() {
-    var _json = {
-        "newtabdata": [
-
-        ]
+global.newTabRemoveCard = function(_id, callback) {
+    try {
+        var _json = global.getNewtabData();
+        _id = parseInt(_id);
+        delete _json.newtabdata[_id];
+        _json.newtabdata[_id] = "[Object object c04d222f6d6b2c0247d29be1800c74ce]";
+        _json = JSON.stringify(_json);
+        _json = _json.replace('"[Object object c04d222f6d6b2c0247d29be1800c74ce]",', "");
+        _json = _json.replace('"[Object object c04d222f6d6b2c0247d29be1800c74ce]"', "");
+        _json = JSON.parse(_json);
+        for (var i = 0; i < _json.newtabdata.length; i++) {
+            var _eid = parseInt(_json.newtabdata[i].id);
+            if (_eid > _id) {
+                _json.newtabdata[i].id = (_eid - 1).toString();
+            }
+        }
+        _json = JSON.stringify(_json);
+        global.saveNewtabData(_json, function() {
+            if (global.isFunction(callback)) {
+                callback();
+            }
+        })
+    } catch (err) {
+        console.log(err);
+        global.resetNewtabData();
     }
-    _json = JSON.stringify(_json);
-    global.saveNewtabData(_json);
+}
+
+global.isFunction = function(f) {
+    var g = {};
+    return f && g.toString.call(f) === '[object Function]';
 }
 
 ipcRenderer.on('env', function(e, data) {
