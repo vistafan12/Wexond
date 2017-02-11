@@ -18,7 +18,9 @@ export default class ToolbarItem extends React.Component {
             <div className={className} style={
                 {
                     color: this.props.color,
-                    opacity: this.props.opacity
+                    opacity: this.props.opacity,
+                    marginRight: this.props.marginRight,
+                    marginLeft: this.props.marginLeft
                 }}>
                 {this.props.children}
             </div>
@@ -30,5 +32,7 @@ ToolbarItem.defaultProps = {
     position: 'left',
     color: '#000',
     opacity: 0.9,
-    inverted: false
+    inverted: false,
+    marginLeft: 4,
+    marginRight: 4
 };

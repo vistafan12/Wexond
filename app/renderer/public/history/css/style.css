@@ -6,11 +6,15 @@
     font-weight: 300;
 }
 
-.t1 {
+#t1 {
+    float: left;
+    height: 100%;
+}
+#t2 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 768px;
+    max-width: 1024px;
     width: calc(100% - 72px);
     height: 100%;
     float: left;
