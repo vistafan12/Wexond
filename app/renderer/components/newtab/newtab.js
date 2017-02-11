@@ -5,6 +5,7 @@ import Cards from './cards.js';
 import Item from './item.js';
 import AddItem from './additem.js';
 import Dialog from './dialog.js';
+import Toast from './toast.js';
 
 export default class Newtab extends React.Component {
     constructor() {
@@ -43,18 +44,20 @@ export default class Newtab extends React.Component {
 
     }
     _add() {
+        var t = this;
         var _title = this.refs.title.value,
         _url = this.refs.url.value,
         _icon = this.refs.icon.value,
         _color = this.refs.color.value,
         _fontcolor = this.refs.fontcolor.value;
-        if (_title.length > 0) {
+         if (_title.length > 0) {
             if (_url.length > 0) {
                 if (_icon.length > 0) {
                     if (_color.length > 0) {
-                        if (_fontcolor > 0) {
+                        if (_fontcolor.length > 0) {
                             newTabAddCard(_title, _url, _icon, _color, _fontcolor, function() {
-
+                                t.refs.dialog.hide();
+                                t.refs.toast.show();
                             });
                         }
                     }
@@ -94,7 +97,7 @@ export default class Newtab extends React.Component {
                 icon={this.state.cards[index].icon}
                 color={this.state.cards[index].color}
                 fontColor={this.state.cards[index].fontColor}
-                rippleColor={"#fff"}>
+                rippleColor={this.state.cards[index].rippleColor}>
             </Item>
         );
         //TODO: inputs
@@ -114,14 +117,15 @@ export default class Newtab extends React.Component {
                     <br /><br />
                     <input type="text" className="testinput" ref="icon" placeholder="Icon" onKeyUp={this._update}></input>
                     <br /><br />
-                    <input type="text" className="testinput" ref="color" placeholder="Background color" onKeyUp={this._update}></input>
+                    <input type="text" className="testinput" ref="color" placeholder="Background color (HEX)" onKeyUp={this._update}></input>
                     <br /><br />
-                    <input type="text" className="testinput" ref="fontcolor" placeholder="Font color" onKeyUp={this._update}></input>
+                    <input type="text" className="testinput" ref="fontcolor" placeholder="Font color (HEX)" onKeyUp={this._update}></input>
                     <div ref="root" className="card-item card-item-test" style={{backgroundColor: this.state.tcColor, color: this.state.tcFontColor}}>
                         <img className="icon noselectable" src={this.state.tcIcon}/>
                         <div className="title noselectable">{this.state.tcName}</div>
                     </div>
                 </Dialog>
+                <Toast ref="toast" text="Added card!"></Toast>
             </div>
         );
     }
