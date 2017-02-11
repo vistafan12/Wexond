@@ -7,8 +7,11 @@ export default class Dialog extends React.Component {
     constructor() {
         super();
         //binds
+        this.ripple = this.ripple.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
+        this._add = this._add.bind(this);
+        this._cancel = this._cancel.bind(this);
     }
 
     componentDidMount() {
@@ -74,6 +77,22 @@ export default class Dialog extends React.Component {
             }
         });
     }
+    ripple(e) {
+        var ripple = Ripple.createRipple(e.target, {
+            backgroundColor: "#3f51b5"
+        }, createRippleMouse(e.target, e, 1.2));
+        Ripple.makeRipple(ripple);
+    }
+    _add() {
+        if (this.props.onOk != null || this.props.onOk != undefined) {
+            this.props.onOk();
+        }
+    }
+    _cancel() {
+        if (this.props.onCancel != null || this.props.onCancel != undefined) {
+            this.props.onCancel();
+        }
+    }
 
     render() {
         return (
@@ -84,6 +103,11 @@ export default class Dialog extends React.Component {
                         this.props.children
                     }
                 </div>
+                <ul className="footer">
+                    <li className="ripple" onMouseDown={this.ripple} onClick={this._add}>{this.props.ok}</li>
+                    <li className="ripple" onMouseDown={this.ripple} onClick={this._cancel}>{this.props.cancel}</li>
+                    <div style={{clear:'both'}}></div>
+                </ul>
             </div>
         );
     }

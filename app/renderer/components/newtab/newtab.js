@@ -11,6 +11,8 @@ export default class Newtab extends React.Component {
         super();
         //binds
         this.getNewtab = this.getNewtab.bind(this);
+        this._add = this._add.bind(this);
+        this._cancel = this._cancel.bind(this);
         //global properties
         this.state = {
             cards: [
@@ -48,23 +50,26 @@ export default class Newtab extends React.Component {
     componentDidMount() {
         try {
             if(getNewtabData().length < 2) {
-                //resetNewtabData();
+                resetNewtabData();
             } else {
-                /*newTabAddCard(0, "nersent", "nersent.tk", "cos", "#ff0000", "#fff", function() {
-                    newTabAddCard(1, "test", "aha.tk", "wtf", "#ff00ff", "#555", function() {
+                /*newTabAddCard("nersent", "nersent.tk", "cos", "#ff0000", "#fff", function() {
+                    newTabAddCard("test", "aha.tk", "wtf", "#ff00ff", "#555", function() {
                         console.log("koniec");
                     });
                 });*/
-            }/*else {
-                //newTabAddCard();
-                newTabAddCard(0, "warto wiedzieć");
-                newTabAddCard(1, "nersent");
-                //newTabRemoveCard(1);
-            }*/
+            }
         } catch(ex) {
             console.log(ex);
-            //resetNewtabData();
+            resetNewtabData();
         }
+    }
+    _add() {
+
+    }
+    _cancel() {
+        this.refs.dialog.hide();
+        this.refs.additem.setState({active: false});
+        this.refs.additem.setState({imgRotate: 'rotate(0deg)'});
     }
     getNewtab() {
         return this;
@@ -92,8 +97,8 @@ export default class Newtab extends React.Component {
                 </div>
                 <div className="dark" ref="dark"></div>
                 <AddItem ref="additem" getParent={this.getNewtab}></AddItem>
-                <Dialog ref="dialog" getParent={this.getNewtab}>
-
+                <Dialog ref="dialog" getParent={this.getNewtab} onOk={this._add} onCancel={this._cancel} ok="ADD" cancel="CANCEL">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sodales sem eu sapien dictum, ac consequat ante finibus. Ut condimentum sem non diam dictum pulvinar. Integer quis est justo. Maecenas arcu nisi, fringilla ut laoreet vel, fringilla quis eros. Praesent purus felis, varius et nulla eget, efficitur molestie tellus. Sed consectetur in diam lacinia gravida. Curabitur consectetur enim ac nisi mattis pharetra vel nec nisi. In eget porta dui, condimentum rhoncus eros. Etiam sagittis pulvinar nisl, ut fringilla velit porta in. Sed tincidunt ac turpis ut viverra. Mauris est magna, hendrerit eleifend venenatis id, faucibus et
                 </Dialog>
             </div>
         );

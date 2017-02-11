@@ -33,8 +33,37 @@
     text-align: left;
     padding: 20px;
     padding-bottom: 0px;
+    user-select: none;
+    -webkit-touch-callout: none;
+     -webkit-user-select: none;
 }
 
 .dialog .cont {
     padding: 20px;
+}
+
+.footer {
+    margin: 0;
+    max-width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    position: relative;
+    bottom: 0;
+    list-style: none;
+    padding-right: 18px;
+}
+
+.footer li {
+    min-width: 70px;
+    font-size: 17px;
+    color: #3f51b5;
+    font-family: 'Roboto';
+    float:right;
+    padding: 8px;
+    margin-right: 5px;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    -webkit-touch-callout: none;
+     -webkit-user-select: none;
 }
