@@ -1,5 +1,5 @@
 # Wexond
-Advanced web browser made in Electron and React.
+Advanced web browser made in Electron and React. Made by Mikołaj Palkiewicz & Eryk Rakowski
 
 # [Downloads](https://github.com/Sential/Wexond/releases)
 
