@@ -11,7 +11,7 @@ export default class Toast extends React.Component {
     componentDidMount() {
 
     }
-    show() {
+    show(callback) {
         var t = this;
         t.refs.toast.style.display = "block";
         TweenMax.to(t.refs.toast, 0.2, {
@@ -45,10 +45,10 @@ export default class Toast extends React.Component {
                     opacity: 0
                 },
                 onComplete: function() {
-
+                    callback();
                 }
             });
-        }, 700);
+        }, this.props.hideTime);
     }
     render() {
         return (

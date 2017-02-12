@@ -20,11 +20,12 @@ export default class Newtab extends React.Component {
             cards: [
 
             ],
-                tcName:"",
-                tcUrl:"",
-                tcIcon: "",
-                tcColor: "",
-                tcFontColor: ""
+            tcName:"",
+            tcUrl:"",
+            tcIcon: "",
+            tcColor: "",
+            tcFontColor: "",
+            toastText: "Added new card!"
         };
         try {
             if(getNewtabData().length < 2) {
@@ -32,7 +33,9 @@ export default class Newtab extends React.Component {
             } else {
                 var _json = getNewtabData();
                 for(var i = 0; i < _json.newtabdata.length; i++) {
-                    this.state.cards.push(_json.newtabdata[i]);
+                    var _item = _json.newtabdata[i];
+                    _item.index = i;
+                    this.state.cards.push(_item);
                 }
             }
         } catch(ex) {
@@ -56,8 +59,11 @@ export default class Newtab extends React.Component {
                     if (_color.length > 0) {
                         if (_fontcolor.length > 0) {
                             newTabAddCard(_title, _url, _icon, _color, _fontcolor, function() {
-                                t.refs.dialog.hide();
-                                t.refs.toast.show();
+                                t.refs.dialog_additem.hide();
+                                t.setState({toastText: "Added new card!"});
+                                t.refs.toast.show(function() {
+                                    window.location.href = "";
+                                });
                             });
                         }
                     }
@@ -66,7 +72,7 @@ export default class Newtab extends React.Component {
         }
     }
     _cancel() {
-        this.refs.dialog.hide();
+        this.refs.dialog_additem.hide();
         this.refs.additem.setState({active: false});
         this.refs.additem.setState({imgRotate: 'rotate(0deg)'});
         this.refs.title.value = null;
@@ -87,17 +93,17 @@ export default class Newtab extends React.Component {
         return this;
     }
     render() {
-        console.log(this.state.cards);
-        const listItems = this.state.cards.map((value, index) =>
+        const listItems = this.state.cards.map((value, _index) =>
             <Item
                 data={value}
-                key={index}
-                name={this.state.cards[index].name}
-                url={this.state.cards[index].url}
-                icon={this.state.cards[index].icon}
-                color={this.state.cards[index].color}
-                fontColor={this.state.cards[index].fontColor}
-                rippleColor={this.state.cards[index].rippleColor}>
+                key={_index}
+                name={this.state.cards[_index].name}
+                url={this.state.cards[_index].url}
+                icon={this.state.cards[_index].icon}
+                color={this.state.cards[_index].color}
+                fontColor={this.state.cards[_index].fontColor}
+                rippleColor={this.state.cards[_index].rippleColor}
+                index={this.state.cards[_index].index}>
             </Item>
         );
         //TODO: inputs
@@ -110,7 +116,7 @@ export default class Newtab extends React.Component {
                 </div>
                 <div className="dark" ref="dark" onClick={this._cancel}></div>
                 <AddItem ref="additem" getParent={this.getNewtab}></AddItem>
-                <Dialog ref="dialog" getParent={this.getNewtab} onOk={this._add} onCancel={this._cancel} ok="ADD" cancel="CANCEL">
+                <Dialog ref="dialog_additem" getParent={this.getNewtab} onOk={this._add} onCancel={this._cancel} ok="ADD" cancel="CANCEL">
                     <input type="text" className="testinput" ref="title" placeholder="Title" onKeyUp={this._update}/>
                     <br /><br />
                     <input type="text" className="testinput" ref="url" placeholder="Url"></input>
@@ -125,7 +131,8 @@ export default class Newtab extends React.Component {
                         <div className="title noselectable">{this.state.tcName}</div>
                     </div>
                 </Dialog>
-                <Toast ref="toast" text="Added card!"></Toast>
+                <Dialog></Dialog>
+                <Toast ref="toast" text={this.state.toastText} hideTime={300}></Toast>
             </div>
         );
     }

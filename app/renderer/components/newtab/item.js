@@ -8,22 +8,35 @@ export default class Item extends React.Component {
         super();
         //binds
         this.ripple = this.ripple.bind(this);
+        //global properties
     }
     componentDidMount() {
 
     }
+    MouseClick(e) {
+        if (e.target == this.refs.root) {
+            window.location.href = this.props.url;
+        }
+    }
+    delClick() {
+
+    }
+    editClick() {
+
+    }
     ripple(e) {
-        var ripple = Ripple.createRipple(e.target, {
+        var ripple = Ripple.createRipple(this.refs.root, {
             backgroundColor: this.props.rippleColor
-        }, createRippleMouse(e.target, e, 1.2));
+        }, createRippleMouse(this.refs.root, e, 1.2));
         Ripple.makeRipple(ripple);
     }
     render() {
         return (
-            <a ref="root" href={this.props.url} className="card-item ripple" style={{backgroundColor: this.props.color, color: this.props.fontColor}} onMouseDown={this.ripple}>
-                <img className="icon noselectable" src={this.props.icon} />
-                <div className="title noselectable">{this.props.name}</div>
-            </a>
+            // href={this.props.url}
+            <div ref="root" className="card-item ripple" style={{backgroundColor: this.props.color, color: this.props.fontColor}} onMouseDown={this.ripple} onMouseEnter={this.MouseEnter} onMouseLeave={this.MouseLeave} onClick={this.MouseClick}>
+                <img ref="icon" className="icon noselectable" src={this.props.icon} />
+                <div ref="title" className="title noselectable">{this.props.name}</div>
+            </div>
         );
     }
 }
