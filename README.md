@@ -3,7 +3,7 @@ Advanced web browser made in Electron and React. Made by Mikołaj Palkiewicz & E
 
 # [Downloads](https://github.com/Sential/Wexond/releases)
 
-# [Wexond documentation](https://github.com/Nersent/Wexond/wiki)
+# [Wexond extension documentation](https://github.com/Nersent/Wexond/wiki)
 
 # Running
 ## Installing
