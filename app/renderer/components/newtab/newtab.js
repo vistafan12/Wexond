@@ -3,19 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cards from './cards.js';
 import Item from './item.js';
-import Fab from './fab.js';
-import Dialog from './dialog.js';
-import Toast from './toast.js';
 
 export default class Newtab extends React.Component {
     constructor() {
         super();
         //binds
         this.getNewtab = this.getNewtab.bind(this);
-        this._add = this._add.bind(this);
-        this._cancel = this._cancel.bind(this);
-        this._update = this._update.bind(this);
-        this._fabclick = this._fabclick.bind(this);
         //global properties
         this.state = {
             cards: [
@@ -47,49 +40,7 @@ export default class Newtab extends React.Component {
     componentDidMount() {
 
     }
-    _add() {
-        /*var t = this;
-        var _title = this.refs.title.value,
-        _url = this.refs.url.value,
-        _icon = this.refs.icon.value,
-        _color = this.refs.color.value,
-        _fontcolor = this.refs.fontcolor.value;
-         if (_title.length > 0) {
-            if (_url.length > 0) {
-                if (_icon.length > 0) {
-                    if (_color.length > 0) {
-                        if (_fontcolor.length > 0) {
-                            newTabAddCard(_title, _url, _icon, _color, _fontcolor, function() {
-                                t.refs.dialog_additem.hide();
-                                t.setState({toastText: "Added new card!"});
-                                t.refs.toast.show(function() {
-                                    window.location.href = "";
-                                });
-                            });
-                        }
-                    }
-                }
-            }
-        }*/
-    }
-    _cancel() {
-        this.refs.dialog_settings.hide();
-        /*this.refs.additem.setState({active: false});
-        this.refs.additem.setState({imgRotate: 'rotate(0deg)'});
-        this.refs.title.value = null;
-        this.refs.url.value = null;
-        this.refs.icon.value = null;*/
-    }
-    _update() {
-        /*var _title = this.refs.title.value,
-        _icon = this.refs.icon.value,
-        _color = this.refs.color.value,
-        _fontcolor = this.refs.fontcolor.value;
-        this.setState({tcName: _title});
-        this.setState({tcIcon: _icon});
-        this.setState({tcColor: _color});
-        this.setState({tcFontColor: _fontcolor});*/
-    }
+
     getNewtab() {
         return this;
     }
@@ -118,36 +69,10 @@ export default class Newtab extends React.Component {
                         {listItems}
                     </Cards>
                 </div>
-                <Fab ref="settings" click={this._fabclick}></Fab>
-                <div className="dark" ref="dark" onClick={this._cancel}></div>
-                <Dialog ref="dialog_settings" getParent={this.getNewtab}></Dialog>
             </div>
         );
     }
 }
-/*
-<div className="dark" ref="dark" onClick={this._cancel}></div>
-<AddItem ref="additem" getParent={this.getNewtab}></AddItem>
-<Dialog maxWidth={500} ref="dialog_additem" getParent={this.getNewtab} onOk={this._add} onCancel={this._cancel} ok="ADD" cancel="CANCEL">
-    <input type="text" className="testinput" ref="title" placeholder="Title" onKeyUp={this._update}/>
-    <br /><br />
-    <input type="text" className="testinput" ref="url" placeholder="Url"></input>
-    <br /><br />
-    <input type="text" className="testinput" ref="icon" placeholder="Icon" onKeyUp={this._update}></input>
-    <br /><br />
-    <input type="text" className="testinput" ref="color" placeholder="Background color (HEX)" onKeyUp={this._update}></input>
-    <br /><br />
-    <input type="text" className="testinput" ref="fontcolor" placeholder="Font color (HEX)" onKeyUp={this._update}></input>
-    <div ref="root" className="card-item card-item-test" style={{backgroundColor: this.state.tcColor, color: this.state.tcFontColor}}>
-        <img className="icon noselectable" src={this.state.tcIcon}/>
-        <div className="title noselectable">{this.state.tcName}</div>
-    </div>
-</Dialog>
-<Dialog maxWidth={600} ref="dialog_settings" getParent={this.getNewtab} nOk={this._add} onCancel={this._cancel} title="Settings" ok="OK" cancel="CANCEL">
-    xdd test
-</Dialog>
-<Toast ref="toast" text={this.state.toastText} hideTime={300}></Toast>
-*/
 
 ReactDOM.render(
     <Newtab/>, document.getElementById('app'));
