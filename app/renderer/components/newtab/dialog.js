@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {TweenMax, CSSPlugin} from 'gsap';
+import SettingsItem from './settingsitem';
 
 export default class Dialog extends React.Component {
     constructor() {
@@ -23,6 +24,7 @@ export default class Dialog extends React.Component {
 
     componentDidMount() {
         this.selectItem(this.refs.background, this.refs._background);
+        console.log(this.props.getParent().state);
     }
 
     show() {
@@ -131,7 +133,22 @@ export default class Dialog extends React.Component {
     }
 
     render() {
+        const listItems = this.props.getParent().state.cards.map((value, _index) =>
+            <SettingsItem
+                data={value}
+                key={_index}
+                name={this.props.getParent().state.cards[_index].name}
+                url={this.props.getParent().state.cards[_index].url}
+                icon={this.props.getParent().state.cards[_index].icon}
+                color={this.props.getParent().state.cards[_index].color}
+                fontColor={this.props.getParent().state.cards[_index].fontColor}
+                rippleColor={this.props.getParent().state.cards[_index].rippleColor}
+                index={this.props.getParent().state.cards[_index].index}>
+            </SettingsItem>
+        );
         return (
+            // TODO: _background > images, colors
+            // TODO: _cards > deleting, editing, adding, moving
             <div className="dialog" ref="dialog">
                 <ul className="menu">
                     <div className="title">New tab settings</div>
@@ -139,11 +156,13 @@ export default class Dialog extends React.Component {
                     <li className="ripple" ref="cards" onClick={() => this.selectItem(this.refs.cards, this.refs._cards)} onMouseDown={this.menuItemRipple}>Cards</li>
                 </ul>
                 <ul className="content">
-                    <li ref="_background">
+                    <li ref="_background" className="settings-background">
 
                     </li>
-                    <li ref="_cards">
-                        
+                    <li ref="_cards" className="settings-cards">
+                        <div className="container">
+                            {listItems}
+                        </div>
                     </li>
                 </ul>
             </div>
