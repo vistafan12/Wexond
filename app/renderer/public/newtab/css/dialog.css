@@ -5,13 +5,16 @@
     top: 0;
     left: 0;
     background-color: #000;
-    opacity: 0; /*0.8*/
+    opacity: 0;
+    /*0.8*/
     display: none;
 }
 
 .dialog {
     width: 100%;
-    max-width: 500px;
+    min-height: 400px;
+    max-height: 600px;
+    max-width: 750px;
     background-color: #fafafa;
     border-radius: 2px;
     position: fixed;
@@ -27,44 +30,65 @@
     display: none;
 }
 
-.dialog .dialog-title {
-    font-family: 'Roboto-Medium';
-    font-size: 20px;
-    text-align: left;
-    padding: 20px;
-    padding-bottom: 0px;
-    user-select: none;
-    -webkit-touch-callout: none;
-     -webkit-user-select: none;
-}
-
-.dialog .cont {
-    padding: 20px;
-    padding-bottom: 0px;
-}
-
-.footer {
-    margin: 0;
-    max-width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    position: relative;
-    bottom: 0;
+.dialog .menu {
     list-style: none;
-    padding-right: 18px;
+    width: 200px;
+    height: 100%;
+    background-color: #3f51b5;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.footer li {
-    min-width: 70px;
-    font-size: 17px;
-    color: #3f51b5;
-    font-family: 'Roboto';
-    float:right;
-    padding: 8px;
-    margin-right: 5px;
+.dialog .menu li {
+    color: #fff;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 24px;
+    font-size: 18px;
+    font-family: 'Roboto-Light';
+    -webkit-user-select: none;
     cursor: pointer;
-    text-align: center;
-    user-select: none;
-    -webkit-touch-callout: none;
-     -webkit-user-select: none;
+    transition: all 0.2s;
+}
+
+.dialog .menu .selected {
+    transition: all 0.2s;
+    background-color: #303F9F;
+}
+
+.dialog .menu .title {
+    font-size: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    font-family: 'Roboto-Medium';
+    color: #fff;
+    -webkit-user-select: none;
+}
+
+.dialog .content {
+    list-style: none;
+    height: 100%;
+    width: calc(100% - 200px);
+    position: absolute;
+    margin: 0;
+    top: 0;
+    right: 0;
+    padding: 0;
+}
+
+.dialog .content li {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
