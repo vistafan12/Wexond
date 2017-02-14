@@ -11,6 +11,10 @@ export default class Bar extends React.Component {
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.ripple = this.ripple.bind(this);
+
+        //global properties
+        this.timeout = null;
+        this.shown = false;
     }
     /*
     lifecycle
@@ -20,10 +24,19 @@ export default class Bar extends React.Component {
             nodes = this.refs.bar.getElementsByClassName('bar-icon');
         document.body.addEventListener('mousemove', function(e) {
             if (e.pageY <= 32) {
+                clearTimeout(t.timeout);
                 t.show();
+                t.shown = true;
+            }
+            if (e.pageY < 82 && t.shown) {
+                clearTimeout(t.timeout);
             }
             if (e.pageY > 82 && !t.openedMenu && !t.locked) {
-                t.hide();
+                clearTimeout(t.timeout);
+                t.timeout = setTimeout(function() {
+                    t.hide();
+                    t.shown = false;
+                }, 300);
             }
         });
     }
