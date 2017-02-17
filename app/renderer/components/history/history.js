@@ -18,18 +18,19 @@ export default class History extends React.Component {
         this.resize = this.resize.bind(this);
         this.getHistory = this.getHistory.bind(this);
         this.loadHistory = this.loadHistory.bind(this);
-        this.initializeItems = this.initializeItems.bind(this);
         this.cancelSelection = this.cancelSelection.bind(this);
+        this.deleteSelected = this.deleteSelected.bind(this);
         //global properties
         this.toolbars = [];
         this.cards = [];
+        this.items = [];
         this.state = {
             checkedItems: 0,
             className1: 'history-toolbar-show',
             className2: 'history-toolbar-hide',
             toolbarBackgroundColor: '#03A9F4',
             toolbarColor: '#000',
-            historyCards: []
+            cards: []
         }
     }
 
@@ -58,17 +59,26 @@ export default class History extends React.Component {
         }
     }
 
-    getHistory() {
-        return this;
-    }
+    deleteSelected () {
+        var t = this;
+        for (var i = 0; i <= this.items.length; i++) {
+            if (this.items[i] != null && this.items[i].refs.checkbox != null) {
 
-    initializeItems(r) {
-        var h = getHistoryData();
-        for (var z = 0; z < h.history.length; z++) {
-            if (r.props.object.title == h.history[z].date) {
-                r.addItem({title: h.history[z].title});
+                if (this.items[i].refs.checkbox.checked) {
+                    var item = this.items[i];
+                    item.setState(()=> {
+                        t.items.splice(i, 1);
+                        return {render: false};
+                    });
+                }
             }
         }
+        this.setState({checkedItems: 0});
+        this.toggleToolbar(1);
+    }
+
+    getHistory() {
+        return this;
     }
 
     loadHistory() {
@@ -82,16 +92,17 @@ export default class History extends React.Component {
 
         for (var i = 0; i < headers.length; i++) {
             var newState = this.state;
-            newState.historyCards.push({title: headers[i]});
+            newState.cards.push({title: headers[i]});
             this.setState(newState);
         }
     }
 
     cancelSelection() {
-        for (var x = 0; x < this.cards.length; x++) {
-            for (var z = 0; z < this.cards[x].items.length; z++) {
-
-                this.cards[x].items[z].refs.checkbox.unCheck();
+        for (var i = 0; i < this.items.length; i++) {
+            if (this.items[i] != null && this.items[i].refs.checkbox != null) {
+                if (this.items[i].refs.checkbox.checked) {
+                    this.items[i].refs.checkbox.unCheck();
+                }
             }
         }
         this.setState({checkedItems: 0});
@@ -100,6 +111,7 @@ export default class History extends React.Component {
 
     render() {
         this.toolbars = [];
+        this.cards = [];
         var opacity = (this.state.toolbarColor == '#fff')
             ? 1
             : 0.9;
@@ -120,19 +132,19 @@ export default class History extends React.Component {
                         <ToolbarIcon onClick={this.cancelSelection} rippleColor={this.state.toolbarColor} inverted={inverted} image="browser/img/tabbar/close.png"></ToolbarIcon>
                         <ToolbarItem color={this.state.toolbarColor} opacity={opacity} marginLeft={16}>Selected items: {this.state.checkedItems}</ToolbarItem>
                         <ToolbarItem position="right">
-                            <FlatButton textOpacity={opacity} rippleColor={this.state.toolbarColor} color={this.state.toolbarColor}>
+                            <FlatButton onClick={this.deleteSelected} textOpacity={opacity} rippleColor={this.state.toolbarColor} color={this.state.toolbarColor}>
                                 DELETE
                             </FlatButton>
                         </ToolbarItem>
                         <ToolbarItem position="right">
-                            <FlatButton textOpacity={opacity} rippleColor={this.state.toolbarColor} color={this.state.toolbarColor}>
+                            <FlatButton onClick={this.cancelSelection} textOpacity={opacity} rippleColor={this.state.toolbarColor} color={this.state.toolbarColor}>
                                 CANCEL
                             </FlatButton>
                         </ToolbarItem>
                     </div>
                 </Toolbar>
                 <div ref="cardsContainer" className="history-cards-container">
-                    {this.state.historyCards.map((object, key) => <HistoryCard ref={(r) => {this.initializeItems(r); this.cards.push(r);}} object={object} key={key} getHistory={this.getHistory}></HistoryCard>)}
+                    {this.state.cards.map((object, key) => <HistoryCard ref={(r)=>this.cards.push(r)} object={object} key={key} getHistory={this.getHistory}></HistoryCard>)}
                 </div>
             </div>
         );

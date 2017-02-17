@@ -8,10 +8,15 @@ export default class Item extends React.Component {
         //binds
         this.checkedChanged = this.checkedChanged.bind(this);
         //global properties
-
+        this.state = {
+            render: true
+        }
     }
     componentDidMount() {
 
+    }
+    componentWillUnmount() {
+        this.props.getHistory().items.splice(this.props.getHistory().items.indexOf(this), 1);
     }
     checkedChanged(e) {
         var checkedItems = this.props.getHistory().state.checkedItems;
@@ -28,13 +33,17 @@ export default class Item extends React.Component {
         }
     }
     render() {
-        return (
-            <div className="history-item-root">
-                <Checkbox ref="checkbox" onCheckedChanged={this.checkedChanged} className="history-item-checkbox"></Checkbox>
-                <div className="history-item-hour history-item">11:42</div>
-                <div className="history-item-title history-item">{this.props.object.title}</div>
-                <div className="history-item-domain history-item">www.facebook.com</div>
-            </div>
-        )
+        if (this.state.render) {
+            return (
+                <div className="history-item-root">
+                    <Checkbox ref="checkbox" onCheckedChanged={this.checkedChanged} className="history-item-checkbox"></Checkbox>
+                    <div className="history-item-hour history-item">{this.props.object.time}</div>
+                    <div className="history-item-title history-item">{this.props.object.title}</div>
+                    <div className="history-item-domain history-item">www.facebook.com</div>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }

@@ -256,9 +256,8 @@ export default class Page extends React.Component {
     pageTitleUpdated(title) {
         var webview = this.refs.webview;
         this.getTab().changeTitle(title.title);
-        Storage.saveHistory(webview.getTitle(), webview.getURL());
     }
-    frameFinishLoad() {
+    frameFinishLoad(e) {
         var webview = this.refs.webview,
             bar = this.refs.bar;
         if (webview.getURL() != this.props.getApp().defaultURL) {
@@ -267,6 +266,9 @@ export default class Page extends React.Component {
         } else {
             bar.locked = true;
             bar.show();
+        }
+        if (e.isMainFrame) {
+            Storage.saveHistory(webview.getTitle(), webview.getURL());
         }
     }
     faviconUpdated(favicons) {

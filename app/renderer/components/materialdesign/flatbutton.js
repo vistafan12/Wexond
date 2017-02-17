@@ -21,7 +21,7 @@ export default class FlatButton extends React.Component {
     }
     render() {
         return (
-            <div style={this.props.style}>
+            <div onClick={this.props.onClick} style={this.props.style}>
                 <div className="pointer" onMouseDown={this.onMouseDown} style={{opacity: this.props.opacity}}>
                     <div ref="button" className="material-button ripple" style={{backgroundColor: this.props.backgroundColor}}>
                         <div style={{color: this.props.color, opacity: this.props.textOpacity}}>

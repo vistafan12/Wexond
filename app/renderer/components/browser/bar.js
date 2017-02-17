@@ -22,7 +22,13 @@ export default class Bar extends React.Component {
     componentDidMount() {
         var t = this,
             nodes = this.refs.bar.getElementsByClassName('bar-icon');
+
         document.body.addEventListener('mousemove', function(e) {
+            if (e.pageY > 120 && !t.openedMenu && !t.locked) {
+                t.hide();
+                t.shown = false;
+                console.log("siema");
+            }
             if (e.pageY <= 32) {
                 clearTimeout(t.timeout);
                 t.show();
@@ -30,13 +36,6 @@ export default class Bar extends React.Component {
             }
             if (e.pageY < 82 && t.shown) {
                 clearTimeout(t.timeout);
-            }
-            if (e.pageY > 82 && !t.openedMenu && !t.locked) {
-                clearTimeout(t.timeout);
-                t.timeout = setTimeout(function() {
-                    t.hide();
-                    t.shown = false;
-                }, 300);
             }
         });
     }
