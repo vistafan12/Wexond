@@ -37,7 +37,7 @@ export default class MDMenu extends React.Component {
         }
         window.addEventListener('resize', function() {
             var offset = window.innerWidth / 2 - t.props.getPage().refs.bar.refs.bar.offsetWidth / 2;
-            t.refs.menu.css({display: 'block', right: offset + 'px'});
+            t.refs.menu.css({right: offset + 'px'});
         });
         window.addEventListener('click', function() {
             if (t.openedMenu)

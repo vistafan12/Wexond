@@ -6,9 +6,8 @@ import ToolbarIcon from '../materialdesign/toolbaricon.js';
 import ToolbarItem from '../materialdesign/toolbaritem.js';
 import ToolbarTitle from '../materialdesign/toolbartitle.js';
 
-import Item from './item.js';
+import HistoryCard from './historycard.js';
 import FlatButton from '../materialdesign/flatbutton.js';
-import Card from '../materialdesign/card.js';
 import {CSSPlugin, TweenMax} from 'gsap';
 
 export default class History extends React.Component {
@@ -18,6 +17,9 @@ export default class History extends React.Component {
         this.toggleToolbar = this.toggleToolbar.bind(this);
         this.resize = this.resize.bind(this);
         this.getHistory = this.getHistory.bind(this);
+        this.loadHistory = this.loadHistory.bind(this);
+        this.initializeItems = this.initializeItems.bind(this);
+        this.cancelSelection = this.cancelSelection.bind(this);
         //global properties
         this.toolbars = [];
         this.cards = [];
@@ -26,7 +28,8 @@ export default class History extends React.Component {
             className1: 'history-toolbar-show',
             className2: 'history-toolbar-hide',
             toolbarBackgroundColor: '#03A9F4',
-            toolbarColor: '#000'
+            toolbarColor: '#000',
+            historyCards: []
         }
     }
 
@@ -34,6 +37,7 @@ export default class History extends React.Component {
         this.toggleToolbar(1);
         this.resize();
         window.addEventListener('resize', this.resize);
+        this.loadHistory();
     }
 
     resize() {
@@ -48,19 +52,9 @@ export default class History extends React.Component {
 
     toggleToolbar(show) {
         if (show == 1) {
-            this.setState({
-                className1: 'history-toolbar-show',
-                className2: 'history-toolbar-hide',
-                toolbarBackgroundColor: '#03A9F4',
-                toolbarColor: '#000'
-            });
+            this.setState({className1: 'history-toolbar-show', className2: 'history-toolbar-hide', toolbarBackgroundColor: '#03A9F4', toolbarColor: '#000'});
         } else {
-            this.setState({
-                className2: 'history-toolbar-show',
-                className1: 'history-toolbar-hide',
-                toolbarBackgroundColor: '#1E88E5',
-                toolbarColor: '#fff'
-            });
+            this.setState({className2: 'history-toolbar-show', className1: 'history-toolbar-hide', toolbarBackgroundColor: '#1E88E5', toolbarColor: '#fff'});
         }
     }
 
@@ -68,18 +62,62 @@ export default class History extends React.Component {
         return this;
     }
 
+    initializeItems(r) {
+        var h = getHistoryData();
+        for (var z = 0; z < h.history.length; z++) {
+            if (r.props.object.title == h.history[z].date) {
+                r.addItem({title: h.history[z].title});
+            }
+        }
+    }
+
+    loadHistory() {
+        var h = getHistoryData();
+        var headers = [];
+        for (var i = 0; i < h.history.length; i++) {
+            if (!isInArray(h.history[i].date, headers)) {
+                headers.push(h.history[i].date);
+            }
+        }
+
+        for (var i = 0; i < headers.length; i++) {
+            var newState = this.state;
+            newState.historyCards.push({title: headers[i]});
+            this.setState(newState);
+        }
+    }
+
+    cancelSelection() {
+        for (var x = 0; x < this.cards.length; x++) {
+            for (var z = 0; z < this.cards[x].items.length; z++) {
+
+                this.cards[x].items[z].refs.checkbox.unCheck();
+            }
+        }
+        this.setState({checkedItems: 0});
+        this.toggleToolbar(1);
+    }
+
     render() {
         this.toolbars = [];
-        var opacity = (this.state.toolbarColor == '#fff') ? 1 : 0.9;
-        var inverted = (this.state.toolbarColor == '#fff') ? true : false;
+        var opacity = (this.state.toolbarColor == '#fff')
+            ? 1
+            : 0.9;
+        var inverted = (this.state.toolbarColor == '#fff')
+            ? true
+            : false;
         return (
             <div>
-                <Toolbar backgroundColor={this.state.toolbarBackgroundColor} style={{position: 'fixed', zIndex: 9999, top:0}} ref="toolbar">
+                <Toolbar backgroundColor={this.state.toolbarBackgroundColor} style={{
+                    position: 'fixed',
+                    zIndex: 9999,
+                    top: 0
+                }} ref="toolbar">
                     <div className={this.state.className1} id="t1">
                         <ToolbarTitle>History</ToolbarTitle>
                     </div>
                     <div className={this.state.className2} id="t2">
-                        <ToolbarIcon rippleColor={this.state.toolbarColor} inverted={inverted} image="browser/img/tabbar/close.png"></ToolbarIcon>
+                        <ToolbarIcon onClick={this.cancelSelection} rippleColor={this.state.toolbarColor} inverted={inverted} image="browser/img/tabbar/close.png"></ToolbarIcon>
                         <ToolbarItem color={this.state.toolbarColor} opacity={opacity} marginLeft={16}>Selected items: {this.state.checkedItems}</ToolbarItem>
                         <ToolbarItem position="right">
                             <FlatButton textOpacity={opacity} rippleColor={this.state.toolbarColor} color={this.state.toolbarColor}>
@@ -94,13 +132,12 @@ export default class History extends React.Component {
                     </div>
                 </Toolbar>
                 <div ref="cardsContainer" className="history-cards-container">
-                    <Card ref={(r)=>this.cards.push(r)} className="history-card" header="History">
-                        <Item getHistory={this.getHistory}></Item>
-                    </Card>
+                    {this.state.historyCards.map((object, key) => <HistoryCard ref={(r) => {this.initializeItems(r); this.cards.push(r);}} object={object} key={key} getHistory={this.getHistory}></HistoryCard>)}
                 </div>
             </div>
         );
     }
 }
 
-ReactDOM.render(<History/>, document.getElementById('app'));
+ReactDOM.render(
+    <History/>, document.getElementById('app'));

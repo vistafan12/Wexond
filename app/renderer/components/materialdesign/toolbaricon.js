@@ -21,12 +21,12 @@ export default class ToolbarIcon extends React.Component {
             imageClassName = ((this.props.inverted) ? 'invert' : '') + " toolbar-image";
 
         return (
-            <div ref="toolbarIcon" onMouseDown={this.onMouseDown} className={iconClassName}>
-                <div className={imageClassName} style={{
-                    backgroundImage: 'url(' + this.props.image + ')',
-                    opacity: this.props.opacity
-                }}></div>
-            </div>
+                <div ref="toolbarIcon" onClick={this.props.onClick} className={iconClassName}>
+                    <div onMouseDown={this.onMouseDown} className={imageClassName} style={{
+                        backgroundImage: 'url(' + this.props.image + ')',
+                        opacity: this.props.opacity
+                    }}></div>
+                </div>
         );
     }
 }
