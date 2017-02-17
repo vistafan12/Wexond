@@ -5,10 +5,10 @@
   "license": "MIT",
   "repository": "sential/wexond",
   "scripts": {
-    "start": "electron build/main.bundle.js",
+    "start": "cross-env ENV=dev electron build/main.bundle.js",
     "applets": "webpack --config webpack.applets.js && webpack-dev-server --hot --inline --config webpack.applets.js --port 8181",
     "browser": "webpack && webpack-dev-server --hot --inline --port 8080",
-    "build-package":"webpack --config webpack.config.production.js -p && webpack --config webpack.applets.production.js -p",
+    "build-package":"webpack --config webpack.config.production.js && webpack --config webpack.applets.production.js",
     "all": "npm run build-package && electron-packager . --all Wexond --overwrite",
     "win32": "npm run build-package && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
     "win64": "npm run build-package && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
@@ -18,7 +18,7 @@
   "dependencies": {
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
-    "electron": "^1.4.15",
+    "electron": "latest",
     "gsap": "latest",
     "node-dir": "latest",
     "react": "latest",

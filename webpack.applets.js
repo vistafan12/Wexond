@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    devtool: "eval-source-map",
+    devtool: "cheap-module-eval-source-map",
     entry: {
         history: './app/renderer/components/history/history.js',
         newtab: './app/renderer/components/newtab/newtab.js'

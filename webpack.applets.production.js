@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    devtool: "eval-source-map",
+    devtool: "cheap-module-source-map",
     entry: {
         history: './app/renderer/components/history/history.js',
         newtab: './app/renderer/components/newtab/newtab.js'
@@ -18,9 +18,17 @@ module.exports = {
     },
 
     plugins: [
-        /* TODO: UglifyJs is not working with Babel 6 new webpack.optimize.UglifyJsPlugin() */
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+              warnings: false
+            },
+            output: {
+              comments: false
+            }
+        }),
         new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('production')
+            'process.env.NODE_ENV': JSON.stringify('production')
         })
     ],
 

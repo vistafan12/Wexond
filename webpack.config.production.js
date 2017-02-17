@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     target: "electron",
-    devtool: "eval-source-map",
+    devtool: "cheap-module-source-map",
     entry: {
         entry: './app/renderer/entry.js',
         main: './app/main/main.js'
@@ -43,7 +43,15 @@ module.exports = {
     },
 
     plugins: [
-        /* TODO: UglifyJs is not working with Babel 6 new webpack.optimize.UglifyJsPlugin() */
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+              warnings: false
+            },
+            output: {
+              comments: false
+            }
+        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         })

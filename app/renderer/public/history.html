@@ -41,10 +41,10 @@
     var id = setInterval(function() {
         var env = getEnv();
         if (env != "s") {
-            if (env != 'production') {
-                loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
-            } else {
+            if (env != 'dev') {
                 loadScripts(['build/history.bundle.js']);
+            } else {
+                loadScripts(['http://localhost:8181/build/history.bundle.js', 'http://localhost:8181/webpack-dev-server.js']);
             }
             clearInterval(id);
         }
