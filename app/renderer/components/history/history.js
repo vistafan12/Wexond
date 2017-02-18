@@ -88,21 +88,39 @@ export default class History extends React.Component {
         return this;
     }
 
-    loadHistory() {
+    loadHistory(search = "") {
+        for (var i = 0; i < this.cards.length; i++) {
+            if (this.cards[i] != null) {
+                this.cards[i].setState({render: false});
+            }
+        }
         var h = getHistoryData();
         h.history = h.history.reverse();
         var headers = [];
-        for (var i = 0; i < h.history.length; i++) {
-            if (!isInArray(h.history[i].date, headers)) {
-                headers.push(h.history[i].date);
+        if (search != "") {
+            this.refs.searchHint.css('display', 'none');
+            for (var i = 0; i < h.history.length; i++) {
+                if (h.history[i].title.toLowerCase().startsWith(search.toLowerCase())) {
+                    if (!isInArray(h.history[i].date, headers)) {
+                        headers.push(h.history[i].date);
+                    }
+                }
+            }
+        } else {
+            this.refs.searchHint.css('display', 'block');
+            for (var i = 0; i < h.history.length; i++) {
+                if (!isInArray(h.history[i].date, headers)) {
+                    headers.push(h.history[i].date);
+                }
             }
         }
-
         for (var i = 0; i < headers.length; i++) {
             var newState = this.state;
-            newState.cards.push({title: headers[i]});
+            newState.cards.push({title: headers[i], search: search});
             this.setState(newState);
         }
+
+
     }
 
     cancelSelection() {
@@ -135,6 +153,11 @@ export default class History extends React.Component {
                 }} ref="toolbar">
                     <div className={this.state.className1} id="t1">
                         <ToolbarTitle>History</ToolbarTitle>
+                        <div className="history-toolbar-searchbox">
+                            <div className="history-toolbar-searchicon invert"></div>
+                            <input onInput={(e)=> this.loadHistory(e.target.value)} className="history-toolbar-input" ref="search"></input>
+                            <div onClick={()=> {this.refs.search.focus();}} className="history-toolbar-search-hint text" ref="searchHint">Search</div>
+                        </div>
                     </div>
                     <div className={this.state.className2} id="t2">
                         <ToolbarIcon onClick={this.cancelSelection} rippleColor={this.state.toolbarColor} inverted={inverted} image="browser/img/tabbar/close.png"></ToolbarIcon>

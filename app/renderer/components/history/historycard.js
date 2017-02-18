@@ -10,7 +10,8 @@ export default class HistoryCard extends React.Component {
         this.addItem = this.addItem.bind(this);
         //global properties
         this.state = {
-            items: []
+            items: [],
+            render: true
         }
     }
     componentDidMount() {
@@ -22,8 +23,15 @@ export default class HistoryCard extends React.Component {
                 timeObj.setHours(h.history[z].time.split(":")[0], h.history[z].time.split(":")[1], 0, 0);
                 var time1 = timeObj.toString();
                 var timeString = time1.split(" ")[4].split(":")[0] + ":" + time1.split(" ")[4].split(":")[1];
+                if (this.props.object.search != "") {
+                    if (h.history[z].title.toLowerCase().startsWith(this.props.object.search.toLowerCase())) {
+                        this.addItem({title: h.history[z].title, time: timeString, id: h.history[z].id});
+                    }
+                } else {
+                    this.addItem({title: h.history[z].title, time: timeString, id: h.history[z].id});
+                }
 
-                this.addItem({title: h.history[z].title, time: timeString, id: h.history[z].id});
+
             }
         }
     }
@@ -39,12 +47,17 @@ export default class HistoryCard extends React.Component {
     }
 
     render() {
-        return (
-            <div style={this.props.style}>
-                <Card header={this.props.object.title} className="history-card">
-                    {this.state.items.map((object, key) => <Item ref={(r)=> this.props.getHistory().items.push(r)} getParent={()=> {return this;}} object={object} key={key} getHistory={this.props.getHistory}></Item>)}
-                </Card>
-            </div>
-        );
+        if (this.state.render) {
+            return (
+                <div style={this.props.style}>
+                    <Card header={this.props.object.title} className="history-card">
+                        {this.state.items.map((object, key) => <Item ref={(r)=> this.props.getHistory().items.push(r)} getParent={()=> {return this;}} object={object} key={key} getHistory={this.props.getHistory}></Item>)}
+                    </Card>
+                </div>
+            );
+        } else {
+            return null;
+        }
+
     }
 }
