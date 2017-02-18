@@ -46,6 +46,3 @@
 .invert {
     -webkit-filter: invert(100%);
 }
-.text {
-    cursor:text;
-}

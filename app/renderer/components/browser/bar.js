@@ -27,7 +27,6 @@ export default class Bar extends React.Component {
             if (e.pageY > 120 && !t.openedMenu && !t.locked) {
                 t.hide();
                 t.shown = false;
-                console.log("siema");
             }
             if (e.pageY <= 32) {
                 clearTimeout(t.timeout);

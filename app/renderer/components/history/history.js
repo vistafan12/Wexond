@@ -1,11 +1,7 @@
 'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Toolbar from '../materialdesign/toolbar.js';
-import ToolbarIcon from '../materialdesign/toolbaricon.js';
-import ToolbarItem from '../materialdesign/toolbaritem.js';
-import ToolbarTitle from '../materialdesign/toolbartitle.js';
-
+import {Toolbar, ToolbarIcon, ToolbarItem, ToolbarTitle} from '../materialdesign/toolbar.js';
 import HistoryCard from './historycard.js';
 import FlatButton from '../materialdesign/flatbutton.js';
 import {CSSPlugin, TweenMax} from 'gsap';
