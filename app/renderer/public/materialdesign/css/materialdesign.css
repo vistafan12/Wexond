@@ -46,12 +46,6 @@
 .invert {
     -webkit-filter: invert(100%);
 }
-<<<<<<< HEAD
 .text {
     cursor:text;
-=======
-
-.clear-both {
-    clear:both;
->>>>>>> origin/master
 }
