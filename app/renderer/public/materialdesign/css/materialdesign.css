@@ -5,6 +5,10 @@
 @import url("switch.css");
 @import url("toolbar.css");
 @import url("card.css");
+@import url("snackbar.css");
+@import url("textfield.css");
+@import url("dialog.css");
+@import url("menu.css");
 @font-face {
     font-family: Roboto;
     src: url('../fonts/Roboto.ttf');
@@ -16,19 +20,33 @@
 }
 
 @font-face {
+    font-family: Roboto-Regular;
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
     font-family: Roboto-Light;
     src: url('../fonts/Roboto-Light.ttf');
 }
 
 .no-select {
+    -webkit-touch-callout: none;
     -webkit-user-select: none;
-    cursor: default;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .pointer {
     -webkit-user-select: none;
     cursor: pointer;
 }
+
 .invert {
     -webkit-filter: invert(100%);
+}
+
+.clear-both {
+    clear:both;
 }
