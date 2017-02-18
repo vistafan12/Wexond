@@ -15,6 +15,7 @@ export default class HistoryCard extends React.Component {
     }
     componentDidMount() {
         var h = getHistoryData();
+        h.history = h.history.reverse();
         for (var z = 0; z < h.history.length; z++) {
             if (this.props.object.title == h.history[z].date) {
                 var timeObj = new Date();
@@ -39,7 +40,7 @@ export default class HistoryCard extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={this.props.style}>
                 <Card header={this.props.object.title} className="history-card">
                     {this.state.items.map((object, key) => <Item ref={(r)=> this.props.getHistory().items.push(r)} getParent={()=> {return this;}} object={object} key={key} getHistory={this.props.getHistory}></Item>)}
                 </Card>

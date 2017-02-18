@@ -61,11 +61,16 @@ export default class History extends React.Component {
 
     deleteSelected () {
         var t = this;
+        var h = getHistoryData();
         for (var i = 0; i <= this.items.length; i++) {
             if (this.items[i] != null && this.items[i].refs.checkbox != null) {
-
                 if (this.items[i].refs.checkbox.checked) {
                     var item = this.items[i];
+                    for (var x = 0; x < h.history.length; x++) {
+                        if (h.history[x].id == item.props.object.id) {
+                            h.history.splice(x, 1);
+                        }
+                    }
                     item.setState(()=> {
                         t.items.splice(i, 1);
                         return {render: false};
@@ -73,6 +78,8 @@ export default class History extends React.Component {
                 }
             }
         }
+        saveHistory(JSON.stringify(h));
+        console.log(h);
         this.setState({checkedItems: 0});
         this.toggleToolbar(1);
     }
@@ -83,6 +90,7 @@ export default class History extends React.Component {
 
     loadHistory() {
         var h = getHistoryData();
+        h.history = h.history.reverse();
         var headers = [];
         for (var i = 0; i < h.history.length; i++) {
             if (!isInArray(h.history[i].date, headers)) {
@@ -144,7 +152,7 @@ export default class History extends React.Component {
                     </div>
                 </Toolbar>
                 <div ref="cardsContainer" className="history-cards-container">
-                    {this.state.cards.map((object, key) => <HistoryCard ref={(r)=>this.cards.push(r)} object={object} key={key} getHistory={this.getHistory}></HistoryCard>)}
+                    {this.state.cards.map((object, key) => <HistoryCard style={{marginBottom: 16}} ref={(r)=>this.cards.push(r)} object={object} key={key} getHistory={this.getHistory}></HistoryCard>)}
                 </div>
             </div>
         );
