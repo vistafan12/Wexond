@@ -267,7 +267,7 @@ export default class Page extends React.Component {
             bar.locked = true;
             bar.show();
         }
-        if (e.isMainFrame) {
+        if (e.isMainFrame && !webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             Storage.saveHistory(webview.getTitle(), webview.getURL());
         }
     }
