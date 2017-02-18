@@ -104,6 +104,7 @@ body {
     float: left;
     position: relative;
     top: 50%;
+    opacity: 0.6;
     transform: translateY(-50%);
     margin-left: 8px;
 }
@@ -124,7 +125,7 @@ body {
     opacity: 0.6;
     top: 9px;
     position: absolute;
-    left: 36px;
+    left: 40px;
 }
 
 @keyframes history-toolbar-show-animation {
