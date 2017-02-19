@@ -35,6 +35,7 @@ export default class Page extends React.Component {
         this.focusSearchInput = this.focusSearchInput.bind(this);
         this.getMenu = this.getMenu.bind(this);
         this.openNewTab = this.openNewTab.bind(this);
+        this.newWindow = this.newWindow.bind(this);
         //global properties
         this.menu = new Menu();
         this.xToInspect = null;
@@ -69,6 +70,7 @@ export default class Page extends React.Component {
         webview.addEventListener('dom-ready', this.ready);
         webview.addEventListener('did-frame-finish-load', this.frameFinishLoad);
         webview.addEventListener('page-favicon-updated', this.faviconUpdated);
+        webview.addEventListener('new-window', this.newWindow);
 
         this.colors = new Colors(this.getWebView());
         this.colorInterval = setInterval(this.updateColors, 200);
@@ -270,6 +272,10 @@ export default class Page extends React.Component {
         if (e.isMainFrame && !webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             Storage.saveHistory(webview.getTitle(), webview.getURL());
         }
+        this.getTab().changeTitle(title.title);
+    }
+    newWindow(e) {
+        this.props.getApp().addPage({url: e.url, select: true});
     }
     faviconUpdated(favicons) {
         this.getTab().changeFavicon(favicons.favicons[0]);
