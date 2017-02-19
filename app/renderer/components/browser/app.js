@@ -8,18 +8,13 @@ require('../../public/global/js/main.js');
 export default class App extends React.Component {
     constructor() {
         super();
-        //binds
-        this.addTab = this.addTab.bind(this);
-        this.addPage = this.addPage.bind(this);
-        this.getTabsToCreate = this.getTabsToCreate.bind(this);
-        this.getApp = this.getApp.bind(this);
-        //state
+        //global properties
+        this.defaultURL = 'wexond://newtab/';
+        this.defaultOptions = {url: this.defaultURL, select: true};
         this.state = {
             pagesToCreate: [],
             tabsToCreate: []
         };
-        //properties
-        this.defaultURL = 'wexond://newtab/';
     }
     /*
     lifecycle
@@ -59,7 +54,7 @@ export default class App extends React.Component {
     * adds tab to render queue
     * pageObj - page object
     */
-    addTab(pageObj) {
+    addTab = (pageObj) => {
         var state = this.state;
         state.tabsToCreate.push(pageObj);
         this.setState(state);
@@ -68,40 +63,27 @@ export default class App extends React.Component {
     * adds page to render queue
     * options (optional) - Object {url} default: {url: this.defaultURL, select: true}
     */
-    addPage(options = {
-        url: this.defaultURL,
-        select: true
-    }) {
+    addPage = (options = this.defaultOptions) => {
         var state = this.state;
         state.pagesToCreate.push(options);
         this.setState(state);
     }
     /*
-    * gets tabs render queue
-    * returns array of tabs to create
+    * returns this object
     */
-    getTabsToCreate() {
-        return this.state.tabsToCreate;
-    }
-    /*
-    * returns this
-    */
-    getApp() {
+    getApp = () => {
         return this;
     }
 
     render() {
         var t = this;
-
         return (
             <div>
-
-                <Titlebar getApp={t.getApp} ref="titlebar"></Titlebar>
+                <Titlebar getApp={this.getApp} ref="titlebar"></Titlebar>
 
                 {this.state.pagesToCreate.map(function(object, i) {
                     return <Page index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
                 })}
-
             </div>
         );
     }

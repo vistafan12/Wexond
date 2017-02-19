@@ -17,6 +17,7 @@ export default class Tab extends React.Component {
         this.onDragStart = this.onDragStart.bind(this);
         this.onRelease = this.onRelease.bind(this);
         this.onDrag = this.onDrag.bind(this);
+        this.getTitle = this.getTitle.bind(this);
         //global properties
         this.locked = false;
         this.animationDuration = 150;
@@ -40,7 +41,7 @@ export default class Tab extends React.Component {
             t = this,
             tabbar = this.props.getTabBar();
 
-        this.getPage().associateTab(pass);
+        this.getPage().getTab = pass;
         tabs.push(this);
 
         TweenMax.set(t.tab, {css:{left: tabbar.getPositions()[tabs.indexOf(t)]}});
@@ -59,8 +60,8 @@ export default class Tab extends React.Component {
             }});
         });
 
-        var extensions = this.getPage().getExtensions();
-        this.getPage().getExtensions().loadExtensions(this.getIndex(), function(data) {
+        var extensions = this.getPage().extensions;
+        extensions.loadExtensions(this.getIndex(), function(data) {
             extensions.addExtensionToMenu(data, t.getPage().refs.menu);
         });
         this.getPage().focusSearchInput();
@@ -193,6 +194,12 @@ export default class Tab extends React.Component {
         var state = this.state;
         state.title = newTitle;
         this.setState(state);
+    }
+    /*
+    * returns title string
+    */
+    getTitle() {
+        return this.state.title;
     }
     /*
     * changes favicon

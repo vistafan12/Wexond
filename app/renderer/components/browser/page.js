@@ -6,46 +6,24 @@ import Storage from '../../../classes/storage.js';
 import Extensions from '../../../classes/extensions.js';
 import Colors from '../../../classes/colors.js';
 import MDMenu from './menu.js';
+import Snackbar from '../materialdesign/snackbar.js';
 
 export default class Page extends React.Component {
     constructor() {
         super();
-        //binds
-        this.associateTab = this.associateTab.bind(this);
-        this.getPage = this.getPage.bind(this);
-        this.getWebView = this.getWebView.bind(this);
-        this.removePage = this.removePage.bind(this);
-        this.getSearchInput = this.getSearchInput.bind(this);
-        this.getSuggestions = this.getSuggestions.bind(this);
-        this.resize = this.resize.bind(this);
-        this.loadExtensions = this.loadExtensions.bind(this);
-        this.getExtensions = this.getExtensions.bind(this);
-        this.onResize = this.onResize.bind(this);
-        this.pageTitleUpdated = this.pageTitleUpdated.bind(this);
-        this.frameFinishLoad = this.frameFinishLoad.bind(this);
-        this.faviconUpdated = this.faviconUpdated.bind(this);
-        this.updateColors = this.updateColors.bind(this);
-        this.changeForeground = this.changeForeground.bind(this);
-        this.getTitlebar = this.getTitlebar.bind(this);
-        this.getTabbar = this.getTabbar.bind(this);
-        this.prepareContextMenu = this.prepareContextMenu.bind(this);
-        this.addContextMenuItem = this.addContextMenuItem.bind(this);
-        this.ready = this.ready.bind(this);
-        this.onContextMenu = this.onContextMenu.bind(this);
-        this.focusSearchInput = this.focusSearchInput.bind(this);
-        this.getMenu = this.getMenu.bind(this);
-        this.openNewTab = this.openNewTab.bind(this);
-        this.newWindow = this.newWindow.bind(this);
         //global properties
         this.menu = new Menu();
-        this.xToInspect = null;
-        this.yToInspect = null;
+        this.posToInspect = [];
         this.getTab = null;
         this.extensions = null;
-        //state
+        this.menuItems = [];
+        this.imageToSave = '';
+        this.linkToOpen = '';
+
         this.state = {
             render: true
         };
+
         checkFiles();
     }
     /*
@@ -54,27 +32,30 @@ export default class Page extends React.Component {
     componentDidMount() {
         this.prepareContextMenu();
         var pageObj = this.getPage,
-            webview = this.refs.webview,
-            bar = this.refs.bar,
-            background = '#FAFAFA',
+            webview = this.getWebView(),
+            bar = this.getBar(),
             t = this;
 
         this.select = this.props.select;
 
         this.props.getApp().addTab(pageObj);
         this.extensions = new Extensions();
-        this.resize();
 
+        this.resize();
         window.addEventListener('resize', this.onResize);
+
+        //webview events
         webview.addEventListener('page-title-updated', this.pageTitleUpdated);
         webview.addEventListener('dom-ready', this.ready);
         webview.addEventListener('did-frame-finish-load', this.frameFinishLoad);
         webview.addEventListener('page-favicon-updated', this.faviconUpdated);
         webview.addEventListener('new-window', this.newWindow);
 
+        //colors
         this.colors = new Colors(this.getWebView());
         this.colorInterval = setInterval(this.updateColors, 200);
 
+        //mouse events
         var lastLink = '';
         webview.addEventListener('ipc-message', function(e) {
             if (e.channel == 'scroll') {
@@ -87,183 +68,36 @@ export default class Page extends React.Component {
                 }
             }
             if (e.channel == 'LMB') {
-                t.refs.menu.hide();
+                t.getMenu().hide();
                 t.getSuggestions().hide();
             }
 
         });
-        this.refs.bar.locked = true;
-        this.refs.bar.show();
 
-    }
-    /*
-    * open new tab with url
-    */
-    openNewTab(u, select) {
-      this.props.getApp().addPage({url: u, select: select});
-    }
-    /*
-    * appends and prepares context menu items
-    */
-    prepareContextMenu() {
-        var webview = this.refs.webview,
-            t = this;
-        this.menu = new Menu();
-
-        t.backMenuItem = new MenuItem({
-            label: 'Back',
-            click() {
-                webview.goBack();
-            }
-        });
-        t.forwardMenuItem = new MenuItem({
-            label: 'Forward',
-            click() {
-                webview.goForward();
-            }
-        });
-        t.refreshMenuItem = new MenuItem({
-            label: 'Reload',
-            click() {
-                t.refs.bar.refresh();
-            }
-        });
-        t.openLinkInNewTabMenuItem = new MenuItem({
-            label: 'Open link in new tab',
-            click() {
-                if (t.linkToOpen != "") {
-                    //add new tab
-                    t.props.getApp().addPage({url: t.linkToOpen, select: false});
-                }
-            }
-        });
-        t.openImageInNewTabMenuItem = new MenuItem({
-            label: 'Open image in new tab',
-            click() {
-                if (t.imageToSave != "") {
-                    //add new tab
-                    t.props.getApp().addPage({url: t.imageToSave, select: false});
-                }
-            }
-        });
-        t.copyLinkMenuItem = new MenuItem({
-            label: 'Copy link address',
-            click() {
-                if (t.linkToOpen != "") {
-                    clipboard.writeText(t.linkToOpen);
-                }
-            }
-        });
-        t.saveImageAsMenuItem = new MenuItem({label: 'Save image as', click() {
-                //saves image as
-            }});
-        t.printMenuItem = new MenuItem({label: 'Print', click() {
-                //prints webpage
-            }});
-        t.inspectElementMenuItem = new MenuItem({
-            label: 'Inspect element',
-            click() {
-                webview.inspectElement(t.xToInspect, t.yToInspect);
-            }
-        });
-        t.viewSourceMenuItem = new MenuItem({label: 'View source', click() {
-                //views source
-            }});
-        t.separator1 = new MenuItem({type: 'separator'});
-        t.separator2 = new MenuItem({type: 'separator'});
-        t.addContextMenuItem(t.openLinkInNewTabMenuItem);
-        t.addContextMenuItem(t.openImageInNewTabMenuItem);
-        t.addContextMenuItem(t.backMenuItem);
-        t.addContextMenuItem(t.forwardMenuItem);
-        t.addContextMenuItem(t.refreshMenuItem);
-        t.addContextMenuItem(t.separator1);
-        t.addContextMenuItem(t.copyLinkMenuItem);
-        t.addContextMenuItem(t.saveImageAsMenuItem);
-        t.addContextMenuItem(t.printMenuItem);
-        t.addContextMenuItem(t.separator2);
-        t.addContextMenuItem(t.inspectElementMenuItem);
-        t.addContextMenuItem(t.viewSourceMenuItem);
-    }
-    addContextMenuItem(item) {
-        this.menu.append(item);
+        //when adding new tab don't hide bar
+        this.getBar().locked = true;
+        this.getBar().show();
     }
     /*
     events
     */
-    ready() {
-        var webview = this.refs.webview,
-            t = this;
+    onReady = () => {
+        var webview = this.getWebView();
 
         webview.getWebContents().removeListener('context-menu', this.onContextMenu);
         webview.getWebContents().on('context-menu', this.onContextMenu, false);
         webview.getWebContents().send('env', process.env.ENV);
-
     }
-    onContextMenu(e, params) {
-        var webview = this.refs.webview,
-            t = this;
-        e.preventDefault();
-        t.imageToSave = '';
-        t.linkToOpen = '';
-        if (params.mediaType == 'image') {
-            t.imageToSave = params.srcURL;
-        } else {
-            t.imageToSave = '';
-        }
-        t.linkToOpen = params.linkURL;
-
-        if (t.linkToOpen == "") {
-            t.openLinkInNewTabMenuItem.visible = false;
-            t.copyLinkMenuItem.visible = false;
-        } else {
-            t.openLinkInNewTabMenuItem.visible = true;
-            t.copyLinkMenuItem.visible = true;
-        }
-
-        if (t.imageToSave == "") {
-            t.saveImageAsMenuItem.visible = false;
-            t.openImageInNewTabMenuItem.visible = false;
-        } else {
-            t.saveImageAsMenuItem.visible = true;
-            t.openImageInNewTabMenuItem.visible = true;
-        }
-
-        if (t.imageToSave == "" && t.linkToOpen == "") {
-            t.backMenuItem.visible = true;
-            t.forwardMenuItem.visible = true;
-            t.refreshMenuItem.visible = true;
-            t.printMenuItem.visible = true;
-        } else {
-            t.backMenuItem.visible = false;
-            t.forwardMenuItem.visible = false;
-            t.refreshMenuItem.visible = false;
-            t.printMenuItem.visible = false;
-        }
-
-        if (webview.canGoBack()) {
-            t.backMenuItem.enabled = true;
-        } else {
-            t.backMenuItem.enabled = false;
-        }
-        if (webview.canGoForward()) {
-            t.forwardMenuItem.enabled = true;
-        } else {
-            t.forwardMenuItem.enabled = false;
-        }
-
-        t.xToInspect = params.x;
-        t.yToInspect = params.y;
-        t.menu.popup(remote.getCurrentWindow());
-    }
-    pageTitleUpdated(title) {
-        var webview = this.refs.webview;
+    onPageTitleUpdate = (title) => {
+        var webview = this.getWebView();
         this.getTab().changeTitle(title.title);
+        this.title = title.title;
     }
-    frameFinishLoad(e) {
-        var webview = this.refs.webview,
-            bar = this.refs.bar;
+    onFrameFinishLoad = (e) => {
+        var webview = this.getWebView(),
+            bar = this.getBar();
         if (webview.getURL() != this.props.getApp().defaultURL) {
-            bar.refs.searchInput.value = webview.getURL();
+            bar.getSearchInput().value = webview.getURL();
             bar.locked = false;
         } else {
             bar.locked = true;
@@ -272,58 +106,173 @@ export default class Page extends React.Component {
         if (e.isMainFrame && !webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             Storage.saveHistory(webview.getTitle(), webview.getURL());
         }
+
+        this.getBar().getFavouriteIcon().style.display = 'block';
         this.getTab().changeTitle(title.title);
     }
-    newWindow(e) {
+    onNewWindow = (e) => {
         this.props.getApp().addPage({url: e.url, select: true});
     }
-    faviconUpdated(favicons) {
+    onFaviconUpdated = (favicons) => {
         this.getTab().changeFavicon(favicons.favicons[0]);
     }
-    onResize() {
+    onResize = () => {
         this.resize();
+    }
+    onContextMenu = (e, params) => {
+
+        /*
+        * Menu items:
+        * 0: back
+        * 1: forward
+        * 2: refresh
+        * 3: open link in new tab
+        * 4: open image in new tab
+        * 5: copy link
+        * 6: save image as
+        * 7: print
+        * 8: inspect element
+        * 9: view source
+        * 10: separator 1
+        * 11: separator 2
+        */
+
+        var webview = this.getWebView(),
+            t = this;
+        e.preventDefault();
+        t.imageToSave = '';
+        t.linkToOpen = '';
+
+        if (params.mediaType == 'image') {
+            t.imageToSave = params.srcURL;
+        } else {
+            t.imageToSave = '';
+        }
+        console.log(params);
+        t.linkToOpen = params.linkURL;
+
+        t.posToInspect = [params.x, params.y];
+        t.menu.popup(remote.getCurrentWindow());
+    }
+    /*
+    * appends and prepares context menu items
+    */
+    prepareContextMenu = () => {
+        var webview = this.getWebView(),
+            t = this;
+        this.menu = new Menu();
+
+        //back menu item id: 0
+        this.menuItems.push(new MenuItem({
+            label: 'Back',
+            click() {
+                webview.goBack();
+            }
+        }));
+        //forward menu item id: 1
+        this.menuItems.push(new MenuItem({
+            label: 'Forward',
+            click() {
+                webview.goForward();
+            }
+        }));
+        //refresh menu item id: 2
+        this.menuItems.push(new MenuItem({
+            label: 'Reload',
+            click() {
+                t.getBar().refresh();
+            }
+        }));
+        //open link in new tab menu item id: 3
+        this.menuItems.push(new MenuItem({
+            label: 'Open link in new tab',
+            click() {
+                if (t.linkToOpen != "") {
+                    //add new tab
+                    t.props.getApp().addPage({url: t.linkToOpen, select: false});
+                }
+            }
+        }));
+        //open image in new tab menu item id: 4
+        this.menuItems.push(new MenuItem({
+            label: 'Open image in new tab',
+            click() {
+                if (t.imageToSave != "") {
+                    //add new tab
+                    t.props.getApp().addPage({url: t.imageToSave, select: false});
+                }
+            }
+        }));
+        //copy link menu item id: 5
+        this.menuItems.push(new MenuItem({
+            label: 'Copy link address',
+            click() {
+                if (t.linkToOpen != "") {
+                    clipboard.writeText(t.linkToOpen);
+                }
+            }
+        }));
+        //save image as menu item id: 6
+        this.menuItems.push(new MenuItem({label: 'Save image as', click() {
+                //saves image as
+            }}));
+        //print menu item id: 7
+        this.menuItems.push(new MenuItem({label: 'Print', click() {
+                //prints webpage
+            }}));
+        //inspect element menu item id: 8
+        this.menuItems.push(new MenuItem({
+            label: 'Inspect element',
+            click() {
+                webview.inspectElement(t.xToInspect, t.yToInspect);
+            }
+        }));
+        //view source menu item id: 9
+        this.menuItems.push(new MenuItem({label: 'View source', click() {
+                //views source
+            }}));
+        //separator 1 id: 10
+        this.menuItems.push(new MenuItem({type: 'separator'}));
+        //separator 1 id: 11
+        this.menuItems.push(new MenuItem({type: 'separator'}));
+
+        for (var i = 0; i < this.menuItems.length; i++) {
+            this.menu.append(this.menuItems[i]);
+        }
+    }
+    /*
+    * open new tab with url
+    */
+    addTab = (u, select) => {
+        this.props.getApp().addPage({url: u, select: select});
     }
     /*
     * gets colors from website
     */
-    updateColors() {
+    updateColors = () => {
         var t = this;
-        if (this.getTab() != null || typeof this.getTab() !== 'undefined')
-            if (this.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
-                this.colors.getColor(function(data) {
-                    if (t.getTab().isSelected()) {
-                        if (t.refs.bar != null) {
-                            //t.refs.bar.refs.bar.css('background-color', data.background);
+        if (this.getTab() != null || typeof this.getTab() !== 'undefined') {
+            if (remote != null) {
+                if (this.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
+                    this.colors.getColor(function(data) {
+                        if (remote != null) {
+                            if (t.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {}
                         }
-                        t.getTitlebar().setBackground(shadeColor(data.background, -0.2));
-                        t.changeForeground(data.foreground, data.foreground == 'white'
-                            ? '#fff'
-                            : '#444');
-                        t.getTab().setBackground(data.background);
-                        t.getTab().setForeground(data.foreground, false);
-                    }
-                });
+                    });
+                }
             }
         }
+    }
     /*
     * changes foreground of tab and bar
     * color - String color
     * ripple - String ripple color
     */
-    changeForeground(color, ripple) {
-        this.getTab().foreground = color;
-        var barIcons = this.refs.bar.refs.bar.getElementsByClassName('bar-icon');
-        if (color == 'white') {
-            tabsHoverTransparency = 0.1;
-        } else if (color == 'black' || color == 'semiblack') {
-            tabsHoverTransparency = 0.4;
-        }
-
-    }
+    changeForeground = (color, ripple) => {}
     /*
     * disables page render
     */
-    removePage() {
+    removePage = () => {
         var newState = this.state;
         newState.render = false;
         this.setState(newState);
@@ -332,98 +281,77 @@ export default class Page extends React.Component {
     /*
     * focuses search input
     */
-    focusSearchInput() {
-        if (this.refs.bar.refs.searchInput.value == '') {
-            this.refs.bar.refs.searchInput.focus();
+    focusSearchInput = () => {
+        if (this.getBar().getSearchInput().value == '') {
+            this.getBar().getSearchInput().focus();
         }
     }
     /*
     * reloads only extensions that are related to current page
     */
-    loadExtensions() {
+    loadExtensions = () => {
         var t = this;
         this.extensions.deleteExtensions();
-        this.refs.menu.removeExtensions();
+        this.getMenu().removeExtensions();
         this.extensions.loadExtensions(this.getTab().getIndex(), function(data) {
-            t.extensions.addExtensionToMenu(data, t.refs.menu);
+            t.extensions.addExtensionToMenu(data, t.getMenu());
         });
-    }
-    /*
-    * gets extensions
-    * returns object
-    */
-    getExtensions() {
-        return this.extensions;
-    }
-    /*
-    * gets page ref
-    * returns page ref
-    */
-    getPage() {
-        return this;
-    }
-    /*
-    * gets WebView ref
-    * returns WebView ref
-    */
-    getWebView() {
-        return this.refs.webview;
-    }
-    /*
-    * sets this.tab to new value
-    * tab - tab object
-    */
-    associateTab(tab) {
-        this.getTab = tab;
-    }
-    /*
-    * gets search input
-    * returns ref of search input
-    */
-    getSearchInput() {
-        return this.refs.bar.refs.searchInput;
-    }
-    /*
-    * gets suggestions
-    * returns ref of suggestions
-    */
-    getSuggestions() {
-        return this.refs.suggestions;
     }
     /*
     * resizes WebView to match parent width and height
     */
-    resize() {
+    resize = () => {
         var barHeight = 0,
             tabsHeight = 32,
             height = tabsHeight,
             width = 0;
-        if (this.refs.webview != null) {
-            this.refs.webview.style.height = window.innerHeight - height + 'px';
-            this.refs.webview.style.width = window.innerWidth - width + 'px';
+        if (this.getWebView() != null) {
+            this.getWebView().style.height = window.innerHeight - height + 'px';
+            this.getWebView().style.width = window.innerWidth - width + 'px';
         }
     }
     /*
-    * returns Object tabbar
+    * sets snackbar text
     */
-    getTabbar() {
-        return getTitlebar().refs.tabbar;
+    setSnackbarText = (text) => {
+        this.setState({snackbartext: text});
     }
     /*
-    * returns Object titlebar
+    * returns this
     */
-    getTitlebar() {
-        return this.props.getApp().refs.titlebar;
+    getPage = () => {
+        return this;
     }
     /*
-    * returns Object menu
+    * returns webview
     */
-    getMenu() {
+    getWebView = () => {
+        return this.refs.webview;
+    }
+    /*
+    * returns menu
+    */
+    getMenu = () => {
         return this.refs.menu;
     }
+    /*
+    * returns bar
+    */
+    getBar = () => {
+        return this.refs.bar;
+    }
+    /*
+    * returns suggestionsWindow
+    */
+    getSuggestions = () => {
+        return this.refs.suggestions;
+    }
+
     render() {
-        var t = this,
-            el = (
+        var t = this;
+
+        if (this.state.render) {
+            return (
                 <div className="page" ref="page">
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
@@ -431,9 +359,8 @@ export default class Page extends React.Component {
                     <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.openNewTab(u, s)}></MDMenu>
                 </div>
             );
-        if (this.state.render) {
-            return el;
+        } else {
+            return null;
         }
-        return null;
     }
 }

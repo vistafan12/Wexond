@@ -1,17 +1,10 @@
 'use babel';
 import React from 'react';
+import Storage from '../../../classes/storage.js';
 
 export default class Bar extends React.Component {
     constructor() {
         super();
-        //binds
-        this.handleInput = this.handleInput.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.refresh = this.refresh.bind(this);
-        this.show = this.show.bind(this);
-        this.hide = this.hide.bind(this);
-        this.ripple = this.ripple.bind(this);
-
         //global properties
         this.timeout = null;
         this.shown = false;
@@ -20,11 +13,9 @@ export default class Bar extends React.Component {
     lifecycle
     */
     componentDidMount() {
-        var t = this,
-            nodes = this.refs.bar.getElementsByClassName('bar-icon');
-
+        var t = this;
         document.body.addEventListener('mousemove', function(e) {
-            if (e.pageY > 120 && !t.openedMenu && !t.locked) {
+            if (e.pageY > 130 && !t.openedMenu && !t.locked) {
                 t.hide();
                 t.shown = false;
             }
@@ -41,7 +32,7 @@ export default class Bar extends React.Component {
     /*
     * shows bar
     */
-    show() {
+    show = () => {
         if (this.refs.bar != null) {
             this.refs.bar.css('display', 'block');
             TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
@@ -50,7 +41,7 @@ export default class Bar extends React.Component {
     /*
     * hides bar
     */
-    hide() {
+    hide = () => {
         var t = this;
         if (this.refs.bar != null) {
             TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
@@ -61,14 +52,14 @@ export default class Bar extends React.Component {
     /*
     events
     */
-    handleInput() {
+    handleInput = (e) => {
         var suggestions = this.props.getPage().getSuggestions();
-        suggestions.show();
+        suggestions.show(e.target.value);
     }
-    handleFocusIn(e) {
+    handleFocusIn = (e) => {
         e.target.setSelectionRange(0, e.target.value.length);
     }
-    handleKeyPress(e) {
+    handleKeyPress = (e) => {
         var webview = this.props.getPage().getWebView(),
             suggestions = this.props.getPage().getSuggestions();
         //if enter key was pressed
@@ -80,6 +71,7 @@ export default class Bar extends React.Component {
                     if (e.target.value.startsWith("http://") || e.target.value.startsWith("https://") || e.target.value.startsWith("file://")) {
                         webview.loadURL(e.target.value);
                     } else {
+
                         webview.loadURL("http://" + e.target.value);
                     }
                 } else {
@@ -93,13 +85,13 @@ export default class Bar extends React.Component {
             return false;
         }
     }
-    back(self) {
-        self.props.getPage().getWebView().goBack();
+    back = () => {
+        this.props.getPage().getWebView().goBack();
     }
-    forward(self) {
-        self.props.getPage().getWebView().goForward();
+    forward = () => {
+        this.props.getPage().getWebView().goForward();
     }
-    refresh() {
+    refresh = () => {
         this.props.getPage().loadExtensions();
         this.props.getPage().getWebView().reload();
     }
@@ -109,19 +101,41 @@ export default class Bar extends React.Component {
         Ripple.makeRipple(ripple);
     }
 
+    onClickFavourite = () => {
+        var url = this.props.getPage().getWebView().getURL();
+        this.props.getPage().setSnackbarText(url);
+        this.props.getPage().getSnackbar().show();
+
+        var title = this.props.getPage().title;
+    }
+    onClickMenu = (e) => {
+        e.stopPropagation();
+        this.props.getPage().getMenu().menu();
+    }
+    /*
+    * returns Object favourite icon
+    */
+    getFavouriteIcon = () => {
+        return this.refs.favourite_icon;
+    }
+    /*
+    * returns search input
+    */
+    getSearchInput = () => {
+        return this.refs.searchInput;
+    }
+
     render() {
         return (
             <div className="bar" ref="bar">
-                <div className="bar-icon back ripple-bar-icon" onClick={() => this.back(this)} onMouseDown={this.ripple}></div>
-                <div className="bar-icon forward ripple-bar-icon" onClick={() => this.forward(this)} onMouseDown={this.ripple}></div>
-                <div className="bar-icon refresh ripple-bar-icon" onClick={() => this.refresh(this)} onMouseDown={this.ripple}></div>
-                <div className="border-horizontal" style={{backgroundColor: '#212121', position:'relative', float: 'left', marginLeft: 12, height: 'calc(100% - 24px)'}}></div>
-                <div className="search-icon" style={{marginLeft: 12}}></div>
-                <input onKeyPress={(e) => this.handleKeyPress(e)} onFocus={(e) => this.handleFocusIn(e)} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
-                <div className="bar-icon menu-icon ripple-bar-icon" onMouseDown={this.ripple} onClick={(e) => {
-                    e.stopPropagation();
-                    this.props.getPage().getMenu().menu();
-                }}></div>
+                <div className="bar-icon back ripple-bar-icon no-select" onClick={this.back} onMouseDown={this.ripple}></div>
+                <div className="bar-icon forward ripple-bar-icon no-select" onClick={this.forward} onMouseDown={this.ripple}></div>
+                <div className="bar-icon refresh ripple-bar-icon no-select" onClick={this.refresh} onMouseDown={this.ripple}></div>
+                <div className="border-horizontal no-select" style={{backgroundColor: '#212121', position:'relative', float: 'left', marginLeft: 12, height: 'calc(100% - 24px)'}}></div>
+                <div className="search-icon no-select" style={{marginLeft: 12}}></div>
+                <input onKeyPress={this.handleKeyPress} onFocus={this.handleFocusIn} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
+                <div className="bar-icon menu-icon ripple-bar-icon no-select" onMouseDown={this.ripple} onClick={this.onClickMenu}></div>
+                <div className="bar-icon favourite-icon ripple-bar-icon no-select" ref="favourite_icon" onMouseDown={this.ripple} onClick={this.onClickFavourite}></div>
             </div>
         );
     }

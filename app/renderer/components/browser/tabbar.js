@@ -360,7 +360,7 @@ export default class TabBar extends React.Component {
             <div ref="tabBarContainer" className="tabBarContainer">
                 <div ref='tabbar' className="tabBar">
 
-                    {this.props.getApp().getTabsToCreate().map(function(object, i) {
+                    {this.props.getApp().state.tabsToCreate.map(function(object, i) {
                         return <Tab getApp={t.props.getApp} getTabBar={t.getTabBar} page={object} key={i}></Tab>;
                     })
 }
