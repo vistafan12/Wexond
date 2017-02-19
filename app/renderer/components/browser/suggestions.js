@@ -8,7 +8,7 @@ export default class Suggestions extends React.Component {
         this.canSuggest = false;
     }
     componentDidMount() {
-        var searchInput = this.props.getPage().refs.bar.refs.searchInput,
+        var searchInput = this.props.getPage().getBar().getSearchInput(),
             t = this;
 
         searchInput.addEventListener('input', this.getSuggestions);

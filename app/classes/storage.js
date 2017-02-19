@@ -2,8 +2,8 @@ export default class Storage {
     constructor() {}
     /*
     * saves history
-    * title - String
-    * url - String
+    * @param1 {String} title
+    * @param2 {String} url
     */
     static saveHistory(title, url) {
         var fs = require('fs');

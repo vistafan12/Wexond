@@ -6,10 +6,6 @@ import Colors from '../../../classes/colors.js';
 export default class Titlebar extends React.Component {
     constructor() {
         super();
-        //binds
-        this.setBackground = this.setBackground.bind(this);
-        this.setForeground = this.setForeground.bind(this);
-        this.maximizeOrRestore = this.maximizeOrRestore.bind(this);
         //global properties
         this.foreground = '#fff';
         this.state = {
@@ -21,7 +17,8 @@ export default class Titlebar extends React.Component {
             },
             minimizeStyle: {
                 backgroundImage: 'url(browser/img/controls/minimize.png)'
-            }
+            },
+            backgroundColor: ''
         };
     }
     componentDidMount() {}
@@ -57,17 +54,17 @@ export default class Titlebar extends React.Component {
     }
     /*
     * sets titlebar background color
-    * color - String color
+    * @param1 {String} color
     */
-    setBackground(color) {
-        this.refs.titlebar.css('background-color', color);
+    setBackground = (color) => {
+        this.setState({backgroundColor: color});
         this.setForeground(Colors.getForegroundColor(color));
     }
     /*
     * sets titlebar foreground color
-    * color - String color
+    * @param1 {String} color
     */
-    setForeground(color) {
+    setForeground = (color) => {
         this.foreground = color;
         for (var i = 0; i < tabs.length; i++) {
             if (!tabs[i].selected)
@@ -150,7 +147,7 @@ export default class Titlebar extends React.Component {
             };
         return (
             <div>
-                <div ref="titlebar" className="titlebar">
+                <div ref="titlebar" style={{backgroundColor: this.state.backgroundColor}} className="titlebar">
                     <div className="window-controls">
                         <div className="control" style={closeStyle} onClick={this.close}></div>
                         <div className="control" style={maximizeStyle} onClick={this.maximizeOrRestore}></div>

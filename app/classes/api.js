@@ -1,7 +1,7 @@
 /*
 * class API(tab, parent)
-* tab - React object of tab
-* parent - parent window
+* @param1 {Tab} tab
+* @param2 {Window} parent
 */
 class API {
     constructor(tab, parent) {
@@ -28,18 +28,21 @@ class API {
     }
     /*
     * sets titlebar color
+    * @param1 {String} color
     */
     setTitlebarColor(color) {
-        $(this.page.getTitlebar().refs.titlebar).css('background-color', color);
+        this.page.getApp().getTitlebar().refs.titlebar.css('background-color', color);
     }
     /*
     * gets titlebar color
+    * @return {String} - color
     */
     getTitlebarColor() {
-        return $(this.page.getTabbar().refs.tabBarContainer).css('background-color');
+        return this.page.getApp().getTabbar().refs.tabBarContainer.css('background-color');
     }
     /*
-    * returns string - response from website
+    * requests website
+    * @return {String} - response text
     */
     requestUrl(url) {
         var xmlHttp = new XMLHttpRequest();
@@ -48,34 +51,17 @@ class API {
         return xmlHttp.responseText;
     }
     /*
-    * return boolen, client is offline or online
+    * checks if user is online or offline
+    * @return {Boolean}
     */
     isOnline() {
         return navigator.onLine;
     }
-    /*
-    * get start
-    */
-    getStart() {
-        return remote.getGlobal('start');
-    }
-    /*
-    * get start args
-    */
-    getStartArgs() {
-        return remote.getGlobal('start').args;
-    }
-    /*
-    * get opened file (default false)
-    */
-    getOpenedFile() {
-        return remote.getGlobal('start').file;
-    }
 }
 /*
 * class WebView(webview, api)
-* webview - Object DOM node of webview
-* api - Object api
+* @param1 {DOMElement} webview
+* @param2 {API} api
 */
 class WebView {
     constructor(webview, api) {
@@ -83,14 +69,14 @@ class WebView {
         api.webviews.push(this);
     }
     /*
-    * destroys webview
+    * destroys webview event listeners
     */
     destroy() {}
 }
 /*
 * class Instance(page, api)
-* page - Object page react instance
-* api - Object api
+* @param1 {Page} page
+* @param2 {API} api
 */
 class Page {
     constructor(page, api) {
@@ -98,7 +84,8 @@ class Page {
         //event listeners and methods for instance
     }
     /*
-    * returns app
+    * gets app
+    * @return {ReactObject}
     */
     getApp() {
         return this.page.props.getApp();
@@ -106,8 +93,8 @@ class Page {
 }
 /*
 * class Tab(tab, api)
-* tab - React object of tab
-* api - Object api
+* @param1 {Tab} tab
+* @param2 {API} api
 */
 class Tab {
     constructor(tab, api) {

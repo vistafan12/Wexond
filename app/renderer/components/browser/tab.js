@@ -6,30 +6,16 @@ import Draggable from 'gsap/draggable';
 export default class Tab extends React.Component {
     constructor() {
         super();
-        //binds
-        this.changeTitle = this.changeTitle.bind(this);
-        this.changeFavicon = this.changeFavicon.bind(this);
-        this.getIndex = this.getIndex.bind(this);
-        this.isSelected = this.isSelected.bind(this);
-        this.setBackground = this.setBackground.bind(this);
-        this.setForeground = this.setForeground.bind(this);
-        this.getTab = this.getTab.bind(this);
-        this.onDragStart = this.onDragStart.bind(this);
-        this.onRelease = this.onRelease.bind(this);
-        this.onDrag = this.onDrag.bind(this);
-        this.getTitle = this.getTitle.bind(this);
         //global properties
         this.locked = false;
-        this.animationDuration = 150;
         this.getPage = null;
-        this.tab = null;
         this.selected = false;
-        this.foreground = '#212121';
         this.background = '#fff';
-        //state
+        this.foreground = '#212121';
         this.state = {
             title: "New tab",
-            render: true
+            render: true,
+            icon: ''
         };
     }
     /*
@@ -44,20 +30,28 @@ export default class Tab extends React.Component {
         this.getPage().getTab = pass;
         tabs.push(this);
 
-        TweenMax.set(t.tab, {css:{left: tabbar.getPositions()[tabs.indexOf(t)]}});
+        TweenMax.set(this.refs.tab, {
+            css: {
+                left: tabbar.getPositions()[tabs.indexOf(this)]
+            }
+        });
         tabbar.calcWidths(true);
         tabbar.calcPositions(true, true);
 
         tabbar.getWidths(function(width) {
             if (width < t.props.maxTabWidth) {
-                t.tab.css({width: 0, marginLeft: width});
+                t.refs.tab.css({width: 0, marginLeft: width});
             } else {
-                t.tab.css({width: 0});
+                t.refs.tab.css({width: 0});
             }
-            TweenMax.to(t.tab, tabsAnimationDuration, {width: width, ease: Circ.easeOut, onComplete: function() {
-                tabbar.calcWidths(true);
-                tabbar.calcPositions(true, true);
-            }});
+            TweenMax.to(t.refs.tab, tabsAnimationDuration, {
+                width: width,
+                ease: Circ.easeOut,
+                onComplete: function() {
+                    tabbar.calcWidths(true);
+                    tabbar.calcPositions(true, true);
+                }
+            });
         });
 
         var extensions = this.getPage().extensions;
@@ -66,15 +60,16 @@ export default class Tab extends React.Component {
         });
         this.getPage().focusSearchInput();
 
-        this.drag = Draggable.create(this.tab, {
-            onDragStart: t.onDragStart,
-            onRelease: t.onRelease,
-            onDrag: t.onDrag,
+        this.drag = Draggable.create(this.refs.tab, {
+            onDragStart: this.onDragStart,
+            onRelease: this.onRelease,
+            onDrag: this.onDrag,
             type: "left",
             cursor: "default"
         });
+
         var closed = false;
-        this.tab.addEventListener("click", function(e) {
+        this.refs.tab.addEventListener("click", function(e) {
             if (e.which == 2 && !closed) {
                 closed = true;
                 t.props.getTabBar().removeTab(t);
@@ -93,154 +88,198 @@ export default class Tab extends React.Component {
     /*
     events
     */
-    onDragStart() {
+    onDragStart = () => {
         this.props.getTabBar().selectTab(this);
     }
-    onRelease(e) {
+    /*
+    * @param1 {Object} e
+    */
+    onRelease = (e) => {
         this.props.getTabBar().calcPositions(true, true);
     }
-    onDrag(e) {
+    /*
+    * @param1 {Object} e
+    */
+    onDrag = (e) => {
         for (var i = 0; i < tabs.length; i++) {
-            tabs[i].tab.style.zIndex = 1;
+            tabs[i].refs.tab.style.zIndex = 1;
         }
-        this.tab.style.zIndex = 9999;
-        this.reorderTabs(this, e.pageX);
+        this.refs.tab.style.zIndex = 9999;
+        this.reorderTabs(e.pageX);
     }
-    onMouseDown(self) {
-        self.props.getTabBar().selectTab(self);
+    onMouseDown = () => {
+        this.props.getTabBar().selectTab(this);
     }
-    onMouseEnter(self) {
-        if (!self.isSelected()) {
-            TweenMax.to(self.tab, 0.5, {backgroundColor: `rgba(255,255,255,${tabsHoverTransparency})`, ease: tabsAnimationEasing});
-            TweenMax.to(self.closeBtn, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
-            self.tabTitle.css('max-width', 'calc(100% - 64px)');
+    onMouseEnter = () => {
+        if (!this.isSelected()) {
+            TweenMax.to(this.refs.tab, 0.5, {
+                backgroundColor: `rgba(255,255,255,${tabsHoverTransparency})`,
+                ease: tabsAnimationEasing
+            });
+            TweenMax.to(this.refs.closeBtn, 0.2, {
+                opacity: 0.6,
+                ease: tabsAnimationEasing
+            });
+            this.refs.title.css('max-width', 'calc(100% - 64px)');
         }
     }
-    onMouseLeave(self) {
-        if (!self.isSelected()) {
-            TweenMax.to(self.tab, 0.5, {backgroundColor: 'rgba(255,255,255,0)', ease: tabsAnimationEasing});
-            TweenMax.to(self.closeBtn, 0.2, {opacity: 0, ease: tabsAnimationEasing});
-            self.tabTitle.css('max-width', 'calc(100% - 48px)');
+    onMouseLeave = () => {
+        if (!this.isSelected()) {
+            TweenMax.to(this.refs.tab, 0.5, {
+                backgroundColor: 'rgba(255,255,255,0)',
+                ease: tabsAnimationEasing
+            });
+            TweenMax.to(this.refs.closeBtn, 0.2, {
+                opacity: 0,
+                ease: tabsAnimationEasing
+            });
+            this.refs.title.css('max-width', 'calc(100% - 48px)');
         }
-    }
-    onMouseLeaveCloseBtn(e) {
-        TweenMax.to(e.target, 0.2, {opacity: 0.6, ease: tabsAnimationEasing});
-    }
-    onMouseEnterCloseBtn(e) {
-        TweenMax.to(e.target, 0.2, {opacity: 1, ease: tabsAnimationEasing});
-    }
-    closeBtnClick(self, e) {
-        e.stopPropagation();
-        e.preventDefault();
-        self.props.getTabBar().removeTab(self);
     }
     /*
-    * returns Object tabbar
+    * @param1 {Object} e
     */
-    getTabbar() {
+    onMouseLeaveCloseBtn(e) {
+        TweenMax.to(e.target, 0.2, {
+            opacity: 0.6,
+            ease: tabsAnimationEasing
+        });
+    }
+    /*
+    * @param1 {Object} e
+    */
+    onMouseEnterCloseBtn(e) {
+        TweenMax.to(e.target, 0.2, {
+            opacity: 1,
+            ease: tabsAnimationEasing
+        });
+    }
+    /*
+    * @param1 {Object} e
+    */
+    onClickCloseBtn = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        this.props.getTabBar().removeTab(this);
+    }
+    /*
+    * gets tabbar
+    * @return {Tabbar}
+    */
+    getTabbar = () => {
         return this.props.getTabBar();
     }
     /*
-    * returns boolean
+    * @return {Boolean}
     */
-    isSelected() {
+    isSelected = () => {
         return this.selected;
     }
     /*
     * sets background
-    * color - String color
+    * @param1 {String} color
     */
-    setBackground(color) {
+    setBackground = (color) => {
         this.background = color;
         if (this.selected) {
-            this.tab.css('background-color', color);
+            this.refs.tab.css('background-color', color);
         }
     }
     /*
     * sets foreground
-    * color - String color
+    * @param1 {String} color
+    * @param2 {Boolean} force - can set foreground even the tab is unselected?
     */
-    setForeground(color, force) {
+    setForeground = (color, force) => {
         this.foreground = color;
 
         if (force) {
-            this.tab.css('color', color);
-            if (color == 'white')
-                this.closeBtn.addClass('white-icon');
-            else
-                this.closeBtn.removeClass('white-icon');
+            this.refs.tab.css('color', color);
+            if (color == 'white') {
+                this.refs.closeBtn.addClass('white-icon');
+            } else {
+                this.refs.closeBtn.removeClass('white-icon');
+            }
         } else {
             if (this.selected) {
-                this.tab.css('color', color);
-                if (color == 'white')
-                    this.closeBtn.addClass('white-icon');
-                else
-                    this.closeBtn.removeClass('white-icon');
+                this.refs.tab.css('color', color);
+                if (color == 'white') {
+                    this.refs.closeBtn.addClass('white-icon');
+                } else {
+                    this.refs.closeBtn.removeClass('white-icon');
+                }
             }
         }
     }
     /*
     * gets index of current tab
-    * returns int
+    * @return {Number}
     */
-    getIndex() {
+    getIndex = () => {
         return tabs.indexOf(this);
     }
     /*
     * changes tab's title
-    * newTitle - string
+    * @param1 {String} newTitle
     */
-    changeTitle(newTitle) {
-        var state = this.state;
-        state.title = newTitle;
-        this.setState(state);
+    changeTitle = (newTitle) => {
+        this.setState({title: newTitle});
     }
     /*
-    * returns title string
+    * gets title
+    * @return {String}
     */
-    getTitle() {
+    getTitle = () => {
         return this.state.title;
     }
     /*
     * changes favicon
-    * favicon - string
+    * @param1 {String} favicon
     */
-    changeFavicon(favicon) {
-        this.favicon.css({backgroundImage: `url(${favicon})`});
+    changeFavicon = (favicon) => {
+        this.setState({backgroundImage: `url(${favicon}`});
     }
     /*
     * returns this
+    * @return {Tab}
     */
-    getTab() {
+    getTab = () => {
         return this;
     }
     /*
     * reorders tabs
-    * self = this
-    * cursorX - current cursor x position
+    * @param1 {Number} cursorX
     */
-    reorderTabs(self, cursorX) {
-        var overTab = self.props.getTabBar().getTabFromMousePoint(self, cursorX);
+    reorderTabs = (cursorX) => {
+        var overTab = this.props.getTabBar().getTabFromMousePoint(this, cursorX);
         if (overTab != null) {
-            var indexTab = tabs.indexOf(self),
+            var indexTab = tabs.indexOf(this),
                 indexOverTab = tabs.indexOf(overTab);
-            self.props.getTabBar().replaceTabs(indexTab, indexOverTab, self, overTab);
+            this.props.getTabBar().replaceTabs(indexTab, indexOverTab, this, overTab);
+
         }
     }
 
     render() {
+        var style1 = {
+            width: 100
+        };
+        var style2 = {
+            left: 0
+        };
         if (this.state.render) {
             return (
-                <div ref={(tab) => { this.tab = tab; }} onMouseDown={()=>this.onMouseDown(this)} onMouseEnter={()=>this.onMouseEnter(this)} onMouseLeave={()=>this.onMouseLeave(this)} style={{width: 100}} className="tab draggable">
-                    <div className="border-horizontal" style={{left: 0}}></div>
+                <div ref="tab" onMouseDown={this.onMouseDown} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={style1} className="tab draggable">
+                    <div className="border-horizontal" style={style2}></div>
                     <div className="content">
-                        <div ref={(fav) => { this.favicon = fav; }} className="favicon"></div>
-                        <div className="tabTitle" ref={(title) => { this.tabTitle = title; }}>{this.state.title}</div>
-                        <div className="closeBtn" ref={(btn) => { this.closeBtn = btn; }} onMouseEnter={this.onMouseEnterCloseBtn} onMouseLeave={this.onMouseLeaveCloseBtn} onClick={(e) => this.closeBtnClick(this, e)}></div>
+                        <div ref="favicon" style={{backgroundImage: this.state.icon}} className="favicon"></div>
+                        <div className="tabTitle" ref="title">{this.state.title}</div>
+                        <div className="closeBtn" ref="closeBtn" onMouseEnter={this.onMouseEnterCloseBtn} onMouseLeave={this.onMouseLeaveCloseBtn} onClick={this.onClickCloseBtn}></div>
                     </div>
                 </div>
             );
+        } else {
+            return null;
         }
-        return null;
     }
 }

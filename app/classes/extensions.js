@@ -20,8 +20,8 @@ export default class Extensions {
     }
     /*
     * loads extensions
-    * id - int
-    * callback - function (default: null)
+    * @param1 {Number} id - id of tab
+    * @param2 {Function} callback
     */
     loadExtensions(id, callback = null) {
         var t = this;
@@ -98,8 +98,8 @@ export default class Extensions {
     }
     /*
     * adds extension to menu
-    * extension - Object
-    * menu - MDMenu
+    * @param1 {Object} extension
+    * @param2 {MDMenu} menu
     */
     addExtensionToMenu(extension, menu) {
         var newState = menu.state;

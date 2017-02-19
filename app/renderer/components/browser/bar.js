@@ -52,13 +52,22 @@ export default class Bar extends React.Component {
     /*
     events
     */
+    /*
+    * @param1 {Object} e
+    */
     handleInput = (e) => {
         var suggestions = this.props.getPage().getSuggestions();
         suggestions.show(e.target.value);
     }
+    /*
+    * @param1 {Object} e
+    */
     handleFocusIn = (e) => {
         e.target.setSelectionRange(0, e.target.value.length);
     }
+    /*
+    * @param1 {Object} e
+    */
     handleKeyPress = (e) => {
         var webview = this.props.getPage().getWebView(),
             suggestions = this.props.getPage().getSuggestions();
@@ -95,6 +104,9 @@ export default class Bar extends React.Component {
         this.props.getPage().loadExtensions();
         this.props.getPage().getWebView().reload();
     }
+    /*
+    * @param1 {Object} e
+    */
     ripple(e) {
         var ripple = Ripple.createRipple(e.target, {
         }, createRippleCenter(e.target, 13));
@@ -108,18 +120,23 @@ export default class Bar extends React.Component {
 
         var title = this.props.getPage().title;
     }
+    /*
+    * @param1 {Object} e
+    */
     onClickMenu = (e) => {
         e.stopPropagation();
         this.props.getPage().getMenu().menu();
     }
     /*
-    * returns Object favourite icon
+    * gets favourite icon
+    * @return {DOMElement}
     */
     getFavouriteIcon = () => {
         return this.refs.favourite_icon;
     }
     /*
-    * returns search input
+    * gets search input
+    * @return {DOMElement}
     */
     getSearchInput = () => {
         return this.refs.searchInput;

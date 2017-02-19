@@ -4,8 +4,7 @@ export default class Colors {
     }
     /*
     * calculates foreground color based on background color
-    * color - String color
-    * returns String 'black' or 'white'
+    * @param1 {String} color
     */
     static getForegroundColor(color) {
         var brightness = colorBrightness(color);
@@ -15,10 +14,9 @@ export default class Colors {
             return 'black';
         }
     }
-
     /*
     * gets color from top of website
-    * callback (optional) - function default: null
+    * @param1 {Function} callback
     */
     getColorFromTop(callback = null) {
         var t = this;
@@ -49,19 +47,17 @@ export default class Colors {
                 img.src = image.toDataURL();
                 canvas.width = 2;
                 canvas.height = 2;
-
             });
         }
     }
     /*
     * gets color from html tag <meta name="theme-color".../>
-    * regexp - regular expression
-    * result - Object
-    * callback (optional) - function default: null
+    * @param1 {String} htmlcode
+    * @param2 {Function} callback
     */
-    getColorFromSource(regexp, result, callback = null) {
-        var t = this;
-        var regex = result.match(regexp).toString();
+    getColorFromSource(htmlcode, callback = null) {
+        var regexp = /<meta name='?.theme-color'?.*>/;
+        var regex = htmlcode.match(regexp).toString();
         var color = regex.match(/content="(.*?)"/)[1];
         if (typeof(callback) === 'function') {
             callback({foreground: Colors.getForegroundColor(color), background: color});
@@ -69,7 +65,7 @@ export default class Colors {
     }
     /*
     * determines whether to get a color from the code or website
-    * callback (optional) - function default: null
+    * @param1 {Function} callback
     */
     getColor(callback = null) {
         var t = this;
@@ -80,7 +76,7 @@ export default class Colors {
                 if (regexp.test(result)) {
                     //getting color from source (theme-color)
                     if (typeof(callback) === 'function') {
-                        t.getColorFromSource(regexp, result, function(color) {
+                        t.getColorFromSource(result, function(color) {
                             callback({foreground: color.foreground, background: color.background});
                         });
                     }
@@ -90,7 +86,6 @@ export default class Colors {
                         t.getColorFromTop(function(color) {
                             callback({foreground: color.foreground, background: color.background});
                         });
-
                     }
                 }
             });

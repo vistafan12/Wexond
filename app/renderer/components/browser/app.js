@@ -52,27 +52,44 @@ export default class App extends React.Component {
     }
     /*
     * adds tab to render queue
-    * pageObj - page object
+    * @param1 {Function} getPage
     */
-    addTab = (pageObj) => {
-        var state = this.state;
-        state.tabsToCreate.push(pageObj);
-        this.setState(state);
+    addTab = (getPage) => {
+        this.setState((p)=> {
+            p.tabsToCreate.push(getPage);
+            return {tabsToCreate: p.tabsToCreate};
+        });
     }
     /*
     * adds page to render queue
-    * options (optional) - Object {url} default: {url: this.defaultURL, select: true}
+    * @param1 {Object} options
     */
     addPage = (options = this.defaultOptions) => {
-        var state = this.state;
-        state.pagesToCreate.push(options);
-        this.setState(state);
+        this.setState((p)=> {
+            p.pagesToCreate.push(options);
+            return {pagesToCreate: p.pagesToCreate};
+        });
     }
     /*
-    * returns this object
+    * returns this
+    * @return {Object}
     */
     getApp = () => {
         return this;
+    }
+    /*
+    * returns titlebar
+    * @return {Object}
+    */
+    getTitlebar = () => {
+        return this.refs.titlebar;
+    }
+    /*
+    * returns array of tabs to create
+    * @return {Object[]}
+    */
+    getTabsToCreate = () => {
+        return this.state.tabsToCreate;
     }
 
     render() {

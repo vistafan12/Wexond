@@ -7,19 +7,6 @@ import {TweenMax, Expo, CSSPlugin} from "gsap";
 export default class TabBar extends React.Component {
     constructor() {
         super();
-        //binds
-        this.selectTab = this.selectTab.bind(this);
-        this.selectTabByIndex = this.selectTabByIndex.bind(this);
-        this.removeTab = this.removeTab.bind(this);
-        this.calcWidths = this.calcWidths.bind(this);
-        this.calcPositions = this.calcPositions.bind(this);
-        this.changePos = this.changePos.bind(this);
-        this.getTabFromMousePoint = this.getTabFromMousePoint.bind(this);
-        this.replaceTabs = this.replaceTabs.bind(this);
-        this.getWidths = this.getWidths.bind(this);
-        this.getTabBar = this.getTabBar.bind(this);
-        this._selectTab = this._selectTab.bind(this);
-        this._deselectTab = this._deselectTab.bind(this);
         //global properties
         this.maxTabWidth = 190;
         this.actualTabWidth = this.maxTabWidth;
@@ -30,8 +17,8 @@ export default class TabBar extends React.Component {
     /*
     events
     */
-    addTabClick(self) {
-        self.props.getApp().addPage();
+    onClickAddTab = () => {
+        this.props.getApp().addPage();
     }
     /*
     lifecycle
@@ -83,43 +70,43 @@ export default class TabBar extends React.Component {
     }
     /*
     * selects tab
-    * tab - <Tab>
+    * @param1 {Tab} tab
     */
     _selectTab(tab) {
         if (tab != null && tab.getPage() != null) {
-            this.props.getApp().refs.titlebar.setBackground(shadeColor(tab.background, -0.2));
+            this.props.getApp().getTitlebar().setBackground(shadeColor(tab.background, -0.2));
             tab.getPage().resize();
-            tab.tab.style.zIndex = 9999;
+            tab.refs.tab.style.zIndex = 9999;
             tab.getPage().refs.page.css({position: 'relative', opacity: 1, marginLeft: 0, height: '100%'});
             tab.setForeground(Colors.getForegroundColor(tab.background), false);
-            TweenMax.set(tab.tab, {backgroundColor: tab.background, 'color': tab.foreground});
+            TweenMax.set(tab.refs.tab, {backgroundColor: tab.background, 'color': tab.foreground});
             tab.selected = true;
-            tab.closeBtn.css('opacity' , 0.6);
-            tab.tabTitle.css('max-width', 'calc(100% - 64px)');
+            tab.refs.closeBtn.css('opacity' , 0.6);
+            tab.refs.title.css('max-width', 'calc(100% - 64px)');
         }
     }
     /*
     * unselects tab
-    * tab - <Tab>
+    * @param1 {Tab} tab
     */
     _deselectTab(tab) {
         if (tab != null && tab.getPage() != null) {
-            tab.tab.style.zIndex = 1;
+            tab.refs.tab.style.zIndex = 1;
             tab.getPage().refs.page.css({position: 'absolute', opacity: 0, height: 0, marginLeft: -9999 + 'px'});
-            tab.tab.css({
+            tab.refs.tab.css({
                 backgroundColor: 'transparent',
-                color: this.props.getApp().refs.titlebar.foreground
+                color: this.props.getApp().getTitlebar().foreground
             });
             tab.selected = false;
-            tab.closeBtn.css('opacity' , 0);
-            tab.tabTitle.css('max-width', 'calc(100% - 48px)');
+            tab.refs.closeBtn.css('opacity' , 0);
+            tab.refs.title.css('max-width', 'calc(100% - 48px)');
         }
     }
     /*
     * selects tab and unselects others
-    * tab - <Tab>
+    * @param1 {Tab} tab
     */
-    selectTab(tab) {
+    selectTab = (tab) => {
         if (tab != null && tab.getPage().refs.page != null) {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i] == tab) {
@@ -132,7 +119,11 @@ export default class TabBar extends React.Component {
             }
         }
     }
-    selectTabByIndex(index) {
+    /*
+    * selects tab by index and unselects others
+    * @param1 {Number} index
+    */
+    selectTabByIndex = (index) => {
         if (tabs[index] != null && tabs[index].getPage().refs.page != null) {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i] == tabs[index]) {
@@ -147,9 +138,9 @@ export default class TabBar extends React.Component {
     }
     /*
     * removes tab
-    * tab - <Tab>
+    * @param1 {Tab} tab
     */
-    removeTab(tab, removeFromArray = true) {
+    removeTab = (tab, removeFromArray = true) => {
         var newState = tab.state,
             index = tabs.indexOf(tab),
             t = this,
@@ -173,14 +164,14 @@ export default class TabBar extends React.Component {
         }
         if (index - 1 == tabs.length - 1) {
             if (tabs[0] != null) {
-                if (tabs[0].tab.offsetWidth < t.maxTabWidth) {
+                if (tabs[0].refs.tab.offsetWidth < t.maxTabWidth) {
                     newState.render = false;
                     tab.getPage().removePage();
                     tab.setState(newState);
                     t.calcWidths(true);
                     t.calcPositions(true, true);
                 } else {
-                    TweenMax.to(tab.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
+                    TweenMax.to(tab.refs.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
                         newState.render = false;
                         tab.setState(newState);
                         t.calcWidths(true);
@@ -193,7 +184,7 @@ export default class TabBar extends React.Component {
             }
         } else {
             t.calcPositions(true, true);
-            TweenMax.to(tab.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
+            TweenMax.to(tab.refs.tab, tabsAnimationDuration, {width: 0, ease: tabsAnimationEasing, onComplete: function() {
                 newState.render = false;
                 tab.setState(newState);
             }});
@@ -203,28 +194,31 @@ export default class TabBar extends React.Component {
     }
     /*
     * gets tab from mouse point
-    * callingTab - <Tab>
-    * cursorX - current cursor x position
-    * returns <Tab>
+    * @param1 {Tab} callingTab
+    * @param2 {Number} cursorX
+    * @return {Tab}
     */
-    getTabFromMousePoint(callingTab, cursorX) {
+    getTabFromMousePoint = (callingTab, cursorX) => {
         for (var i = 0; i < tabs.length; i++) {
             if (tabs[i] != callingTab) {
                 if (this.contains(tabs[i], cursorX)) {
-                    if (!tabs[i].locked)
+                    if (!tabs[i].locked) {
                         return tabs[i];
                     }
                 }
+            }
         }
+        return null;
     }
     /*
-    * checks if <Tab>.tab contains mouse x position
-    * tabToCheck - <Tab>
-    * cursorX - mouse x position
-    * returns boolean
+    * checks if {Tab}.refs.tab contains mouse x position
+    * @param1 {Tab} tabToCheck
+    * @param2 {Number} cursorX
+    * @return {Boolean}
     */
-    contains(tabToCheck, cursorX) {
-        var rect = tabToCheck.tab.getBoundingClientRect();
+    contains = (tabToCheck, cursorX) => {
+        var rect = tabToCheck.refs.tab.getBoundingClientRect();
+
         if (cursorX >= rect.left && cursorX <= rect.right) {
             return true;
         }
@@ -232,9 +226,9 @@ export default class TabBar extends React.Component {
     }
     /*
     * sets widths for all tabs
-    * animation (optional) - boolean default: false
+    * @param1 {Boolean} animation
     */
-    calcWidths(animation = false) {
+    calcWidths = (animation = false) => {
         var tabbarwidth = this.refs.tabBarContainer.clientWidth,
             tabbar = this.refs.tabbar,
             addbtn = this.refs.addbtn,
@@ -245,9 +239,9 @@ export default class TabBar extends React.Component {
                 tabWidthTemp = this.maxTabWidth;
             }
             if (animation)
-                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {width: tabWidthTemp, ease: tabsAnimationEasing});
+                TweenMax.to(tabs[i].refs.tab, tabsAnimationDuration, {width: tabWidthTemp, ease: tabsAnimationEasing});
             else
-                tabs[i].tab.style.width = tabWidthTemp + 'px';
+                tabs[i].refs.tab.style.width = tabWidthTemp + 'px';
 
             tabs[i].offsetWidth = tabWidthTemp;
             this.actualTabWidth = tabWidthTemp;
@@ -258,7 +252,7 @@ export default class TabBar extends React.Component {
     }
     /*
     * gets positions for tabs
-    * returns array
+    * @return {[]}
     */
     getPositions() {
         var tabCountTemp = 0,
@@ -273,9 +267,9 @@ export default class TabBar extends React.Component {
     }
     /*
     * only calculates widths for all tabs
-    * callback function
+    * @param1 {Function} callback
     */
-    getWidths(callback = null) {
+    getWidths = (callback = null) => {
         var tabbarwidth = this.refs.tabBarContainer.clientWidth,
             addbtn = this.refs.addbtn;
         for (var i = 0; i < tabs.length; i++) {
@@ -291,10 +285,10 @@ export default class TabBar extends React.Component {
     }
     /*
     * calculates and sets positions for tabs
-    * animateTabs (optional) - boolean default: false
-    * animateAddButton (optional) - boolean default: false
+    * @param1 {Boolean} animateTabs
+    * @param1 {Boolean} animateAddButton
     */
-    calcPositions(animateTabs = false, animateAddButton = false) {
+    calcPositions = (animateTabs = false, animateAddButton = false) => {
         var tabCountTemp = 0,
             addbtn = this.refs.addbtn,
             lefts = [],
@@ -308,9 +302,9 @@ export default class TabBar extends React.Component {
         for (var i = 0; i < tabs.length; i++) {
             tabs[i].locked = false;
             if (animateTabs) {
-                TweenMax.to(tabs[i].tab, tabsAnimationDuration, {css:{left: lefts[i]}, ease: tabsAnimationEasing});
+                TweenMax.to(tabs[i].refs.tab, tabsAnimationDuration, {css:{left: lefts[i]}, ease: tabsAnimationEasing});
             } else {
-                tabs[i].tab.style.left = lefts[i] + 'px';
+                tabs[i].refs.tab.style.left = lefts[i] + 'px';
             }
             tabCountTemp += 1;
         }
@@ -322,36 +316,37 @@ export default class TabBar extends React.Component {
     }
     /*
     * replaces tabs
-    * firstIndex - number
-    * secondIndex - number
-    * firstTab - <Tab>
-    * secondTab - <Tab>
+    * @param1 {Number} firstIndex
+    * @param2 {Number} secondIndex
+    * @param3 {Tab} firstTab
+    * @param4 {Tab} secondTab
     */
-    replaceTabs(firstIndex, secondIndex, firstTab, secondTab) {
+    replaceTabs = (firstIndex, secondIndex, firstTab, secondTab) => {
         tabs[firstIndex] = secondTab;
         tabs[secondIndex] = firstTab;
         this.changePos(secondTab);
     }
     /*
     * changes position of tab to its place
-    * callingTab - <Tab>
+    * @param1 {Tab} callingTab
     */
-    changePos(callingTab) {
+    changePos = (callingTab) => {
         callingTab.locked = true;
         var t = this,
             a = 0;
-        for (var i = 0; i < window.tabs.indexOf(callingTab); i++) {
-            a += tabs[i].tab.offsetWidth;
+        for (var i = 0; i < tabs.indexOf(callingTab); i++) {
+            a += tabs[i].refs.tab.offsetWidth;
         }
 
-        TweenMax.to(callingTab.tab, tabsAnimationDuration + 0.05, {css:{left: a}, ease: tabsAnimationEasing, onComplete: function() {
+        TweenMax.to(callingTab.refs.tab, tabsAnimationDuration + 0.05, {css:{left: a}, ease: tabsAnimationEasing, onComplete: function() {
             callingTab.locked = false;
         }});
     }
     /*
     * returns this
+    * @return {Tabbar}
     */
-    getTabBar() {
+    getTabBar = () => {
         return this;
     }
     render() {
@@ -362,9 +357,8 @@ export default class TabBar extends React.Component {
 
                     {this.props.getApp().state.tabsToCreate.map(function(object, i) {
                         return <Tab getApp={t.props.getApp} getTabBar={t.getTabBar} page={object} key={i}></Tab>;
-                    })
-}
-                    <div ref='addbtn' onClick={() => this.addTabClick(this)} className="addBtn">
+                    })}
+                    <div ref='addbtn' onClick={this.onClickAddTab} className="addBtn">
                         <div className="addbtn-icon"></div>
                         <div className="border-horizontal" style={{left: 0, opacity: 0.2}}></div>
                     </div>

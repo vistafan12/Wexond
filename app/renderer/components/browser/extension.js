@@ -17,7 +17,7 @@ export default class Extension extends React.Component {
     /*
     events
     */
-    onMouseDown(e, self) {
+    onMouseDown(e) {
         var ripple = Ripple.createRipple(e.target, {
         }, createRippleCenter(e.target));
         Ripple.makeRipple(ripple);
@@ -25,7 +25,7 @@ export default class Extension extends React.Component {
 
     render() {
         return (
-            <div onMouseDown={(e)=> this.onMouseDown(e, this)} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
+            <div onMouseDown={this.onMouseDown} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
 
             </div>
         );

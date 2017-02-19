@@ -13,7 +13,7 @@ export default class Page extends React.Component {
         super();
         //global properties
         this.menu = new Menu();
-        this.posToInspect = [];
+        this.posToInspect = {x: 0, y: 0};
         this.getTab = null;
         this.extensions = null;
         this.menuItems = [];
@@ -45,11 +45,11 @@ export default class Page extends React.Component {
         window.addEventListener('resize', this.onResize);
 
         //webview events
-        webview.addEventListener('page-title-updated', this.pageTitleUpdated);
-        webview.addEventListener('dom-ready', this.ready);
-        webview.addEventListener('did-frame-finish-load', this.frameFinishLoad);
-        webview.addEventListener('page-favicon-updated', this.faviconUpdated);
-        webview.addEventListener('new-window', this.newWindow);
+        webview.addEventListener('page-title-updated', this.onPageTitleUpdated);
+        webview.addEventListener('dom-ready', this.onReady);
+        webview.addEventListener('did-frame-finish-load', this.onFrameFinishLoad);
+        webview.addEventListener('page-favicon-updated', this.onFaviconUpdated);
+        webview.addEventListener('new-window', this.onNewWindow);
 
         //colors
         this.colors = new Colors(this.getWebView());
@@ -88,11 +88,17 @@ export default class Page extends React.Component {
         webview.getWebContents().on('context-menu', this.onContextMenu, false);
         webview.getWebContents().send('env', process.env.ENV);
     }
-    onPageTitleUpdate = (title) => {
+    /*
+    * @param1 {Object} e
+    */
+    onPageTitleUpdate = (e) => {
         var webview = this.getWebView();
-        this.getTab().changeTitle(title.title);
-        this.title = title.title;
+        this.getTab().changeTitle(e.title);
+        this.title = e.title;
     }
+    /*
+    * @param1 {Object} e
+    */
     onFrameFinishLoad = (e) => {
         var webview = this.getWebView(),
             bar = this.getBar();
@@ -108,51 +114,91 @@ export default class Page extends React.Component {
         }
 
         this.getBar().getFavouriteIcon().style.display = 'block';
-        this.getTab().changeTitle(title.title);
     }
+    /*
+    * @param1 {Object} e
+    */
     onNewWindow = (e) => {
         this.props.getApp().addPage({url: e.url, select: true});
     }
-    onFaviconUpdated = (favicons) => {
-        this.getTab().changeFavicon(favicons.favicons[0]);
+    /*
+    * @param1 {Object} e
+    */
+    onFaviconUpdated = (e) => {
+        this.getTab().changeFavicon(e.favicons[0]);
     }
     onResize = () => {
         this.resize();
     }
+    /*
+    * @param1 {Object} e
+    * @param2 {Object} params
+    */
     onContextMenu = (e, params) => {
 
         /*
         * Menu items:
-        * 0: back
-        * 1: forward
-        * 2: refresh
-        * 3: open link in new tab
-        * 4: open image in new tab
-        * 5: copy link
-        * 6: save image as
-        * 7: print
-        * 8: inspect element
-        * 9: view source
-        * 10: separator 1
-        * 11: separator 2
+        * 0: open image in new tab
+        * 1: open link in new tab
+        * 2: back
+        * 3: forward
+        * 4: refresh
+        * 5: separator1
+        * 6: copy link
+        * 7: save image as
+        * 8: print
+        * 9: separator2
+        * 10: inspect element
+        * 11: view source
         */
 
-        var webview = this.getWebView(),
-            t = this;
+        var webview = this.getWebView();
+
         e.preventDefault();
-        t.imageToSave = '';
-        t.linkToOpen = '';
+
+        this.imageToSave = '';
+        this.linkToOpen = '';
 
         if (params.mediaType == 'image') {
-            t.imageToSave = params.srcURL;
+            this.imageToSave = params.srcURL;
         } else {
-            t.imageToSave = '';
+            this.imageToSave = '';
         }
-        console.log(params);
-        t.linkToOpen = params.linkURL;
 
-        t.posToInspect = [params.x, params.y];
-        t.menu.popup(remote.getCurrentWindow());
+        this.linkToOpen = params.linkURL;
+
+        this.cleanContextMenu();
+
+        this.posToInspect = {x: params.x, y: params.y};
+        this.menu.popup(remote.getCurrentWindow());
+    }
+    /*
+    * makes context menu clean
+    */
+    cleanContextMenu = () => {
+        this.menuItems[1].visible = (this.linkToOpen == "") ? false : true;
+        if (this.menuItems[1].visible || this.menuItems[0].visible) {
+            for (var i = 2; i < 5; i++) {
+                this.menuItems[i].visible = false;
+            }
+            this.menuItems[8].visible = false;
+        } else {
+            for (var i = 2; i < 5; i++) {
+                this.menuItems[i].visible = true;
+            }
+            this.menuItems[8].visible = true;
+        }
+        if (this.menuItems[1].visible) {
+            this.menuItems[6].visible = true;
+        } else {
+            this.menuItems[6].visible = false;
+        }
+        if (this.menuItems[0].visible) {
+            this.menuItems[7].visible = true;
+        } else {
+            this.menuItems[7].visible = false;
+        }
+        this.menuItems[0].visible = (this.imageToSave == "") ? false : true;
     }
     /*
     * appends and prepares context menu items
@@ -162,38 +208,7 @@ export default class Page extends React.Component {
             t = this;
         this.menu = new Menu();
 
-        //back menu item id: 0
-        this.menuItems.push(new MenuItem({
-            label: 'Back',
-            click() {
-                webview.goBack();
-            }
-        }));
-        //forward menu item id: 1
-        this.menuItems.push(new MenuItem({
-            label: 'Forward',
-            click() {
-                webview.goForward();
-            }
-        }));
-        //refresh menu item id: 2
-        this.menuItems.push(new MenuItem({
-            label: 'Reload',
-            click() {
-                t.getBar().refresh();
-            }
-        }));
-        //open link in new tab menu item id: 3
-        this.menuItems.push(new MenuItem({
-            label: 'Open link in new tab',
-            click() {
-                if (t.linkToOpen != "") {
-                    //add new tab
-                    t.props.getApp().addPage({url: t.linkToOpen, select: false});
-                }
-            }
-        }));
-        //open image in new tab menu item id: 4
+        //open image in new tab menu item id: 0
         this.menuItems.push(new MenuItem({
             label: 'Open image in new tab',
             click() {
@@ -203,7 +218,40 @@ export default class Page extends React.Component {
                 }
             }
         }));
-        //copy link menu item id: 5
+        //open link in new tab menu item id: 1
+        this.menuItems.push(new MenuItem({
+            label: 'Open link in new tab',
+            click() {
+                if (t.linkToOpen != "") {
+                    //add new tab
+                    t.props.getApp().addPage({url: t.linkToOpen, select: false});
+                }
+            }
+        }));
+        //back menu item id: 2
+        this.menuItems.push(new MenuItem({
+            label: 'Back',
+            click() {
+                webview.goBack();
+            }
+        }));
+        //forward menu item id: 3
+        this.menuItems.push(new MenuItem({
+            label: 'Forward',
+            click() {
+                webview.goForward();
+            }
+        }));
+        //refresh menu item id: 4
+        this.menuItems.push(new MenuItem({
+            label: 'Reload',
+            click() {
+                t.getBar().refresh();
+            }
+        }));
+        //separator 1 id: 5
+        this.menuItems.push(new MenuItem({type: 'separator'}));
+        //copy link menu item id: 6
         this.menuItems.push(new MenuItem({
             label: 'Copy link address',
             click() {
@@ -212,36 +260,37 @@ export default class Page extends React.Component {
                 }
             }
         }));
-        //save image as menu item id: 6
+        //save image as menu item id: 7
         this.menuItems.push(new MenuItem({label: 'Save image as', click() {
-                //saves image as
-            }}));
-        //print menu item id: 7
+            //saves image as
+        }}));
+        //print menu item id: 8
         this.menuItems.push(new MenuItem({label: 'Print', click() {
-                //prints webpage
-            }}));
-        //inspect element menu item id: 8
+            //prints webpage
+        }}));
+        //separator 2 id: 9
+        this.menuItems.push(new MenuItem({type: 'separator'}));
+        //inspect element menu item id: 10
         this.menuItems.push(new MenuItem({
             label: 'Inspect element',
             click() {
-                webview.inspectElement(t.xToInspect, t.yToInspect);
+                webview.inspectElement(t.posToInspect.x, t.posToInspect.y);
             }
         }));
-        //view source menu item id: 9
+        //view source menu item id: 11
         this.menuItems.push(new MenuItem({label: 'View source', click() {
-                //views source
-            }}));
-        //separator 1 id: 10
-        this.menuItems.push(new MenuItem({type: 'separator'}));
-        //separator 1 id: 11
-        this.menuItems.push(new MenuItem({type: 'separator'}));
+            //views source
+        }}));
 
         for (var i = 0; i < this.menuItems.length; i++) {
             this.menu.append(this.menuItems[i]);
         }
+        this.cleanContextMenu();
     }
     /*
     * open new tab with url
+    * @param1 {String} u - url
+    * @param2 {Boolean} select - can select new tab?
     */
     addTab = (u, select) => {
         this.props.getApp().addPage({url: u, select: select});
@@ -256,7 +305,9 @@ export default class Page extends React.Component {
                 if (this.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
                     this.colors.getColor(function(data) {
                         if (remote != null) {
-                            if (t.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {}
+                            if (t.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
+
+                            }
                         }
                     });
                 }
@@ -265,17 +316,14 @@ export default class Page extends React.Component {
     }
     /*
     * changes foreground of tab and bar
-    * color - String color
-    * ripple - String ripple color
+    * @param1 {String} color
     */
-    changeForeground = (color, ripple) => {}
+    changeForeground = (color) => {}
     /*
     * disables page render
     */
     removePage = () => {
-        var newState = this.state;
-        newState.render = false;
-        this.setState(newState);
+        this.setState({render: false});
         clearInterval(this.colorInterval);
     }
     /*
@@ -312,36 +360,42 @@ export default class Page extends React.Component {
     }
     /*
     * sets snackbar text
+    * @param1 {String} text
     */
     setSnackbarText = (text) => {
         this.setState({snackbartext: text});
     }
     /*
     * returns this
+    * @return {Object}
     */
     getPage = () => {
         return this;
     }
     /*
     * returns webview
+    * @return {DOMElement}
     */
     getWebView = () => {
         return this.refs.webview;
     }
     /*
     * returns menu
+    * @return {DOMElement}
     */
     getMenu = () => {
         return this.refs.menu;
     }
     /*
     * returns bar
+    * @return {DOMElement}
     */
     getBar = () => {
         return this.refs.bar;
     }
     /*
-    * returns suggestionsWindow
+    * returns suggestions
+    * @return {DOMElement}
     */
     getSuggestions = () => {
         return this.refs.suggestions;
