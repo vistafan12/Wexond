@@ -12,7 +12,7 @@ export default class Item extends React.Component {
         };
     }
     componentDidMount() {
-      var brightness = this.colorBrightness(this.props.data.backgroundColor);
+      var brightness = colorBrightness(this.props.data.backgroundColor);
       if (brightness < 125) {
           this.setState({color: '#fff'});
       } else {

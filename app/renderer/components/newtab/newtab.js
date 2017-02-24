@@ -17,13 +17,11 @@ export default class Newtab extends React.Component {
             if (_json.length < 2) {
                 resetBookmarksData();
             } else {
-                var cards = this.state.cards;
                 for (var i = 0; i < _json.bookmarks.length; i++) {
                     var _item = _json.bookmarks[i];
                     _item.index = i;
-                    cards.push(_item);
+                    this.state.cards.push(_item);
                 }
-                this.setState({cards: cards});
             }
         } catch (ex) {
             console.log(ex);
@@ -47,7 +45,7 @@ export default class Newtab extends React.Component {
             <div>
                 <div className="bgizmage" ref="bgizmage">
                     <Cards maxInLine={4} ref="cards">
-                        this.state.cards.map((value, _index) => <Item data={value} key={_index}></Item>);
+                        {this.state.cards.map((value, _index) => <Item data={value} key={_index}></Item>)}
                     </Cards>
                 </div>
             </div>
