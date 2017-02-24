@@ -11,6 +11,11 @@
         }
 
         @font-face {
+            font-family: Roboto-Regular;
+            src: url('global/fonts/Roboto-Regular.ttf');
+        }
+
+        @font-face {
             font-family: Roboto-Medium;
             src: url('global/fonts/Roboto-Medium.ttf');
         }
@@ -19,6 +24,20 @@
             font-family: Roboto-Light;
             src: url('global/fonts/Roboto-Light.ttf');
         }
+
+        .no-select {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .pointer {
+            -webkit-user-select: none;
+            cursor: pointer;
+        }
+
+        .invert {
+            -webkit-filter: invert(100%);
+        }
     </style>
     <link rel="stylesheet" href="browser/css/tabbar.css" />
     <link rel="stylesheet" href="browser/css/browser.css" />
@@ -26,6 +45,8 @@
     <link rel="stylesheet" href="browser/css/bar.css" />
     <link rel="stylesheet" href="browser/css/titlebar.css" />
     <link rel="stylesheet" href="materialdesign/css/ripple.css" />
+    <link rel="stylesheet" href="materialdesign/css/materialbutton.css" />
+    <link rel="stylesheet" href="materialdesign/css/snackbar.css" />
     <link rel="stylesheet" href="browser/css/menu.css" />
 </head>
 

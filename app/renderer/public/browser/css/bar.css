@@ -78,6 +78,16 @@
     background-image: url(../img/bar/menu.png);
 }
 
+.favourite-icon {
+    float: right;
+    background-image: url(../img/bar/star_empty.png);
+    display: none;
+}
+
+.favourite-icon-full {
+    background-image: url(../img/bar/star_full.png);
+}
+
 .bar-icon:hover {
     opacity: 1;
     transition: 0.3s background;

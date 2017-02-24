@@ -8,6 +8,11 @@ export default class Bar extends React.Component {
         //global properties
         this.timeout = null;
         this.shown = false;
+        this.bookmarkExist = false;
+        this.lastTitle = null;
+        this.lastUrl = null;
+        this.lastFavicon = null;
+        this.lastColor = null;
     }
     /*
     lifecycle
@@ -124,14 +129,53 @@ export default class Bar extends React.Component {
     }
 
     onClickFavourite = () => {
-        var url = this.props.getPage().getWebView().getURL();
-        var title = this.props.getPage().pageData.title;
-        var favicon = this.props.getPage().pageData.favicon;
-        var color = this.props.getPage().pageData.color;
-        console.log(this.props.getPage().pageData);
-        /*this.props.getPage().setSnackbarText(url);
-        this.props.getPage().getSnackbar().show();*/
+        var t = this;
+        this.lastTitle = this.props.getPage().getWebView().getTitle();
+        this.lastUrl = this.props.getPage().getWebView().getURL();
+        this.lastFavicon = this.props.getPage().pageData.favicon;
+        this.lastColor = this.props.getPage().pageData.color;
+
+        if (!this.bookmarkExist) {
+            this.bookmarkExist = undefined;
+            this.props.getPage().setSnackbarText("Added a new bookmark!");
+            Storage.addBookmark(this.lastTitle, this.lastUrl, this.lastFavicon, this.lastColor, null, function() {
+                t.props.getPage().getSnackbar().show();
+                t.setFavouriteIconFull(true);
+            });
+        } else if (this.bookmarkExist) {
+            this.bookmarkExist = undefined;
+            this.props.getPage().setSnackbarText("Removed the bookmark!");
+            Storage.getBookmarkIndex(this.lastUrl, function(index) {
+                if (index != undefined) {
+                    Storage.delBookmark(index, function() {
+                        t.props.getPage().getSnackbar().show();
+                        t.setFavouriteIconFull(false);
+                    });
+                }
+            });
+        }
     }
+
+    onSnackbarButtonClick = () => {
+        var t = this;
+        t.props.getPage().getSnackbar().hide();
+        if (!this.bookmarkExist) {
+            this.bookmarkExist = undefined;
+            Storage.addBookmark(this.lastTitle, this.lastUrl, this.lastFavicon, this.lastColor, null, function() {
+                t.setFavouriteIconFull(true);
+            });
+        } else if (this.bookmarkExist) {
+            this.bookmarkExist = undefined;
+            Storage.getBookmarkIndex(this.lastUrl, function(index) {
+                if (index != undefined) {
+                    Storage.delBookmark(index, function() {
+                        t.setFavouriteIconFull(false);
+                    });
+                }
+            });
+        }
+    }
+
     /*
     * @param1 {Object} e
     */
@@ -145,6 +189,16 @@ export default class Bar extends React.Component {
     */
     getFavouriteIcon = () => {
         return this.refs.favourite_icon;
+    }
+    /*
+    * sets favourite icon full or empty
+    */
+    setFavouriteIconFull = (f) => {
+        this.refs.favourite_icon.classList.remove("favourite-icon-full");
+        if (f) {
+            this.refs.favourite_icon.classList.add("favourite-icon-full");
+        }
+        this.bookmarkExist = f;
     }
     /*
     * gets search input

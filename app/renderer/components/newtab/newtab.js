@@ -26,8 +26,8 @@ export default class Newtab extends React.Component {
                 resetNewtabData();
             } else {
                 var _json = getNewtabData();
-                for(var i = 0; i < _json.newtabdata.length; i++) {
-                    var _item = _json.newtabdata[i];
+                for(var i = 0; i < _json.bookmarks.length; i++) {
+                    var _item = _json.bookmarks[i];
                     _item.index = i;
                     this.state.cards.push(_item);
                 }

@@ -30,7 +30,8 @@ export default class Page extends React.Component {
         };
 
         this.state = {
-            render: true
+            render: true,
+            snackbartext: "Added bookmark!"
         };
 
         checkFiles();
@@ -110,7 +111,8 @@ export default class Page extends React.Component {
     * @param1 {Object} e
     */
     onFrameFinishLoad = (e) => {
-        var webview = this.getWebView(),
+        var t = this,
+            webview = this.getWebView(),
             bar = this.getBar();
         if (webview.getURL() != this.props.getApp().defaultURL) {
             bar.getSearchInput().value = webview.getURL();
@@ -122,9 +124,19 @@ export default class Page extends React.Component {
         if (e.isMainFrame && !webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             Storage.saveHistory(webview.getTitle(), webview.getURL());
         }
-
-        this.getBar().getFavouriteIcon().style.display = 'block';
         this.pageData.url = webview.getURL();
+        if (!webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
+            this.getBar().getFavouriteIcon().style.display = 'block';
+            Storage.getBookmarkIndex(this.pageData.url, function(i) {
+                if (i != undefined) {
+                    t.getBar().setFavouriteIconFull(true);
+                } else {
+                    t.getBar().setFavouriteIconFull(false);
+                }
+            });
+        } else {
+            this.getBar().getFavouriteIcon().style.display = 'none';
+        }
     }
     /*
     * @param1 {Object} e
@@ -436,7 +448,23 @@ export default class Page extends React.Component {
     getSuggestions = () => {
         return this.refs.suggestions;
     }
-
+    /*
+    * returns snackbar
+    * @return {DOMElement}
+    */
+    getSnackbar = () => {
+        return this.refs.snackbar;
+    }
+    /*
+    * sets snackbar text
+    * @param1 {String} text
+    */
+    setSnackbarText = (text) => {
+        this.setState({snackbartext: text});
+    }
+    onSnackbarButtonClick = () => {
+        this.refs.bar.onSnackbarButtonClick();
+    }
     render() {
         var t = this;
 
@@ -447,6 +475,7 @@ export default class Page extends React.Component {
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
                     <webview preload="../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
                     <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.openNewTab(u, s)}></MDMenu>
+                    <Snackbar ref="snackbar" flatButton={true} flatButtonText="UNDO" onFlatButtonClick={this.onSnackbarButtonClick}>{this.state.snackbartext}</Snackbar>
                 </div>
             );
         } else {

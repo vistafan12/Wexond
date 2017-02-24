@@ -1,6 +1,6 @@
 const {app} = require('electron').remote, {ipcRenderer} = require('electron');
 var historyPath = app.getPath('userData') + '/userdata/history.json',
-    newTabDataPath = app.getPath('userData') + '/userdata/newtab.json',
+    newTabDataPath = app.getPath('userData') + '/userdata/bookmarks.json',
     extensionsPath = app.getPath('userData') + '/userdata/extensions',
     userdataPath = app.getPath('userData') + '/userdata',
     remote = require('electron').remote,
@@ -26,7 +26,7 @@ global.getNewtabData = function() {
 
 global.resetNewtabData = function() {
     var _json = {
-        "newtabdata": []
+        "bookmarks": []
     }
     _json = JSON.stringify(_json);
     global.saveNewtabData(_json);
@@ -39,7 +39,7 @@ global.newTabAddCard = function(_name, _url, _icon, _color, _fontColor, callback
     if (brightness < 125) {
         _ripplecolor = '#fff';
     }
-    _json.newtabdata.push({
+    _json.bookmarks.push({
         "name": _name.toString(),
         "url": _url.toString(),
         "icon": _icon.toString(),

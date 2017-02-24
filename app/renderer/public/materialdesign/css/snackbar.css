@@ -6,6 +6,7 @@
     border-radius: 2px;
     background-color: #323232;
     display: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 .material-snackbar .text {
     color: #fff;
@@ -14,7 +15,7 @@
     padding-top: 16px;
     padding-bottom: 16px;
     font-size: 16px;
-    font-family: 'Roboto-Light';
+    font-family: 'Roboto';
     user-select: none;
     -webkit-user-select: none;
     opacity: 0;

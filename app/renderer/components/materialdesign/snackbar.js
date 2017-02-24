@@ -102,7 +102,7 @@ export default class Snackbar extends React.Component {
                             this.props.children
                         }
                     </div>
-                    <FlatButton onFlatButtonClick={this.onClick} ref="flatbutton" style={{display: this.state.flatbutton, fontFamily: 'Roboto-Regular'}} color={this.props.flatButtonColor} textOpacity={this.props.flatButtonOpacity} opacity={this.props.flatButtonOpacity} backgroundColor={this.props.flatButtonBackgroundColor} rippleColor={this.props.flatButtonRippleColor}>
+                    <FlatButton onClick={this.props.onFlatButtonClick} ref="flatbutton" style={{display: this.state.flatbutton, fontFamily: 'Roboto'}} color={this.props.flatButtonColor} textOpacity={this.props.flatButtonOpacity} opacity={this.props.flatButtonOpacity} backgroundColor={this.props.flatButtonBackgroundColor} rippleColor={this.props.flatButtonRippleColor}>
                         {this.props.flatButtonText}
                     </FlatButton>
                 </div>
