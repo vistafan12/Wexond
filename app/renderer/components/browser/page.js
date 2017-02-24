@@ -357,11 +357,13 @@ export default class Page extends React.Component {
     */
     changeForeground = (color) => {
         this.getTab().foreground = color;
-        var barIcons = this.getBar().refs.bar.getElementsByClassName('bar-icon');
-        if (color == 'white') {
-            tabsHoverTransparency = 0.1;
-        } else if (color == 'black' || color == 'semiblack') {
-            tabsHoverTransparency = 0.4;
+        if (this.getBar() != null) {
+            var barIcons = this.getBar().refs.bar.getElementsByClassName('bar-icon');
+            if (color == 'white') {
+                tabsHoverTransparency = 0.1;
+            } else if (color == 'black' || color == 'semiblack') {
+                tabsHoverTransparency = 0.4;
+            }
         }
     }
     /*

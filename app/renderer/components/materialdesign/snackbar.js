@@ -29,54 +29,59 @@ export default class Snackbar extends React.Component {
     }
     onClick(e) {
         var _t = {};
-        if(this.props.onFlatButtonClick && _t.toString.call(this.props.onFlatButtonClick) === '[object Function]') {
+        if (this.props.onFlatButtonClick && _t.toString.call(this.props.onFlatButtonClick) === '[object Function]') {
             this.props.onFlatButtonClick();
         }
     }
     show() {
         var t = this;
-        this.refs.snackbar.style.display = 'block';
-        TweenMax.to(this.refs.snackbar, 0.3, {
-            css: {
-                bottom: t.props.marginBottom
-            }
-        });
-        var _animationdelay = setInterval(function() {
-            TweenMax.to(t.refs.text, 0.2, {
+        if (this.refs.snackbar != null) {
+            this.refs.snackbar.style.display = 'block';
+            TweenMax.to(this.refs.snackbar, 0.3, {
                 css: {
-                    opacity: 1
+                    bottom: t.props.marginBottom
                 }
             });
-            clearInterval(_animationdelay);
-        }, 150)
-        var _delay = setInterval(function() {
-            t.hide();
-            clearInterval(_delay);
-        }, this.props.hideTime);
+            var _animationdelay = setInterval(function() {
+                TweenMax.to(t.refs.text, 0.2, {
+                    css: {
+                        opacity: 1
+                    }
+                });
+                clearInterval(_animationdelay);
+            }, 150)
+            var _delay = setInterval(function() {
+                t.hide();
+                clearInterval(_delay);
+            }, this.props.hideTime);
+        }
+
     }
     hide() {
         var t = this;
-        TweenMax.to(this.refs.text, 0.4, {
-            css: {
-                opacity: 0
-            }
-        });
-        TweenMax.to(this.refs.snackbar, 0.7, {
-            css: {
-                bottom: -200
-            },
-            onComplete: function() {
-                t.refs.snackbar.style.display = 'none';
-                var _t = {};
-                if(t.props.onHide && _t.toString.call(t.props.onHide) === '[object Function]') {
-                    t.props.onHide();
+        if (this.refs.snackbar != null) {
+            TweenMax.to(this.refs.text, 0.4, {
+                css: {
+                    opacity: 0
                 }
-            }
-        });
+            });
+            TweenMax.to(this.refs.snackbar, 0.7, {
+                css: {
+                    bottom: -200
+                },
+                onComplete: function() {
+                    t.refs.snackbar.style.display = 'none';
+                    var _t = {};
+                    if (t.props.onHide && _t.toString.call(t.props.onHide) === '[object Function]') {
+                        t.props.onHide();
+                    }
+                }
+            });
+        }
     }
     setPosition(position) {
         var t = this;
-        switch(position) {
+        switch (position) {
             case 'left':
                 t.refs.snackbar.style.margin = 0;
                 t.refs.snackbar.style.left = t.props.marginLeft;
@@ -96,13 +101,18 @@ export default class Snackbar extends React.Component {
     render() {
         return (
             <div style={this.props.style}>
-                <div className="material-snackbar" ref="snackbar" style={{backgroundColor: this.props.backgrondColor, color: this.props.textColor}}>
+                <div className="material-snackbar" ref="snackbar" style={{
+                    backgroundColor: this.props.backgrondColor,
+                    color: this.props.textColor
+                }}>
                     <div className="text" ref="text">
-                        {
-                            this.props.children
-                        }
+                        {this.props.children
+}
                     </div>
-                    <FlatButton onClick={this.props.onFlatButtonClick} ref="flatbutton" style={{display: this.state.flatbutton, fontFamily: 'Roboto'}} color={this.props.flatButtonColor} textOpacity={this.props.flatButtonOpacity} opacity={this.props.flatButtonOpacity} backgroundColor={this.props.flatButtonBackgroundColor} rippleColor={this.props.flatButtonRippleColor}>
+                    <FlatButton onClick={this.props.onFlatButtonClick} ref="flatbutton" style={{
+                        display: this.state.flatbutton,
+                        fontFamily: 'Roboto'
+                    }} color={this.props.flatButtonColor} textOpacity={this.props.flatButtonOpacity} opacity={this.props.flatButtonOpacity} backgroundColor={this.props.flatButtonBackgroundColor} rippleColor={this.props.flatButtonRippleColor}>
                         {this.props.flatButtonText}
                     </FlatButton>
                 </div>
