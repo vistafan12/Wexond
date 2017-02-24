@@ -52,7 +52,7 @@ class ToolbarIcon extends React.Component {
             imageClassName = ((this.props.inverted) ? 'invert' : '') + " toolbar-image";
 
         return (
-            <div ref="toolbarIcon" onMouseDown={this.onMouseDown} className={iconClassName}>
+            <div ref="toolbarIcon" onClick={this.props.onClick} onMouseDown={this.onMouseDown} className={iconClassName}>
                 <div className={imageClassName} style={{
                     backgroundImage: 'url(' + this.props.image + ')',
                     opacity: this.props.opacity

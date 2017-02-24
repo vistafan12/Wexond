@@ -75,7 +75,6 @@ export default class History extends React.Component {
             }
         }
         saveHistory(JSON.stringify(h));
-        console.log(h);
         this.setState({checkedItems: 0});
         this.toggleToolbar(1);
     }
@@ -90,7 +89,7 @@ export default class History extends React.Component {
     * loads history from storage
     * @param1 {String} search
     */
-    loadHistory(search = "") {
+    loadHistory = (search = "") => {
         for (var i = 0; i < this.cards.length; i++) {
             if (this.cards[i] != null) {
                 this.cards[i].setState({render: false});
@@ -126,7 +125,7 @@ export default class History extends React.Component {
     /*
     * removes selection from all items
     */
-    cancelSelection() {
+    cancelSelection = () => {
         for (var i = 0; i < this.items.length; i++) {
             if (this.items[i] != null && this.items[i].refs.checkbox != null) {
                 if (this.items[i].refs.checkbox.checked) {
