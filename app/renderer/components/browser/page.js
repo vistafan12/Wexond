@@ -64,7 +64,6 @@ export default class Page extends React.Component {
         //colors
         this.colors = new Colors(this.getWebView());
         this.colorInterval = setInterval(this.updateColors, 200);
-
         //mouse events
         var lastLink = '';
         webview.addEventListener('ipc-message', function(e) {
@@ -81,9 +80,15 @@ export default class Page extends React.Component {
                 t.getMenu().hide();
                 t.getSuggestions().hide();
             }
-
+            if (e.channel == 'update-favourites') {
+                for (var i = 0; i < tabs.length; i++) {
+                    if (tabs[i].getPage() != null) {
+                        tabs[i].getPage().updateFavouriteIcon();
+                    }
+                }
+            }
         });
-
+        console.log(t.props.getApp().pages);
         //when adding new tab don't hide bar
         this.getBar().locked = true;
         this.getBar().show();
@@ -127,10 +132,7 @@ export default class Page extends React.Component {
         this.pageData.url = webview.getURL();
         if (!webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             this.getBar().getFavouriteIcon().style.display = 'block';
-            t.getBar().setFavouriteIconFull(false);
-            Storage.getBookmarkIndex(this.pageData.url, function(i) {
-                t.getBar().setFavouriteIconFull(true);
-            });
+            this.updateFavouriteIcon();
         } else {
             this.getBar().getFavouriteIcon().style.display = 'none';
         }
@@ -150,6 +152,9 @@ export default class Page extends React.Component {
     }
     onResize = () => {
         this.resize();
+    }
+    onSnackbarButtonClick = () => {
+        this.refs.bar.onSnackbarButtonClick();
     }
     /*
     * @param1 {Object} e
@@ -461,9 +466,19 @@ export default class Page extends React.Component {
     setSnackbarText = (text) => {
         this.setState({snackbartext: text});
     }
-    onSnackbarButtonClick = () => {
-        this.refs.bar.onSnackbarButtonClick();
+    /*
+    * updates favourite icon
+    */
+    updateFavouriteIcon = () => {
+        var t = this;
+        this.getBar().setFavouriteIconFull(false);
+        setTimeout(function() {
+            Storage.getBookmarkIndex(t.getWebView().getURL(), function(i) {
+                t.getBar().setFavouriteIconFull(true);
+            });
+        }, 100);
     }
+
     render() {
         var t = this;
 

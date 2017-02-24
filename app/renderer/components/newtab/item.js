@@ -48,6 +48,7 @@ export default class Item extends React.Component {
       this.setState({render: false});
       this.props.getCards().cards.splice(this.props.getCards().cards.indexOf(this), 1);
       this.props.getCards().resize();
+      updateFavouriteIcons();
     }
     /*
     * makes ripple

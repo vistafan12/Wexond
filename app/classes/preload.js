@@ -86,6 +86,10 @@ global.removeHistory = function(callback = function() {}) {
     fs.unlink(historyPath, callback);
 }
 
+global.updateFavouriteIcons = function() {
+    ipcRenderer.sendToHost("update-favourites");
+}
+
 document.addEventListener("click", function(e) {
     if (e.which == 2) {
         if (e.target.tagName == "A") {

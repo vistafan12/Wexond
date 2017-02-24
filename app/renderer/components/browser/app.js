@@ -15,6 +15,7 @@ export default class App extends React.Component {
             pagesToCreate: [],
             tabsToCreate: []
         };
+        this.pages = [];
     }
     /*
     lifecycle
@@ -94,12 +95,13 @@ export default class App extends React.Component {
 
     render() {
         var t = this;
+        this.pages = [];
         return (
             <div>
                 <Titlebar getApp={this.getApp} ref="titlebar"></Titlebar>
 
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
+                    return <Page ref={(s)=> t.pages.push(s)} index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
                 })}
             </div>
         );
