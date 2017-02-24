@@ -233,6 +233,14 @@ export default class Bar extends React.Component {
                 }}></div>
                 <input onKeyPress={this.handleKeyPress} onFocus={this.handleFocusIn} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 <div className="bar-icon menu-icon ripple-bar-icon no-select" onMouseDown={this.ripple} onClick={this.onClickMenu}></div>
+                <div className="border-horizontal no-select" style={{
+                    backgroundColor: '#212121',
+                    position: 'relative',
+                    float: 'right',
+                    marginLeft: 10,
+                    marginRight: 2,
+                    height: 'calc(100% - 24px)'
+                }}></div>
                 <div className="bar-icon favourite-icon ripple-bar-icon no-select" ref="favourite_icon" onMouseDown={this.ripple} onClick={this.onClickFavourite}></div>
             </div>
         );
