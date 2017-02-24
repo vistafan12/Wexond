@@ -39,6 +39,17 @@
     -webkit-user-select: none;
     font-size: 16px;
 }
+.card-item .delete {
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/icons/del.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
 
 .card-item-test {
     position: relative;
@@ -46,4 +57,8 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
+}
+
+.invert {
+    -webkit-filter: invert(100%);
 }

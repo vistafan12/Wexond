@@ -20,6 +20,32 @@ global.getBookmarksData = function() {
     return JSON.parse(fs.readFileSync(bookmarksPath));
 }
 
+global.delBookmark = function(_id, callback) {
+    try {
+        var _json = getBookmarksData();
+        _id = parseInt(_id);
+        _json.bookmarks.splice(_id, 1);
+        _json = JSON.stringify(_json);
+        saveBookmarksData(_json, function() {
+            callback();
+        });
+    } catch (err) {
+        throw err;
+    }
+}
+
+global.getBookmarkIndex = function(url, callback) {
+    var _json = getBookmarksData();
+    var id = -1;
+    for (var i = 0; i < _json.bookmarks.length; i++) {
+      if (_json.bookmarks[i].url == url) {
+        id = i;
+        callback(id);
+        break;
+      }
+    }
+}
+
 global.resetBookmarksData = function() {
     var _json = {
         "bookmarks": []

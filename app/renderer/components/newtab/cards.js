@@ -37,7 +37,15 @@ export default class Cards extends React.Component {
             this.setState({contWidth: width});
         } catch (err) {}
     }
+    /*
+    * gets cards
+    * @return {Cards}
+    */
+    getCards = () => {
+        return this;
+    }
     render() {
+        var t = this;
         return (
             <div ref="cards" className="cards" style={{
                 width: this.state.contWidth
@@ -47,7 +55,8 @@ export default class Cards extends React.Component {
                         if (child.type.name == "Item") {
                             this.cards[index] = ref;
                         }
-                    }
+                    },
+                    getCards: t.getCards
                 }))}
             </div>
         );
