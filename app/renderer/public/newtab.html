@@ -31,13 +31,6 @@
     </div>
     <!-- TODO: scripts -->
     <script>
-        function loadScripts(arr) {
-            for (var i = 0; i < arr.length; i++) {
-                var script = document.createElement('script');
-                script.src = arr[i];
-                document.body.appendChild(script);
-            }
-        }
         var id = setInterval(function() {
             var env = getEnv();
             if (env != "s") {
@@ -50,6 +43,8 @@
             }
         }, 1);
     </script>
+    <script src="global/js/utils/dom.js"></script>
+    <script src="global/js/utils/color.js"></script>
     <script src="materialdesign/js/ripple.js"></script>
 </body>
 

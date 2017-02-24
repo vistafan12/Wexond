@@ -5,8 +5,6 @@ import ReactDOM from 'react-dom';
 export default class Cards extends React.Component {
     constructor() {
         super();
-        //binds
-        this.resize = this.resize.bind(this);
         //global properties
         this.state = {
             contWidth: 0
@@ -14,10 +12,13 @@ export default class Cards extends React.Component {
         this.cards = [];
     }
     componentDidMount() {
-        this.resize();
         window.addEventListener('resize', this.resize);
+        this.resize();
     }
-    resize() {
+    /*
+    * adjusts container width
+    */
+    resize = () => {
         try {
             var maxInLine = this.props.maxInLine,
                 marginLeft = 8,

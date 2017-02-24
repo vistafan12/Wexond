@@ -27,6 +27,10 @@ function checkFiles() {
     if (!fs.existsSync(historyPath)) {
         fs.writeFile(historyPath, '{"history":[]}');
     }
+    //check if file called bookmarks.json exists
+    if (!fs.existsSync(bookmarksDataPath)) {
+        fs.writeFile(bookmarksDataPath, '{"bookmarks":[]}');
+    }
 }
 
 //unregister all shortcuts to prevent errors

@@ -35,7 +35,10 @@ export default class HistoryCard extends React.Component {
             }
         }
     }
-
+    /*
+    * adds item to render queue
+    * @param1 {Object} object
+    */
     addItem(object) {
         this.setState((p)=> {
             var items = p.items;

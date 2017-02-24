@@ -18,6 +18,12 @@ export default class Item extends React.Component {
     componentWillUnmount() {
         this.props.getHistory().items.splice(this.props.getHistory().items.indexOf(this), 1);
     }
+    /*
+    events
+    */
+    /*
+    * @param1 {Object} e
+    */
     checkedChanged(e) {
         var checkedItems = this.props.getHistory().state.checkedItems;
         if (e.checked) {

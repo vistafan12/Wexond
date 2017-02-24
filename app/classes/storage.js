@@ -125,10 +125,8 @@ export default class Storage {
             _json.bookmarks.push({
               name: data.name,
               url: data.url,
-              color: data.color,
-              fontColor: _ripplecolor,
-              icon: data.favicon,
-              rippleColor: _ripplecolor
+              backgroundColor: data.color,
+              icon: data.favicon
             });
             _json = JSON.stringify(_json);
             Storage.setBookmarksData(_json, function() {

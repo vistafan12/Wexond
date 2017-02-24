@@ -6,36 +6,45 @@ import {TweenMax, CSSPlugin} from 'gsap';
 export default class Item extends React.Component {
     constructor() {
         super();
-        //binds
-        this.ripple = this.ripple.bind(this);
         //global properties
+        this.state = {
+          color: "#000"
+        };
     }
     componentDidMount() {
-
+      var brightness = this.colorBrightness(this.props.data.backgroundColor);
+      if (brightness < 125) {
+          this.setState({color: '#fff'});
+      } else {
+          this.setState({color: '#000'});
+      }
+      console.log(this.props.data.icon);
     }
-    MouseClick(e) {
+    /*
+    events
+    */
+    /*
+    * @param1 {Object} e
+    */
+    MouseClick = (e) => {
         if (e.target == this.refs.root) {
-            window.location.href = this.props.url;
+            window.location.href = this.props.data.url;
         }
     }
-    delClick() {
-
-    }
-    editClick() {
-
-    }
-    ripple(e) {
+    /*
+    * @param1 {Object} e
+    */
+    ripple = (e) => {
         var ripple = Ripple.createRipple(this.refs.root, {
-            backgroundColor: this.props.rippleColor
+            backgroundColor: this.state.color
         }, createRippleMouse(this.refs.root, e, 1.2));
         Ripple.makeRipple(ripple);
     }
     render() {
         return (
-            // href={this.props.url}
-            <div ref="root" className="card-item ripple" style={{backgroundColor: this.props.color, color: this.props.fontColor}} onMouseDown={this.ripple} onMouseEnter={this.MouseEnter} onMouseLeave={this.MouseLeave} onClick={this.MouseClick}>
-                <img ref="icon" className="icon noselectable" src={this.props.icon} />
-                <div ref="title" className="title noselectable">{this.props.name}</div>
+            <div ref="root" className="card-item ripple" style={{backgroundColor: this.props.data.backgroundColor, color: this.state.color}} onMouseDown={this.ripple}onClick={this.MouseClick}>
+                <img ref="icon" className="icon noselectable" src={this.props.data.icon} />
+                <div ref="title" className="title noselectable">{this.props.data.name}</div>
             </div>
         );
     }

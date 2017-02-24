@@ -9,13 +9,6 @@ import {CSSPlugin, TweenMax} from 'gsap';
 export default class History extends React.Component {
     constructor() {
         super();
-        //binds
-        this.toggleToolbar = this.toggleToolbar.bind(this);
-        this.resize = this.resize.bind(this);
-        this.getHistory = this.getHistory.bind(this);
-        this.loadHistory = this.loadHistory.bind(this);
-        this.cancelSelection = this.cancelSelection.bind(this);
-        this.deleteSelected = this.deleteSelected.bind(this);
         //global properties
         this.toolbars = [];
         this.cards = [];
@@ -36,8 +29,10 @@ export default class History extends React.Component {
         window.addEventListener('resize', this.resize);
         this.loadHistory();
     }
-
-    resize() {
+    /*
+    * adjusts sizes
+    */
+    resize = () => {
         if (window.innerWidth > 1024 + 32) {
             this.refs.cardsContainer.classList.add('history-cards-container-center');
             this.refs.cardsContainer.classList.remove('history-cards-container-normal');
@@ -46,16 +41,21 @@ export default class History extends React.Component {
             this.refs.cardsContainer.classList.add('history-cards-container-normal');
         }
     }
-
-    toggleToolbar(show) {
-        if (show == 1) {
+    /*
+    * shows editing toolbar or normal toolbar
+    * @param1 {Number} id - the id of toolbar to show
+    */
+    toggleToolbar = (id) => {
+        if (id == 1) {
             this.setState({className1: 'history-toolbar-show', className2: 'history-toolbar-hide', toolbarBackgroundColor: '#03A9F4', toolbarColor: '#000'});
         } else {
             this.setState({className2: 'history-toolbar-show', className1: 'history-toolbar-hide', toolbarBackgroundColor: '#1E88E5', toolbarColor: '#fff'});
         }
     }
-
-    deleteSelected () {
+    /*
+    * delete selected items from storage and document
+    */
+    deleteSelected = () => {
         var t = this;
         var h = getHistoryData();
         for (var i = 0; i <= this.items.length; i++) {
@@ -79,11 +79,17 @@ export default class History extends React.Component {
         this.setState({checkedItems: 0});
         this.toggleToolbar(1);
     }
-
-    getHistory() {
+    /*
+    * gets history
+    * @return {History}
+    */
+    getHistory = () => {
         return this;
     }
-
+    /*
+    * loads history from storage
+    * @param1 {String} search
+    */
     loadHistory(search = "") {
         for (var i = 0; i < this.cards.length; i++) {
             if (this.cards[i] != null) {
@@ -115,10 +121,11 @@ export default class History extends React.Component {
             newState.cards.push({title: headers[i], search: search});
             this.setState(newState);
         }
-
-
     }
 
+    /*
+    * removes selection from all items
+    */
     cancelSelection() {
         for (var i = 0; i < this.items.length; i++) {
             if (this.items[i] != null && this.items[i].refs.checkbox != null) {
