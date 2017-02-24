@@ -35,7 +35,12 @@ export default class Bar extends React.Component {
     show = () => {
         if (this.refs.bar != null) {
             this.refs.bar.css('display', 'block');
-            TweenMax.to(this.refs.bar, 0.2, {css:{top: 8, opacity: 1}});
+            TweenMax.to(this.refs.bar, 0.2, {
+                css: {
+                    top: 8,
+                    opacity: 1
+                }
+            });
         }
     }
     /*
@@ -44,9 +49,15 @@ export default class Bar extends React.Component {
     hide = () => {
         var t = this;
         if (this.refs.bar != null) {
-            TweenMax.to(this.refs.bar, 0.2, {css:{top: -8, opacity: 0}, onComplete: function() {
-                t.refs.bar.css('display', 'none');
-            }});
+            TweenMax.to(this.refs.bar, 0.2, {
+                css: {
+                    top: -8,
+                    opacity: 0
+                },
+                onComplete: function() {
+                    t.refs.bar.css('display', 'none');
+                }
+            });
         }
     }
     /*
@@ -94,13 +105,13 @@ export default class Bar extends React.Component {
             return false;
         }
     }
-    back = () => {
+    onClickBack = () => {
         this.props.getPage().getWebView().goBack();
     }
-    forward = () => {
+    onClickForward = () => {
         this.props.getPage().getWebView().goForward();
     }
-    refresh = () => {
+    onClickRefresh = () => {
         this.props.getPage().loadExtensions();
         this.props.getPage().getWebView().reload();
     }
@@ -108,24 +119,25 @@ export default class Bar extends React.Component {
     * @param1 {Object} e
     */
     ripple(e) {
-        var ripple = Ripple.createRipple(e.target, {
-        }, createRippleCenter(e.target, 13));
+        var ripple = Ripple.createRipple(e.target, {}, createRippleCenter(e.target, 13));
         Ripple.makeRipple(ripple);
     }
 
     onClickFavourite = () => {
         var url = this.props.getPage().getWebView().getURL();
-        this.props.getPage().setSnackbarText(url);
-        this.props.getPage().getSnackbar().show();
-
-        var title = this.props.getPage().title;
+        var title = this.props.getPage().pageData.title;
+        var favicon = this.props.getPage().pageData.favicon;
+        var color = this.props.getPage().pageData.color;
+        console.log(this.props.getPage().pageData);
+        /*this.props.getPage().setSnackbarText(url);
+        this.props.getPage().getSnackbar().show();*/
     }
     /*
     * @param1 {Object} e
     */
     onClickMenu = (e) => {
         e.stopPropagation();
-        this.props.getPage().getMenu().menu();
+        this.props.getPage().getMenu().showOrHide();
     }
     /*
     * gets favourite icon
@@ -145,11 +157,19 @@ export default class Bar extends React.Component {
     render() {
         return (
             <div className="bar" ref="bar">
-                <div className="bar-icon back ripple-bar-icon no-select" onClick={this.back} onMouseDown={this.ripple}></div>
-                <div className="bar-icon forward ripple-bar-icon no-select" onClick={this.forward} onMouseDown={this.ripple}></div>
-                <div className="bar-icon refresh ripple-bar-icon no-select" onClick={this.refresh} onMouseDown={this.ripple}></div>
-                <div className="border-horizontal no-select" style={{backgroundColor: '#212121', position:'relative', float: 'left', marginLeft: 12, height: 'calc(100% - 24px)'}}></div>
-                <div className="search-icon no-select" style={{marginLeft: 12}}></div>
+                <div className="bar-icon back ripple-bar-icon no-select" onClick={this.onClickBack} onMouseDown={this.ripple}></div>
+                <div className="bar-icon forward ripple-bar-icon no-select" onClick={this.onClickForward} onMouseDown={this.ripple}></div>
+                <div className="bar-icon refresh ripple-bar-icon no-select" onClick={this.onClickRefresh} onMouseDown={this.ripple}></div>
+                <div className="border-horizontal no-select" style={{
+                    backgroundColor: '#212121',
+                    position: 'relative',
+                    float: 'left',
+                    marginLeft: 12,
+                    height: 'calc(100% - 24px)'
+                }}></div>
+                <div className="search-icon no-select" style={{
+                    marginLeft: 12
+                }}></div>
                 <input onKeyPress={this.handleKeyPress} onFocus={this.handleFocusIn} onInput={this.handleInput} ref="searchInput" className="searchInput"></input>
                 <div className="bar-icon menu-icon ripple-bar-icon no-select" onMouseDown={this.ripple} onClick={this.onClickMenu}></div>
                 <div className="bar-icon favourite-icon ripple-bar-icon no-select" ref="favourite_icon" onMouseDown={this.ripple} onClick={this.onClickFavourite}></div>

@@ -12,22 +12,23 @@ export default class Extension extends React.Component {
     }
     componentDidMount() {
         this.data = this.props.object;
-        this.setState({backgroundImage: 'url(' + this.data.icon + ')'});
+        this.setState({
+            backgroundImage: 'url(' + this.data.icon + ')'
+        });
     }
     /*
     events
     */
     onMouseDown(e) {
-        var ripple = Ripple.createRipple(e.target, {
-        }, createRippleCenter(e.target));
+        var ripple = Ripple.createRipple(e.target, {}, createRippleCenter(e.target));
         Ripple.makeRipple(ripple);
     }
 
     render() {
         return (
-            <div onMouseDown={this.onMouseDown} className="ripple-icon extension" style={{backgroundImage: this.state.backgroundImage}}>
-
-            </div>
+            <div onMouseDown={this.onMouseDown} className="ripple-icon extension" style={{
+                backgroundImage: this.state.backgroundImage
+            }}></div>
         );
     }
 }

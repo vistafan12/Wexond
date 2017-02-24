@@ -13,12 +13,21 @@ export default class Page extends React.Component {
         super();
         //global properties
         this.menu = new Menu();
-        this.posToInspect = {x: 0, y: 0};
+        this.posToInspect = {
+            x: 0,
+            y: 0
+        };
         this.getTab = null;
         this.extensions = null;
         this.menuItems = [];
         this.imageToSave = '';
         this.linkToOpen = '';
+        this.pageData = {
+            url: '',
+            title: '',
+            favicon: '',
+            color: ''
+        };
 
         this.state = {
             render: true
@@ -94,7 +103,8 @@ export default class Page extends React.Component {
     onPageTitleUpdate = (e) => {
         var webview = this.getWebView();
         this.getTab().changeTitle(e.title);
-        this.title = e.title;
+        this.pageData.title = e.title;
+        this.pageData.url = webview.getURL();
     }
     /*
     * @param1 {Object} e
@@ -114,6 +124,7 @@ export default class Page extends React.Component {
         }
 
         this.getBar().getFavouriteIcon().style.display = 'block';
+        this.pageData.url = webview.getURL();
     }
     /*
     * @param1 {Object} e
@@ -126,6 +137,7 @@ export default class Page extends React.Component {
     */
     onFaviconUpdated = (e) => {
         this.getTab().changeFavicon(e.favicons[0]);
+        this.pageData.favicon = e.favicons[0];
     }
     onResize = () => {
         this.resize();
@@ -169,14 +181,19 @@ export default class Page extends React.Component {
 
         this.cleanContextMenu();
 
-        this.posToInspect = {x: params.x, y: params.y};
+        this.posToInspect = {
+            x: params.x,
+            y: params.y
+        };
         this.menu.popup(remote.getCurrentWindow());
     }
     /*
     * makes context menu clean
     */
     cleanContextMenu = () => {
-        this.menuItems[1].visible = (this.linkToOpen == "") ? false : true;
+        this.menuItems[1].visible = (this.linkToOpen == "")
+            ? false
+            : true;
         if (this.menuItems[1].visible || this.menuItems[0].visible) {
             for (var i = 2; i < 5; i++) {
                 this.menuItems[i].visible = false;
@@ -198,7 +215,9 @@ export default class Page extends React.Component {
         } else {
             this.menuItems[7].visible = false;
         }
-        this.menuItems[0].visible = (this.imageToSave == "") ? false : true;
+        this.menuItems[0].visible = (this.imageToSave == "")
+            ? false
+            : true;
     }
     /*
     * appends and prepares context menu items
@@ -262,12 +281,12 @@ export default class Page extends React.Component {
         }));
         //save image as menu item id: 7
         this.menuItems.push(new MenuItem({label: 'Save image as', click() {
-            //saves image as
-        }}));
+                //saves image as
+            }}));
         //print menu item id: 8
         this.menuItems.push(new MenuItem({label: 'Print', click() {
-            //prints webpage
-        }}));
+                //prints webpage
+            }}));
         //separator 2 id: 9
         this.menuItems.push(new MenuItem({type: 'separator'}));
         //inspect element menu item id: 10
@@ -279,8 +298,8 @@ export default class Page extends React.Component {
         }));
         //view source menu item id: 11
         this.menuItems.push(new MenuItem({label: 'View source', click() {
-            //views source
-        }}));
+                //views source
+            }}));
 
         for (var i = 0; i < this.menuItems.length; i++) {
             this.menu.append(this.menuItems[i]);
@@ -306,7 +325,16 @@ export default class Page extends React.Component {
                     this.colors.getColor(function(data) {
                         if (remote != null) {
                             if (t.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
-
+                                /*if (t.refs.bar != null) {
+                                    t.refs.bar.refs.bar.css('background-color', data.background);
+                                }*/
+                                t.props.getApp().getTitlebar().setBackground(shadeColor(data.background, -0.2));
+                                t.getTab().setBackground(data.background);
+                                t.changeForeground(data.foreground, data.foreground == 'white'
+                                    ? '#fff'
+                                    : '#444');
+                                t.getTab().setForeground(data.foreground, false);
+                                t.pageData.color = data.background;
                             }
                         }
                     });
@@ -318,7 +346,15 @@ export default class Page extends React.Component {
     * changes foreground of tab and bar
     * @param1 {String} color
     */
-    changeForeground = (color) => {}
+    changeForeground = (color) => {
+        this.getTab().foreground = color;
+        var barIcons = this.getBar().refs.bar.getElementsByClassName('bar-icon');
+        if (color == 'white') {
+            tabsHoverTransparency = 0.1;
+        } else if (color == 'black' || color == 'semiblack') {
+            tabsHoverTransparency = 0.4;
+        }
+    }
     /*
     * disables page render
     */
