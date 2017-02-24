@@ -55,10 +55,10 @@ export default class Page extends React.Component {
         window.addEventListener('resize', this.onResize);
 
         //webview events
-        webview.addEventListener('page-title-updated', this.onPageTitleUpdated);
+        webview.addEventListener('page-title-updated', this.onPageTitleUpdate);
         webview.addEventListener('dom-ready', this.onReady);
         webview.addEventListener('did-frame-finish-load', this.onFrameFinishLoad);
-        webview.addEventListener('page-favicon-updated', this.onFaviconUpdated);
+        webview.addEventListener('page-favicon-updated', this.onFaviconUpdate);
         webview.addEventListener('new-window', this.onNewWindow);
 
         //colors
@@ -127,12 +127,9 @@ export default class Page extends React.Component {
         this.pageData.url = webview.getURL();
         if (!webview.getURL().startsWith("wexond://history") && !webview.getURL().startsWith("wexond://newtab")) {
             this.getBar().getFavouriteIcon().style.display = 'block';
+            t.getBar().setFavouriteIconFull(false);
             Storage.getBookmarkIndex(this.pageData.url, function(i) {
-                if (i != undefined) {
-                    t.getBar().setFavouriteIconFull(true);
-                } else {
-                    t.getBar().setFavouriteIconFull(false);
-                }
+                t.getBar().setFavouriteIconFull(true);
             });
         } else {
             this.getBar().getFavouriteIcon().style.display = 'none';
@@ -147,7 +144,7 @@ export default class Page extends React.Component {
     /*
     * @param1 {Object} e
     */
-    onFaviconUpdated = (e) => {
+    onFaviconUpdate = (e) => {
         this.getTab().changeFavicon(e.favicons[0]);
         this.pageData.favicon = e.favicons[0];
     }

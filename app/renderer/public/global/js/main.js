@@ -12,7 +12,7 @@ var app = remote.app,
     tabsAnimationEasing,
     tabsHoverTransparency = 0.1,
     tabs = [],
-    bookMarksDataPath = userData + '/bookmarks.json';
+    bookmarksDataPath = userData + '/bookmarks.json';
 
 function checkFiles() {
     //check if directory called userdata exists

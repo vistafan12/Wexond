@@ -237,7 +237,7 @@ export default class Tab extends React.Component {
     * @param1 {String} favicon
     */
     changeFavicon = (favicon) => {
-        this.setState({backgroundImage: `url(${favicon}`});
+        this.setState({icon: `url(${favicon}`});
     }
     /*
     * returns this

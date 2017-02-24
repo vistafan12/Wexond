@@ -130,49 +130,55 @@ export default class Bar extends React.Component {
 
     onClickFavourite = () => {
         var t = this;
-        this.lastTitle = this.props.getPage().getWebView().getTitle();
-        this.lastUrl = this.props.getPage().getWebView().getURL();
-        this.lastFavicon = this.props.getPage().pageData.favicon;
-        this.lastColor = this.props.getPage().pageData.color;
+        var title = this.props.getPage().getWebView().getTitle();
+        var url = this.props.getPage().getWebView().getURL();
+        var favicon = this.props.getPage().pageData.favicon;
+        var color = this.props.getPage().pageData.color;
+
+        this.data = {
+          url: url,
+          favicon: favicon,
+          color: color,
+          name: title
+        };
 
         if (!this.bookmarkExist) {
-            this.bookmarkExist = undefined;
-            this.props.getPage().setSnackbarText("Added a new bookmark!");
-            Storage.addBookmark(this.lastTitle, this.lastUrl, this.lastFavicon, this.lastColor, null, function() {
-                t.props.getPage().getSnackbar().show();
-                t.setFavouriteIconFull(true);
+          this.props.getPage().setSnackbarText("Added a new bookmark!");
+          Storage.addBookmark(this.data, function() {
+              t.props.getPage().getSnackbar().show();
+              t.setFavouriteIconFull(true);
+          });
+          this.bookmarkExist = true;
+        } else {
+          this.props.getPage().setSnackbarText("Removed the bookmark!");
+          Storage.getBookmarkIndex(url, function(index) {
+            Storage.delBookmark(index, function() {
+              t.props.getPage().getSnackbar().show();
+              t.setFavouriteIconFull(false);
             });
-        } else if (this.bookmarkExist) {
-            this.bookmarkExist = undefined;
-            this.props.getPage().setSnackbarText("Removed the bookmark!");
-            Storage.getBookmarkIndex(this.lastUrl, function(index) {
-                if (index != undefined) {
-                    Storage.delBookmark(index, function() {
-                        t.props.getPage().getSnackbar().show();
-                        t.setFavouriteIconFull(false);
-                    });
-                }
-            });
+          });
+          this.bookmarkExist = false;
         }
+
     }
 
     onSnackbarButtonClick = () => {
         var t = this;
         t.props.getPage().getSnackbar().hide();
         if (!this.bookmarkExist) {
-            this.bookmarkExist = undefined;
-            Storage.addBookmark(this.lastTitle, this.lastUrl, this.lastFavicon, this.lastColor, null, function() {
+            Storage.addBookmark(this.data, function() {
                 t.setFavouriteIconFull(true);
             });
+            this.bookmarkExist = true;
         } else if (this.bookmarkExist) {
-            this.bookmarkExist = undefined;
-            Storage.getBookmarkIndex(this.lastUrl, function(index) {
+            Storage.getBookmarkIndex(this.data.url, function(index) {
                 if (index != undefined) {
                     Storage.delBookmark(index, function() {
                         t.setFavouriteIconFull(false);
                     });
                 }
             });
+            this.bookmarkExist = false;
         }
     }
 
@@ -192,6 +198,7 @@ export default class Bar extends React.Component {
     }
     /*
     * sets favourite icon full or empty
+    * @param1 {Boolean} f
     */
     setFavouriteIconFull = (f) => {
         this.refs.favourite_icon.classList.remove("favourite-icon-full");
