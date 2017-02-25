@@ -88,7 +88,6 @@ export default class Page extends React.Component {
                 }
             }
         });
-        console.log(t.props.getApp().pages);
         //when adding new tab don't hide bar
         this.getBar().locked = true;
         this.getBar().show();

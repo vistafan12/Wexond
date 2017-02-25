@@ -74,6 +74,7 @@ export default class Storage {
     static setBookmarksData(json, callback) {
         fs.writeFile(bookmarksDataPath, json, function(err) {
             if (err) {
+                Storage.resetBookmarksData();
                 throw err;
             } else {
                 callback();
@@ -86,8 +87,9 @@ export default class Storage {
     */
     static getBookmarksData(callback) {
         fs.readFile(bookmarksDataPath, function(err, data) {
-            if (err) {
-                throw err;
+            if (err || data.length < 16) {
+                Storage.resetBookmarksData();
+                throw err
             } else {
                 var json = data.toString();
                 //replace weird characters in utf-8
@@ -106,7 +108,9 @@ export default class Storage {
         };
         _json = JSON.stringify(_json);
         Storage.setBookmarksData(_json, function() {
-            callback();
+            if (callback != undefined) {
+                callback();
+            }
         });
     }
     /*
@@ -150,6 +154,7 @@ export default class Storage {
                 });
             });
         } catch (err) {
+            Storage.resetBookmarksData();
             throw err;
         }
     }
