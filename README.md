@@ -1,18 +1,18 @@
 # Wexond
 Advanced web browser made in Electron and React.
 
-# Downloads
+## Downloads
 [Link](https://github.com/Sential/Wexond/releases)
 
-# Wexond extension documentation
+## Documentation
 [Link](https://github.com/Nersent/Wexond/wiki)
 
-# Running
-## Installing
+## Running
+### Installing
 ```
 npm install
 ```
-## Running in dev mode
+### Running in dev mode
 ```
 npm run browser
 npm run applets
