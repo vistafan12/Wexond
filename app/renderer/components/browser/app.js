@@ -10,7 +10,10 @@ export default class App extends React.Component {
         super();
         //global properties
         this.defaultURL = 'wexond://newtab/';
-        this.defaultOptions = {url: this.defaultURL, select: true};
+        this.defaultOptions = {
+            url: this.defaultURL,
+            select: true
+        };
         this.state = {
             pagesToCreate: [],
             tabsToCreate: []
@@ -45,18 +48,20 @@ export default class App extends React.Component {
             _url = "file:///" + remote.getGlobal('start').file;
         }
         this.addPage({url: _url, select: true});
-        globalShortcut.register('CmdOrCtrl+T', () => {
-            if (remote.getCurrentWindow().isFocused())
+        document.addEventListener('keyup', function(e) {
+            //CTRL + T
+            if (e.ctrlKey && e.keyCode == 84) {
                 t.addPage();
             }
-        );
+        }, false);
+
     }
     /*
     * adds tab to render queue
     * @param1 {Function} getPage
     */
     addTab = (getPage) => {
-        this.setState((p)=> {
+        this.setState((p) => {
             p.tabsToCreate.push(getPage);
             return {tabsToCreate: p.tabsToCreate};
         });
@@ -66,7 +71,7 @@ export default class App extends React.Component {
     * @param1 {Object} options
     */
     addPage = (options = this.defaultOptions) => {
-        this.setState((p)=> {
+        this.setState((p) => {
             p.pagesToCreate.push(options);
             return {pagesToCreate: p.pagesToCreate};
         });
@@ -101,7 +106,7 @@ export default class App extends React.Component {
                 <Titlebar getApp={this.getApp} ref="titlebar"></Titlebar>
 
                 {this.state.pagesToCreate.map(function(object, i) {
-                    return <Page ref={(s)=> t.pages.push(s)} index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
+                    return <Page ref={(s) => t.pages.push(s)} index={i} getApp={t.getApp} key={i} select={object.select} url={object.url}></Page>;
                 })}
             </div>
         );

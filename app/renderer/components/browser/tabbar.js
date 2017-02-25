@@ -40,17 +40,19 @@ export default class TabBar extends React.Component {
             }
             t.timer += 1;
         }, 1000);
-        globalShortcut.register('CmdOrCtrl+W', () => {
-            if (remote.getCurrentWindow().isFocused()) {
+        document.addEventListener('keyup', function(e) {
+            //CTRL + W
+            if (e.ctrlKey && e.keyCode == 87) {
                 for (var i = 0; i < tabs.length; i++) {
                     if (tabs[i].selected) {
                         t.removeTab(tabs[i]);
                     }
                 }
             }
-        });
-        globalShortcut.register('CmdOrCtrl+O', () => {
-            if (remote.getCurrentWindow().isFocused()) {
+        }, false);
+        document.addEventListener('keyup', function(e) {
+            //CTRL + O
+            if (e.ctrlKey && e.keyCode == 79) {
                 for (var i = 0; i < tabs.length; i++) {
                     if (!tabs[i].isSelected()) {
                         t.removeTab(tabs[i], false);
@@ -65,8 +67,7 @@ export default class TabBar extends React.Component {
                 t.calcWidths(true, true);
                 t.calcPositions(true, true);
             }
-        });
-
+        }, false);
     }
     /*
     * selects tab

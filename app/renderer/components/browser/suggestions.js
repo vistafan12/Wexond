@@ -13,13 +13,12 @@ export default class Suggestions extends React.Component {
 
         searchInput.addEventListener('input', this.getSuggestions);
         searchInput.onkeydown = this.handleKeyDown;
-        globalShortcut.register('Esc', () => {
-            if (remote != null) {
-                if (remote.getCurrentWindow().isFocused())
-                    t.hide();
-                }
+        document.addEventListener('keyup', function(e) {
+            //ESC
+            if (e.ctrlKey && e.keyCode == 27) {
+                t.hide();
             }
-        );
+        }, false);
     }
     /*
     * hides suggestions windows

@@ -1,5 +1,5 @@
 const {remote, clipboard} = require('electron');
-const {Menu, MenuItem, globalShortcut} = remote;
+const {Menu, MenuItem} = remote;
 
 var app = remote.app,
     appData = app.getPath('userData'),
@@ -32,9 +32,6 @@ function checkFiles() {
         fs.writeFile(bookmarksDataPath, '{"bookmarks":[]}');
     }
 }
-
-//unregister all shortcuts to prevent errors
-globalShortcut.unregisterAll();
 
 if (process.env.ENV == 'dev') {
     remote.getCurrentWindow().webContents.openDevTools();
