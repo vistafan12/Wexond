@@ -64,7 +64,7 @@ export default class Item extends React.Component {
     render() {
       if (this.state.render) {
         return (
-            <div ref="root" className="card-item ripple" style={{
+            <div ref="root" className="card-item ripple pointer" style={{
                 backgroundColor: this.props.data.backgroundColor,
                 color: this.state.color
             }} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseDown={this.ripple} onClick={this.onMouseClick}>
