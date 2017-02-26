@@ -103,8 +103,9 @@ export default class History extends React.Component {
         if (search != "") {
             this.refs.searchHint.css('display', 'none');
             for (var i = 0; i < h.history.length; i++) {
-                if (h.history[i].title.toLowerCase().startsWith(search.toLowerCase())) {
+                if (h.history[i].title.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
                     if (!isInArray(h.history[i].date, headers)) {
+                        console.log("siema");
                         headers.push(h.history[i].date);
                     }
                 }

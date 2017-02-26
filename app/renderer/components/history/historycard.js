@@ -11,7 +11,8 @@ export default class HistoryCard extends React.Component {
         //global properties
         this.state = {
             items: [],
-            itemsCount: 0
+            itemsCount: 0,
+            render: true
         }
     }
     componentDidMount() {
@@ -24,7 +25,7 @@ export default class HistoryCard extends React.Component {
                 var time1 = timeObj.toString();
                 var timeString = time1.split(" ")[4].split(":")[0] + ":" + time1.split(" ")[4].split(":")[1];
                 if (this.props.object.search != "") {
-                    if (h.history[z].title.toLowerCase().startsWith(this.props.object.search.toLowerCase())) {
+                    if (h.history[z].title.toLowerCase().indexOf(this.props.object.search.toLowerCase()) !== -1) {
                         this.addItem({title: h.history[z].title, time: timeString, id: h.history[z].id});
                     }
                 } else {
@@ -56,8 +57,7 @@ export default class HistoryCard extends React.Component {
     }
 
     render() {
-        console.log(this.state.itemsCount);
-        if (this.state.itemsCount >= 1) {
+        if (this.state.itemsCount > 0 && this.state.render) {
             return (
                 <div style={this.props.style}>
                     <Card header={this.props.object.title} className="history-card">
@@ -73,7 +73,7 @@ export default class HistoryCard extends React.Component {
                     </Card>
                 </div>
             );
-        } else if (this.state.itemsCount <= 0) {
+        } else {
             return null;
         }
     }
