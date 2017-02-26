@@ -11,7 +11,7 @@ export default class HistoryCard extends React.Component {
         //global properties
         this.state = {
             items: [],
-            render: true
+            itemsCount: 0
         }
     }
     componentDidMount() {
@@ -30,8 +30,6 @@ export default class HistoryCard extends React.Component {
                 } else {
                     this.addItem({title: h.history[z].title, time: timeString, id: h.history[z].id});
                 }
-
-
             }
         }
     }
@@ -44,23 +42,39 @@ export default class HistoryCard extends React.Component {
             var items = p.items;
             p.items.push(object);
             return {
-                items: items
+                items: items,
+                itemsCount: p.itemsCount + 1
             };
         });
     }
+    /*
+    * gets HistoryCard
+    * @return {HistoryCard}
+    */
+    getHistoryCard = () => {
+        return this;
+    }
 
     render() {
-        if (this.state.render) {
+        console.log(this.state.itemsCount);
+        if (this.state.itemsCount >= 1) {
             return (
                 <div style={this.props.style}>
                     <Card header={this.props.object.title} className="history-card">
-                        {this.state.items.map((object, key) => <Item ref={(r)=> this.props.getHistory().items.push(r)} getParent={()=> {return this;}} object={object} key={key} getHistory={this.props.getHistory}></Item>)}
+                        {this.state.items.map((object, key) =>
+                            <Item
+                                ref={(r)=> this.props.getHistory().items.push(r)}
+                                getParent={this.getHistoryCard}
+                                object={object}
+                                key={key}
+                                getHistory={this.props.getHistory}>
+                            </Item>
+                        )}
                     </Card>
                 </div>
             );
-        } else {
+        } else if (this.state.itemsCount <= 0) {
             return null;
         }
-
     }
 }

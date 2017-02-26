@@ -67,6 +67,8 @@ export default class History extends React.Component {
                             h.history.splice(x, 1);
                         }
                     }
+                    var itemsCount = item.props.getParent().state.itemsCount;
+                    item.props.getParent().setState({itemsCount: itemsCount - 1});
                     item.setState(()=> {
                         t.items.splice(i, 1);
                         return {render: false};
