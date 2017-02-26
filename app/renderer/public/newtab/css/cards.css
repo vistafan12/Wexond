@@ -1,11 +1,13 @@
 .cards {
-    width: 472px;
+    max-width: 752px;
+    display: table;
     list-style: none;
     padding: 0;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
+    margin: 0;
+    left: 50%;
+    transform: translateX(-50%);
     margin-top: 160px;
+    position: relative;
 }
 
 .card-item {

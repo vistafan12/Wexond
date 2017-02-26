@@ -92,7 +92,3 @@
     opacity: 1;
     transition: 0.3s background;
 }
-
-.white-icon {
-    -webkit-filter: invert(100%);
-}
