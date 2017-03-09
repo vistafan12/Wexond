@@ -487,7 +487,7 @@ export default class Page extends React.Component {
     }
     /*
     * webview leave full screen event
-    */
+    *//
     onFullScreenLeave = (e) => {
         this.props.getApp().getTitlebar().setVisible(true);
     }
