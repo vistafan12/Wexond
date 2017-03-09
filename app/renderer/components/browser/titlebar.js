@@ -18,7 +18,8 @@ export default class Titlebar extends React.Component {
             minimizeStyle: {
                 backgroundImage: 'url(browser/img/controls/minimize.png)'
             },
-            backgroundColor: ''
+            backgroundColor: '',
+            visible: true
         };
     }
     componentDidMount() {}
@@ -134,7 +135,20 @@ export default class Titlebar extends React.Component {
             }
         }
     }
-
+    /*
+    * sets titlebar visible
+    * @param1 {boolean} flag
+    */
+    setVisible = (flag) => {
+        this.setState({visible: flag});
+    }
+    /*
+    * gets titlebar visible
+    * return {boolean} flag
+    */
+    isVisible = () => {
+        return this.state.visible;
+    }
     render() {
         var closeStyle = {
                 backgroundImage: this.state.closeStyle.backgroundImage
@@ -147,7 +161,7 @@ export default class Titlebar extends React.Component {
             };
         return (
             <div>
-                <div ref="titlebar" style={{backgroundColor: this.state.backgroundColor}} className="titlebar">
+                <div ref="titlebar" style={{backgroundColor: this.state.backgroundColor, display: (this.state.visible) ? "block" : "none"}} className="titlebar">
                     <div className="window-controls">
                         <div className="control" style={closeStyle} onClick={this.close}></div>
                         <div className="control" style={maximizeStyle} onClick={this.maximizeOrRestore}></div>

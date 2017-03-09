@@ -60,6 +60,8 @@ export default class Page extends React.Component {
         webview.addEventListener('did-frame-finish-load', this.onFrameFinishLoad);
         webview.addEventListener('page-favicon-updated', this.onFaviconUpdate);
         webview.addEventListener('new-window', this.onNewWindow);
+        webview.addEventListener('enter-html-full-screen', this.onFullScreenEnter);
+        webview.addEventListener('leave-html-full-screen', this.onFullScreenLeave);
 
         //colors
         this.colors = new Colors(this.getWebView());
@@ -477,7 +479,18 @@ export default class Page extends React.Component {
             });
         }, 100);
     }
-
+    /*
+    * webview enter full screen event
+    */
+    onFullScreenEnter = (e) => {
+        this.props.getApp().getTitlebar().setVisible(false);
+    }
+    /*
+    * webview leave full screen event
+    */
+    onFullScreenLeave = (e) => {
+        this.props.getApp().getTitlebar().setVisible(true);
+    }
     render() {
         var t = this;
 
