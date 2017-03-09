@@ -7,6 +7,7 @@ import Extensions from '../../../classes/extensions.js';
 import Colors from '../../../classes/colors.js';
 import MDMenu from './menu.js';
 import Snackbar from '../materialdesign/snackbar.js';
+import Find from './find.js';
 
 export default class Page extends React.Component {
     constructor() {
@@ -62,6 +63,16 @@ export default class Page extends React.Component {
         webview.addEventListener('new-window', this.onNewWindow);
         webview.addEventListener('enter-html-full-screen', this.onFullScreenEnter);
         webview.addEventListener('leave-html-full-screen', this.onFullScreenLeave);
+        webview.addEventListener('found-in-page', (e) => {
+            try {
+                var matches = e.result.matches;
+                var activeMatche = e.result.activeMatchOrdinal;
+                t.refs.findpanel.setMatches(activeMatche, matches);
+                webview.stopFindInPage('keepSelection');
+            } catch (e) {
+
+            }
+        });
 
         //colors
         this.colors = new Colors(this.getWebView());
@@ -487,9 +498,15 @@ export default class Page extends React.Component {
     }
     /*
     * webview leave full screen event
-    *//
+    */
     onFullScreenLeave = (e) => {
         this.props.getApp().getTitlebar().setVisible(true);
+    }
+    /*
+    * returns find panel
+    */
+    getFindPanel() {
+        return this.refs.findpanel;
     }
     render() {
         var t = this;
@@ -502,6 +519,7 @@ export default class Page extends React.Component {
                     <webview preload="../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
                     <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.addTab(u, s)}></MDMenu>
                     <Snackbar ref="snackbar" flatButton={true} flatButtonText="UNDO" onFlatButtonClick={this.onSnackbarButtonClick}>{this.state.snackbartext}</Snackbar>
+                    <Find ref="findpanel" getPage={t.getPage}></Find>
                 </div>
             );
         } else {

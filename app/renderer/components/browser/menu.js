@@ -120,7 +120,10 @@ export default class MDMenu extends React.Component {
                         <div className="icon"></div>
                         Private mode
                     </li>
-
+                    <li className="ripple find" ref="item" onClick={() => this.props.getPage().getFindPanel().setVisible((this.props.getPage().getFindPanel().isOpened() ? false : true))}>
+                        <div className="icon"></div>
+                        Find
+                    </li>
                 </ul>
                 <div ref="divider" className="divider"></div>
                 <div ref="extensionsItems" className="extensions-items">

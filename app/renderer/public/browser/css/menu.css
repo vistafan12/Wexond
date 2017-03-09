@@ -1,6 +1,6 @@
 .menu {
     width: 280px;
-    height: 387px;
+    height: 430px;
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -130,4 +130,8 @@
 
 .privacy .icon {
     background-image: url(../img/menu/privacy.png);
+}
+
+.find .icon {
+
 }
