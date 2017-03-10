@@ -61,7 +61,7 @@ export default class Extensions {
                                 requestUrl(fileUrl, function(data) {
                                     //add webview to execute extension
                                     var webview = document.createElement('webview');
-                                    webview.preload = "../../classes/preloads/apipreload.js";
+                                    webview.preload = "../../classes/preloads/extension.js";
                                     webview.src = fileUrl;
                                     document.body.appendChild(webview);
                                     var api = new ExtensionAPI(t.page, webview);
