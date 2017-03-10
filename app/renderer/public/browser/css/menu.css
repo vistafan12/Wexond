@@ -1,76 +1,35 @@
 .menu {
     width: 280px;
-    height: 430px;
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     position: absolute;
     right: 12px;
     top: 28px;
-    /*48*/
     z-index: 10;
     opacity: 0;
     display: none;
 }
 .menu-items {
-    width: 220px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 100%;
     list-style: none;
     padding: 0;
     font-size: 0;
     float: left;
 }
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0);
-}
-
-::-webkit-scrollbar-thumb
-{
-  background: rgba(0, 0, 0, 0.3);
-}
-.divider {
-    width: 1px;
-    background-color: #eee;
-    height: calc(100% - 16px);
-    margin-top: 8px;
-    float: left;
-}
-.extensions-items {
-    padding: 0;
-    margin: 0;
-    height: 387px;
-    position: absolute;
-    right: 0;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-.extension {
-    padding: 0;
-    margin: 0;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 36px;
-    width: 36px;
-    margin-bottom: 6px;
-    margin-top: 6px;
-    margin-right: 9px;
-    margin-left: 4px;
-}
 .menu-items li {
     max-width: 100%;
     height: auto;
     text-align: left;
     padding: 0;
-    padding-top: 13px;
-    padding-bottom: 13px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     position: relative;
-    padding-left: 60px;
-    font-size: 14px;
+    padding-left: 64px;
+    font-size: 14.5px;
     color: #212121;
     font-family: 'Roboto';
     transition: all 0.2s;
@@ -78,8 +37,17 @@
     cursor: default;
 }
 
+.menu-divider {
+    height: 1px;
+    position: relative;
+    width: 100%;
+    background-color: #EEEEEE;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .menu-items li:hover {
-    background-color: #E0E0E0;
+    background-color: #EEEEEE;
     transition: all 0.2s;
 }
 
@@ -90,10 +58,10 @@
     width: 20px;
     height: 20px;
     top: 50%;
-    left: 20px;
+    left: 24px;
     transform: translateY(-50%);
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 .settings .icon {

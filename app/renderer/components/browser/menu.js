@@ -28,6 +28,11 @@ export default class MDMenu extends React.Component {
                     }, createRippleMouse(e.target, e));
                     Ripple.makeRipple(ripple);
                 });
+                node.addEventListener('click', function() {
+                    if (t.openedMenu) {
+                        t.hide();
+                    }
+                })
             }
         }
         window.addEventListener('resize', function() {
@@ -35,13 +40,13 @@ export default class MDMenu extends React.Component {
             t.refs.menu.css({right: offset + 'px'});
         });
         window.addEventListener('click', function() {
-            if (t.openedMenu)
+            if (t.openedMenu) {
                 t.hide();
+            }
         });
-        this.refs.divider.css('height', this.refs.menu.clientHeight - 16);
     }
     /*
-    * shows menu
+    * shows menus
     */
     show = () => {
         TweenMax.to(this.refs.menu, 0.2, {css:{top: 58, opacity: 1}});
@@ -72,15 +77,14 @@ export default class MDMenu extends React.Component {
         }
     }
     /*
-    * removes extensions from menu
+    * @param1 {Object} e
     */
-    removeExtensions = () => {
-        this.setState({extensionsToCreate: []});
+    onClick = (e) => {
+        e.stopPropagation();
     }
-
     render() {
         return (
-            <div ref="menu" className="menu">
+            <div onClick={this.onClick} ref="menu" className="menu">
                 <ul ref="menuItems" className="menu-items">
                     <li className="ripple settings" ref="item">
                         <div className="icon"></div>
@@ -102,6 +106,7 @@ export default class MDMenu extends React.Component {
                         <div className="icon"></div>
                         Extensions
                     </li>
+                    <div className="menu-divider"></div>
                     <li className="ripple fullscreen" ref="item" onClick={() => remote.getCurrentWindow().setFullScreen(remote.getCurrentWindow().isFullScreen()
                         ? false
                         : true)}>
@@ -112,6 +117,7 @@ export default class MDMenu extends React.Component {
                         <div className="icon"></div>
                         Developer tools
                     </li>
+                    <div className="menu-divider"></div>
                     <li className="ripple screenshot" ref="item">
                         <div className="icon"></div>
                         Take screenshot
@@ -125,12 +131,6 @@ export default class MDMenu extends React.Component {
                         Find
                     </li>
                 </ul>
-                <div ref="divider" className="divider"></div>
-                <div ref="extensionsItems" className="extensions-items">
-                    {this.state.extensionsToCreate.map(function(object, i) {
-                        return <Extension key={i} object={object}></Extension>;
-                    })}
-                </div>
             </div>
 
         );
