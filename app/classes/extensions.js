@@ -1,29 +1,30 @@
 export default class Extensions {
-    constructor() {
-        this.loadedExts = [];
-        this.apis = [];
+    constructor(page) {
+        this.extensions = [];
+        this.page = page;
     }
     /*
     * deletes extensions
     */
     deleteExtensions() {
-        for (var i = 0; i < this.loadedExts.length; i++) {
-
-            this.loadedExts[i].parentNode.removeChild(this.loadedExts[i]);
+        for (var i = 0; i < this.extensions.length; i++) {
+            this.extensions[i].dispose();
         }
-        for (var i = 0; i < this.apis.length; i++) {
-            this.apis[i].dispose();
-            this.apis[i] = null;
+    }
+    /*
+    * reloads extensions
+    */
+    reloadExtensions() {
+        for (var i = 0; i < this.extensions.length; i++) {
+            this.extensions[i].dispose();
+            this.extensions[i].webview.reload();
         }
-        this.apis = [];
-        this.loadedExts = [];
     }
     /*
     * loads extensions
-    * @param1 {Number} id - id of tab
-    * @param2 {Function} callback
+    * @param1 {Function} callback
     */
-    loadExtensions(id, callback = null) {
+    loadExtensions(callback = null) {
         var t = this;
         //get all .JSON files in folder to an array
         var listOfExtensions = [];
@@ -34,61 +35,48 @@ export default class Extensions {
             if (err)
                 throw err;
 
-            for (var i = 0; i < subdirs.length; i++) {
-                var directory = subdirs[i];
-                dir.files(subdirs[i], function(err, files) {
+            for (var x = 0; x < subdirs.length; x++) {
+                var directory = subdirs[x];
+                dir.files(subdirs[x], function(err, files) {
                     if (err)
                         throw err;
-                    for (var i2 = 0; i2 < files.length; i2++) {
-                        if (files[i2].replace(/^.*[\\\/]/, '') == "manifest.json") {
-                            listOfExtensions.push(files[i2]);
+                    for (var y = 0; y < files.length; y++) {
+                        if (files[y].replace(/^.*[\\\/]/, '') === "manifest.json") {
+                            listOfExtensions.push(files[y]);
                             //read json from all files
-                            requestUrl(files[i2], function(data) {
-                                var jsonObject = JSON.parse(data);
+                            requestUrl(files[y], function(data) {
                                 //Deserialize JSON string
+                                var jsonObject = JSON.parse(data);
                                 var jsonData = {
                                     name: jsonObject.name,
                                     version: jsonObject.version,
                                     description: jsonObject.description,
                                     icon: jsonObject.icon,
-                                    popupPage: jsonObject.popupPage,
-                                    settingsPage: jsonObject.settingsPage,
-                                    scripts: jsonObject.scripts
+                                    popup: jsonObject.popup,
+                                    settings: jsonObject.settings,
+                                    extension: jsonObject.extension
                                 };
-
-                                for (var i3 = 0; i3 < jsonData.scripts.length; i3++) {
-                                    var fileUrl = directory + "\\" + jsonData.scripts[i3]["url"];
-                                    requestUrl(fileUrl, function(data) {
-                                        if (typeof(callback) === 'function') {
-                                            jsonData.code = data;
-                                            var icon = directory + "/" + jsonData.icon;
-                                            callback({
-                                                name: jsonData.name,
-                                                version: jsonData.version,
-                                                description: jsonData.description,
-                                                icon: icon.replace(/\\/g,"/"),
-                                                popupPage: jsonData.popuppage,
-                                                settingsPage: jsonData.settingsPage,
-                                                scripts: jsonData.scripts,
-                                                directory: directory
-                                            });
-                                        }
-                                        var iframe = document.getElementById('extensions-iframe'),
-                                            script = document.createElement('script'),
-                                            innerDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-
-                                        iframe.contentWindow.parent = window;
-
-                                        script.text = `function a${id}(index) {
-                                                var api = new API(parent.tabs[index], parent)
-                                                parent.tabs[index].getPage().getExtensions().apis.push(api)
-                                                parent = null
-                                                ${data}
-                                            } a${id}(${id});`;
-                                        innerDoc.getElementsByTagName('head')[0].appendChild(script);
-                                        t.loadedExts.push(script);
-                                    });
-                                }
+                                var fileUrl = directory + "\\" + jsonData.extension;
+                                //read extension html
+                                requestUrl(fileUrl, function(data) {
+                                    //add webview to execute extension
+                                    var webview = document.createElement('webview');
+                                    webview.preload = "../../classes/preloads/apipreload.js";
+                                    webview.src = fileUrl;
+                                    document.body.appendChild(webview);
+                                    var api = new ExtensionAPI(t.page, webview);
+                                    t.extensions.push(api);
+                                    //execute callback
+                                    if (typeof(callback) === 'function') {
+                                        jsonData.code = data;
+                                        var icon = directory.replace(/\\/g,"/") + "/" + jsonData.icon;
+                                        var result = jsonData;
+                                        result.directory = directory;
+                                        result.api = api;
+                                        result.icon = icon;
+                                        callback(result);
+                                    }
+                                });
                             });
                         }
                     }

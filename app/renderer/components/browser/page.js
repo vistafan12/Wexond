@@ -50,7 +50,8 @@ export default class Page extends React.Component {
         this.select = this.props.select;
 
         this.props.getApp().addTab(pageObj);
-        this.extensions = new Extensions();
+        this.extensions = new Extensions(this);
+        this.loadExtensions();
 
         this.resize();
         window.addEventListener('resize', this.onResize);
@@ -399,15 +400,22 @@ export default class Page extends React.Component {
         }
     }
     /*
-    * reloads only extensions that are related to current page
+    * loads only extensions that are related to current page
     */
     loadExtensions = () => {
         var t = this;
         this.extensions.deleteExtensions();
         this.getMenu().removeExtensions();
-        this.extensions.loadExtensions(this.getTab().getIndex(), function(data) {
+        this.extensions.loadExtensions(function(data) {
             t.extensions.addExtensionToMenu(data, t.getMenu());
         });
+    }
+    /*
+    * reloads only extensions that are related to current page
+    */
+    reloadExtensions = () => {
+        var t = this;
+        this.extensions.reloadExtensions();
     }
     /*
     * resizes WebView to match parent width and height
@@ -516,7 +524,7 @@ export default class Page extends React.Component {
                 <div className="page" ref="page">
                     <Bar ref="bar" getPage={t.getPage}></Bar>
                     <Suggestions ref="suggestions" getPage={t.getPage}></Suggestions>
-                    <webview preload="../../classes/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
+                    <webview preload="../../classes/preloads/preload.js" className="webview" ref="webview" src={this.props.url}></webview>
                     <MDMenu ref="menu" getPage={t.getPage} addTab={(u, s) => this.addTab(u, s)}></MDMenu>
                     <Snackbar ref="snackbar" flatButton={true} flatButtonText="UNDO" onFlatButtonClick={this.onSnackbarButtonClick}>{this.state.snackbartext}</Snackbar>
                     <Find ref="findpanel" getPage={t.getPage}></Find>

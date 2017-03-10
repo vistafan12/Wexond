@@ -53,11 +53,7 @@ export default class Tab extends React.Component {
                 }
             });
         });
-
-        var extensions = this.getPage().extensions;
-        extensions.loadExtensions(this.getIndex(), function(data) {
-            extensions.addExtensionToMenu(data, t.getPage().refs.menu);
-        });
+        
         this.getPage().focusSearchInput();
 
         this.drag = Draggable.create(this.refs.tab, {

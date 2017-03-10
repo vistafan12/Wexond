@@ -15,6 +15,19 @@ export default class Extension extends React.Component {
         this.setState({
             backgroundImage: 'url(' + this.data.icon + ')'
         });
+        var t = this;
+        var menu = new Menu()
+        menu.append(new MenuItem({
+            label: 'Open devtools',
+            click() {
+                t.data.api.webview.openDevTools();
+            }
+        }))
+
+        this.refs.root.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            menu.popup(remote.getCurrentWindow())
+        }, false)
     }
     /*
     events
@@ -26,7 +39,7 @@ export default class Extension extends React.Component {
 
     render() {
         return (
-            <div onMouseDown={this.onMouseDown} className="ripple-icon extension" style={{
+            <div ref="root" onMouseDown={this.onMouseDown} className="ripple-icon extension" style={{
                 backgroundImage: this.state.backgroundImage
             }}></div>
         );
