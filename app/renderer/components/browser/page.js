@@ -159,6 +159,18 @@ export default class Page extends React.Component {
     /*
     * @param1 {Object} e
     */
+    onFullScreenEnter = (e) => {
+        this.props.getApp().getTitlebar().setVisible(false);
+    }
+    /*
+    * @param1 {Object} e
+    */
+    onFullScreenLeave = (e) => {
+        this.props.getApp().getTitlebar().setVisible(true);
+    }
+    /*
+    * @param1 {Object} e
+    */
     onFaviconUpdate = (e) => {
         this.getTab().changeFavicon(e.favicons[0]);
         this.pageData.favicon = e.favicons[0];
@@ -499,23 +511,13 @@ export default class Page extends React.Component {
         }, 100);
     }
     /*
-    * webview enter full screen event
-    */
-    onFullScreenEnter = (e) => {
-        this.props.getApp().getTitlebar().setVisible(false);
-    }
-    /*
-    * webview leave full screen event
-    */
-    onFullScreenLeave = (e) => {
-        this.props.getApp().getTitlebar().setVisible(true);
-    }
-    /*
-    * returns find panel
+    * gets find panel
+    * @return {Find}
     */
     getFindPanel() {
         return this.refs.findpanel;
     }
+
     render() {
         var t = this;
 
