@@ -42,6 +42,7 @@ export default class MDMenu extends React.Component {
                 t.hide();
             }
         });
+        this.refs.tab1.css('color', '#03A9F4');
     }
     /*
     * shows menus
@@ -101,12 +102,15 @@ export default class MDMenu extends React.Component {
             TweenMax.to(this.refs.line, 0.2, {css:{left: 0}});
             this.refs.extensions.css('display', 'none');
             this.refs.menuItems.css('display', 'block');
+            this.refs.tab1.css('color', '#03A9F4');
+            this.refs.tab2.css('color', '#212121');
             TweenMax.to(this.refs.menu, 0.2, {css:{height: '486px'}});
         } else if (index === 2) {
             TweenMax.to(this.refs.line, 0.2, {css:{left: '50%'}});
             this.refs.extensions.css('display', 'block');
             this.refs.menuItems.css('display', 'none');
-
+            this.refs.tab2.css('color', '#03A9F4');
+            this.refs.tab1.css('color', '#212121');
             var rows = Math.ceil(this.state.extensionsToCreate.length / 4);
             var height = 48 + 32 + rows * 48;
 
@@ -123,17 +127,18 @@ export default class MDMenu extends React.Component {
         return (
             <div onClick={this.onClick} ref="menu" className="menu">
                 <div className="menu-tabbar">
-                    <div onClick={(e)=> this.onClickTab(e, 1)} onMouseDown={this.onMouseDownTab} className="menu-tab ripple pointer">
+                    <div ref="tab1" onClick={(e)=> this.onClickTab(e, 1)} onMouseDown={this.onMouseDownTab} className="menu-tab ripple pointer">
                         <div className="menu-tab-title">
                             MENU
                         </div>
                     </div>
-                    <div onClick={(e)=> this.onClickTab(e, 2)} onMouseDown={this.onMouseDownTab} className="menu-tab ripple pointer">
+                    <div ref="tab2" onClick={(e)=> this.onClickTab(e, 2)} onMouseDown={this.onMouseDownTab} className="menu-tab ripple pointer">
                         <div className="menu-tab-title">
                             EXTENSIONS
                         </div>
                     </div>
-                    <div ref="line" className="menu-line"></div>
+                    <div className="menu-tabbar-divider"></div>
+                    <div ref="line" className="menu-tabbar-line"></div>
                 </div>
                 <div ref="extensions" className="menu-extensions">
                     {

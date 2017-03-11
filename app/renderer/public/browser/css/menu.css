@@ -74,23 +74,31 @@
     height: 100%;
     position: absolute;
     top: 0;
+    color: #212121;
 }
 .menu-tab-title {
     position: absolute;
     font-size: 14px;
     top: 50%;
     left: 50%;
-    color: #212121;
     transform: translate(-50%, -50%);
 }
 .menu-tab:nth-child(2) {
     left: 50%;
 }
 
-.menu-line {
+.menu-tabbar-line {
     height: 2px;
     width: 50%;
     background-color: #03A9F4;
+    position: absolute;
+    bottom: 0;
+}
+
+.menu-tabbar-divider {
+    height: 1px;
+    width: 100%;
+    background-color: #eee;
     position: absolute;
     bottom: 0;
 }
