@@ -101,12 +101,21 @@ export default class MDMenu extends React.Component {
             TweenMax.to(this.refs.line, 0.2, {css:{left: 0}});
             this.refs.extensions.css('display', 'none');
             this.refs.menuItems.css('display', 'block');
-            //TweenMax.to(this.refs.menu, 0.2, {css:{height: '486px'}});
+            TweenMax.to(this.refs.menu, 0.2, {css:{height: '486px'}});
         } else if (index === 2) {
             TweenMax.to(this.refs.line, 0.2, {css:{left: '50%'}});
             this.refs.extensions.css('display', 'block');
             this.refs.menuItems.css('display', 'none');
-            //TweenMax.to(this.refs.menu, 0.2, {css:{height: '200px'}});
+
+            var rows = Math.ceil(this.state.extensionsToCreate.length / 4);
+            var height = 48 + 32 + rows * 48;
+
+            if (height > 486) {
+                TweenMax.to(this.refs.menu, 0.2, {css:{height: 486}});
+            } else {
+                TweenMax.to(this.refs.menu, 0.2, {css:{height: height}});
+            }
+
         }
     }
 
