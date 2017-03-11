@@ -5,7 +5,7 @@ import Suggestions from './suggestions.js';
 import Storage from '../../../classes/storage.js';
 import Extensions from '../../../classes/extensions.js';
 import Colors from '../../../classes/colors.js';
-import MDMenu from './menu.js';
+import MDMenu from '../menu/menu.js';
 import Snackbar from '../materialdesign/snackbar.js';
 import Find from './find.js';
 
@@ -70,9 +70,7 @@ export default class Page extends React.Component {
                 var activeMatche = e.result.activeMatchOrdinal;
                 t.refs.findpanel.setMatches(activeMatche, matches);
                 webview.stopFindInPage('keepSelection');
-            } catch (e) {
-
-            }
+            } catch (e) {}
         });
 
         //colors
@@ -109,7 +107,9 @@ export default class Page extends React.Component {
         document.addEventListener('keyup', function(e) {
             //CTRL + F
             if (e.ctrlKey && e.keyCode == 70) {
-                t.refs.findpanel.setVisible((t.refs.findpanel.isOpened()) ? false : true);
+                t.refs.findpanel.setVisible((t.refs.findpanel.isOpened())
+                    ? false
+                    : true);
             }
         }, false);
     }

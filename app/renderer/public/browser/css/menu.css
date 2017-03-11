@@ -1,5 +1,7 @@
 .menu {
     width: 280px;
+    height: auto;
+    max-height: 486px;
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -9,9 +11,11 @@
     z-index: 10;
     opacity: 0;
     display: none;
+    overflow: hidden;
+    overflow-y: auto;
 }
 .menu-items {
-    margin-top: 8px;
+    margin-top: 16px;
     margin-bottom: 8px;
     width: 100%;
     list-style: none;
@@ -37,15 +41,6 @@
     cursor: default;
 }
 
-.menu-divider {
-    height: 1px;
-    position: relative;
-    width: 100%;
-    background-color: #EEEEEE;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
 .menu-items li:hover {
     background-color: #EEEEEE;
     transition: all 0.2s;
@@ -62,6 +57,68 @@
     transform: translateY(-50%);
     position: absolute;
     opacity: 0.6;
+}
+
+.menu-tabbar {
+    height: 48px;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.menu-tab {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+.menu-tab-title {
+    position: absolute;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    color: #212121;
+    transform: translate(-50%, -50%);
+}
+.menu-tab:nth-child(2) {
+    left: 50%;
+}
+
+.menu-line {
+    height: 2px;
+    width: 50%;
+    background-color: #03A9F4;
+    position: absolute;
+    bottom: 0;
+}
+
+.extension-item {
+    background-position: center;
+    background-size: 48px 48px;
+    background-repeat: no-repeat;
+    width: 48px;
+    height: 48px;
+    float: left;
+    margin-left: 11px;
+}
+
+.menu-extensions {
+    padding: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: none;
+}
+
+.menu-divider {
+    height: 1px;
+    position: relative;
+    width: 100%;
+    background-color: #EEEEEE;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .settings .icon {
