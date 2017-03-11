@@ -69,7 +69,6 @@ export default class Page extends React.Component {
                 var matches = e.result.matches;
                 var activeMatche = e.result.activeMatchOrdinal;
                 t.refs.findpanel.setMatches(activeMatche, matches);
-                webview.stopFindInPage('keepSelection');
             } catch (e) {}
         });
 
