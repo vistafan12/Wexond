@@ -105,6 +105,13 @@ export default class Page extends React.Component {
         //when adding new tab don't hide bar
         this.getBar().locked = true;
         this.getBar().show();
+
+        document.addEventListener('keyup', function(e) {
+            //CTRL + F
+            if (e.ctrlKey && e.keyCode == 70) {
+                t.refs.findpanel.setVisible((t.refs.findpanel.isOpened()) ? false : true);
+            }
+        }, false);
     }
     /*
     events
