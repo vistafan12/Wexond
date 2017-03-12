@@ -6,17 +6,17 @@ class WebView {
         this.page = page;
         this.events = [];
 
-        ipcRenderer.on('dispose', this.dispose);
+        ipcRenderer.on('api:dispose', this.dispose);
     }
     addEventListener(event, callback) {
         var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this.page.tab)};
-        ipcRenderer.sendToHost("webviewaddevent", eventObj);
+        ipcRenderer.sendToHost("webview:addevent", eventObj);
         ipcRenderer.on(event, callback);
         this.events.push(eventObj);
     }
     removeEventListener(event, callback) {
         var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this.page.tab)};
-        ipcRenderer.sendToHost("webviewremoveevent", eventObj);
+        ipcRenderer.sendToHost("webview:removeevent", eventObj);
         ipcRenderer.removeListener(event, callback);
         this.events.splice(this.events.indexOf(eventObj), 1);
     }
@@ -44,6 +44,28 @@ class Tab {
         this.selected = null;
         this.favicon = null;
         this.title = null;
+
+        this.events = [];
+
+        ipcRenderer.on('api:dispose', this.dispose);
+    }
+    addEventListener(event, callback) {
+        var t = this;
+        var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this)};
+        ipcRenderer.sendToHost("tab:addevent", eventObj);
+        ipcRenderer.on(event, callback);
+        this.events.push(eventObj);
+    }
+    removeEventListener(event, callback) {
+        var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this)};
+        ipcRenderer.sendToHost("tab:removeevent", eventObj);
+        ipcRenderer.removeListener(event, callback);
+        this.events.splice(this.events.indexOf(eventObj), 1);
+    }
+    dispose() {
+        for (var i = 0; i < this.events.length; i++) {
+            this.removeEventListener(this.events[i].event, this.events[i].callback);
+        }
     }
 }
 
@@ -56,8 +78,8 @@ class Tabs {
     * @param1 {function(tabs)} callback
     */
     getTabs(callback = null) {
-        ipcRenderer.sendToHost('gettabs');
-        ipcRenderer.on('gettabs', function(e, tabs) {
+        ipcRenderer.sendToHost('tabs:gettabs');
+        ipcRenderer.on('tabs:gettabs', function(e, tabs) {
             var result = [];
             for (var i = 0; i < tabs.length; i++) {
                 result.push(createTabClass(tabs[i]));
@@ -84,8 +106,8 @@ class Tabs {
     * @param1 {function(Tab)} callback
     */
     getCurrentTab(callback = null) {
-        ipcRenderer.sendToHost('getcurrenttab');
-        ipcRenderer.on('getcurrenttab', function(e, tab) {
+        ipcRenderer.sendToHost('tabs:getcurrenttab');
+        ipcRenderer.on('tabs:getcurrenttab', function(e, tab) {
             if (callback != null) {
                 callback(createTabClass(tab));
             }

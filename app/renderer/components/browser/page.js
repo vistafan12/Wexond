@@ -7,6 +7,7 @@ import Colors from '../../../classes/colors.js';
 import MDMenu from '../menu/menu.js';
 import Snackbar from '../materialdesign/snackbar.js';
 import Find from './find.js';
+import ReactDOM from 'react-dom';
 
 export default class Page extends React.Component {
     constructor() {
@@ -366,6 +367,12 @@ export default class Page extends React.Component {
                     this.colors.getColor(function(data) {
                         if (remote != null) {
                             if (t.getTab().isSelected() && !remote.getCurrentWindow().isMinimized()) {
+                                if (t.pageData.color != data.background) {
+                                    var evt = document.createEvent('Event');
+                                    evt.initEvent('color-update', true, true);
+                                    evt.color = data.background;
+                                    ReactDOM.findDOMNode(t.getTab()).dispatchEvent(evt);
+                                }
                                 /*if (t.refs.bar != null) {
                                     t.refs.bar.refs.bar.css('background-color', data.background);
                                 }*/

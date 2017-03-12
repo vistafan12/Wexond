@@ -3,6 +3,7 @@ import React from 'react';
 import {TweenMax, CSSPlugin} from "gsap";
 import Extensions from '../../../classes/extensions.js';
 import Draggable from 'gsap/draggable';
+import ReactDOM from 'react-dom';
 
 export default class Tab extends React.Component {
     constructor() {
@@ -285,6 +286,13 @@ export default class Tab extends React.Component {
         this.extensions.loadExtensions(function(data) {
             t.extensions.addExtensionToMenu(data, t.getPage().getMenu());
         });
+    }
+    /*
+    * gets DOM node for tab
+    * @return {DOMElement}
+    */
+    getDOMNode = () => {
+        return ReactDOM.findDOMNode(this);
     }
 
     render() {
