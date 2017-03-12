@@ -18,15 +18,15 @@ export default class Extension extends React.Component {
         var t = this;
         var menu = new Menu()
         menu.append(new MenuItem({
-            label: 'Open devtools',
+            label: 'Reload',
             click() {
-                t.data.api.extensionWebview.openDevTools();
+                t.data.api.reload();
             }
         }))
         menu.append(new MenuItem({
-            label: 'Reload',
+            label: 'Open devtools',
             click() {
-                t.data.api.extensionWebview.reload();
+                t.data.api.extensionWebview.openDevTools();
             }
         }))
 

@@ -12,15 +12,6 @@ export default class Extensions {
         }
     }
     /*
-    * reloads extensions
-    */
-    reloadExtensions() {
-        for (var i = 0; i < this.extensions.length; i++) {
-            this.extensions[i].dispose();
-            this.extensions[i].webview.reload();
-        }
-    }
-    /*
     * loads extensions
     * @param1 {Function} callback
     */

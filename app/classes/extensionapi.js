@@ -63,6 +63,13 @@ class ExtensionAPI {
         this.extensionWebview.send('dispose');
     }
     /*
+    * reloads extensions
+    */
+    reload() {
+        this.dispose();
+        this.extensionWebview.reload();
+    }
+    /*
     * transforms tab to IPC friendly object
     * @return {Object}
     */
