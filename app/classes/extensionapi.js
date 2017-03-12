@@ -16,7 +16,6 @@ class ExtensionAPI {
                 * event
             */
             if (e.channel == 'webviewaddevent') {
-                console.log(e.args[0]);
                 var page = t.getPageForTab(e.args[0].tab);
                 page.getWebView().addEventListener(e.args[0].event, handleEvent);
             }
