@@ -1,6 +1,11 @@
 # Wexond
 Advanced web browser made in Electron and React.
 
+## Screenshots
+[screen1](http://89.38.146.104/wexond/screenshots/screen1.png)
+[screen2](http://89.38.146.104/wexond/screenshots/screen2.png)
+[screen3](http://89.38.146.104/wexond/screenshots/screen3.png)
+
 ## Downloads
 [Link](https://github.com/Sential/Wexond/releases)
 
