@@ -1,10 +1,10 @@
 console.log(tabs);
 
 class ExtensionAPI {
-    constructor(tab, webview) {
+    constructor(tab, extensionWebview) {
         this.currentTab = tab;
         this.currentPage = tab.getPage();
-        this.extensionWebview = webview;
+        this.extensionWebview = extensionWebview;
 
         var t = this;
 
@@ -56,7 +56,9 @@ class ExtensionAPI {
             t.extensionWebview.send(e.type);
         }
     }
-
+    /*
+    * sends to extension dispose alert
+    */
     dispose() {
         this.extensionWebview.send('dispose');
     }

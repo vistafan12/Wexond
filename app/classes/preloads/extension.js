@@ -5,6 +5,8 @@ class WebView {
     constructor(page) {
         this.page = page;
         this.events = [];
+
+        ipcRenderer.on('dispose', this.dispose);
     }
     addEventListener(event, callback) {
         var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this.page.tab)};
@@ -49,6 +51,10 @@ class Tabs {
     constructor() {
 
     }
+    /*
+    * gets tabs array
+    * @param1 {function(tabs)} callback
+    */
     getTabs(callback = null) {
         ipcRenderer.sendToHost('gettabs');
         ipcRenderer.on('gettabs', function(e, tabs) {
@@ -128,7 +134,3 @@ function prepareIPCTab(tab) {
 }
 
 global.wexond = new Wexond();
-
-ipcRenderer.on('dispose', function() {
-    global.webview.dispose();
-});
