@@ -1,6 +1,7 @@
 'use babel';
 import React from 'react';
 import {TweenMax, CSSPlugin} from "gsap";
+import Extensions from '../../../classes/extensions.js';
 import Draggable from 'gsap/draggable';
 
 export default class Tab extends React.Component {
@@ -10,6 +11,8 @@ export default class Tab extends React.Component {
         this.locked = false;
         this.getPage = null;
         this.selected = false;
+        this.extensions = null;
+        this.staticIndex = -1;
         this.background = '#fff';
         this.foreground = '#212121';
         this.state = {
@@ -53,7 +56,7 @@ export default class Tab extends React.Component {
                 }
             });
         });
-        
+
         this.getPage().focusSearchInput();
 
         this.drag = Draggable.create(this.refs.tab, {
@@ -80,6 +83,10 @@ export default class Tab extends React.Component {
                 }
             }
         }
+        this.extensions = new Extensions(this);
+        this.loadExtensions();
+
+        this.staticIndex = tabs.indexOf(this);
     }
     /*
     events
@@ -215,6 +222,13 @@ export default class Tab extends React.Component {
         return tabs.indexOf(this);
     }
     /*
+    * gets static index of current tab
+    * @return {Number}
+    */
+    getStaticIndex = () => {
+        return this.staticIndex;
+    }
+    /*
     * changes tab's title
     * @param1 {String} newTitle
     */
@@ -227,6 +241,13 @@ export default class Tab extends React.Component {
     */
     getTitle = () => {
         return this.state.title;
+    }
+    /*
+    * gets favicon URL
+    * @return {String}
+    */
+    getFaviconURL = () => {
+        return this.getPage().pageData.favicon;
     }
     /*
     * changes favicon
@@ -254,6 +275,16 @@ export default class Tab extends React.Component {
             this.props.getTabBar().replaceTabs(indexTab, indexOverTab, this, overTab);
 
         }
+    }
+    /*
+    * loads only extensions that are related to current page
+    */
+    loadExtensions = () => {
+        var t = this;
+        this.extensions.deleteExtensions();
+        this.extensions.loadExtensions(function(data) {
+            t.extensions.addExtensionToMenu(data, t.getPage().getMenu());
+        });
     }
 
     render() {

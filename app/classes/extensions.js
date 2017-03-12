@@ -1,7 +1,7 @@
 export default class Extensions {
-    constructor(page) {
+    constructor(tab) {
         this.extensions = [];
-        this.page = page;
+        this.tab = tab;
     }
     /*
     * deletes extensions
@@ -64,7 +64,7 @@ export default class Extensions {
                                     webview.preload = "../../classes/preloads/extension.js";
                                     webview.src = fileUrl;
                                     document.body.appendChild(webview);
-                                    var api = new ExtensionAPI(t.page, webview);
+                                    var api = new ExtensionAPI(t.tab, webview);
                                     t.extensions.push(api);
                                     //execute callback
                                     if (typeof(callback) === 'function') {
@@ -74,6 +74,7 @@ export default class Extensions {
                                         result.directory = directory;
                                         result.api = api;
                                         result.icon = icon;
+                                        result.popup = 'file://' + directory.replace(/\\/g,"/") + "/" + jsonData.popup;
                                         callback(result);
                                     }
                                 });

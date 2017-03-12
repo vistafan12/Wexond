@@ -20,7 +20,13 @@ export default class Extension extends React.Component {
         menu.append(new MenuItem({
             label: 'Open devtools',
             click() {
-                t.data.api.webview.openDevTools();
+                t.data.api.extensionWebview.openDevTools();
+            }
+        }))
+        menu.append(new MenuItem({
+            label: 'Reload',
+            click() {
+                t.data.api.extensionWebview.reload();
             }
         }))
 
@@ -39,7 +45,7 @@ export default class Extension extends React.Component {
 
     render() {
         return (
-            <div ref="root" onMouseDown={this.onMouseDown} className="ripple-icon extension-item pointer" style={{
+            <div onClick={(e)=> this.props.onClick(e, this)} ref="root" onMouseDown={this.onMouseDown} className="ripple-icon extension-item pointer" style={{
                 backgroundImage: this.state.backgroundImage
             }}></div>
         );

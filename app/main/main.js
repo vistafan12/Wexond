@@ -27,7 +27,7 @@ process.on('uncaughtException', function () {
 * prepares browser window-all-closed
 */
 function createWindow() {
-    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430});
+    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430, tabs: null});
     mainWindow.loadURL('file://' + __dirname + '/../app/renderer/public/index.html');
     mainWindow.setMenu(null);
 

@@ -1,15 +1,19 @@
+var remote = require('electron').remote;
+var {ipcRenderer} = require('electron');
+
 class WebView {
-    constructor() {
+    constructor(page) {
+        this.page = page;
         this.events = [];
     }
     addEventListener(event, callback) {
-        var eventObj = {event: event, callback: callback};
+        var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this.page.tab)};
         ipcRenderer.sendToHost("webviewaddevent", eventObj);
         ipcRenderer.on(event, callback);
         this.events.push(eventObj);
     }
     removeEventListener(event, callback) {
-        var eventObj = {event: event, callback: callback};
+        var eventObj = {event: event, callback: callback, tab: prepareIPCTab(this.page.tab)};
         ipcRenderer.sendToHost("webviewremoveevent", eventObj);
         ipcRenderer.removeListener(event, callback);
         this.events.splice(this.events.indexOf(eventObj), 1);
@@ -21,9 +25,109 @@ class WebView {
     }
 }
 
-var {ipcRenderer} = require('electron');
+class Page {
+    constructor(tab) {
+        this.tab = tab;
+        this.webview = new WebView(this);
+    }
+}
 
-global.webview = new WebView();
+class Tab {
+    constructor(tab) {
+        this.page = new Page(this);
+
+        this.background = null;
+        this.foreground = null;
+        this.index = null;
+        this.selected = null;
+        this.favicon = null;
+        this.title = null;
+    }
+}
+
+class Tabs {
+    constructor() {
+
+    }
+    getTabs(callback = null) {
+        ipcRenderer.sendToHost('gettabs');
+        ipcRenderer.on('gettabs', function(e, tabs) {
+            var result = [];
+            for (var i = 0; i < tabs.length; i++) {
+                result.push(createTabClass(tabs[i]));
+            }
+            if (callback != null) {
+                callback(result);
+            }
+        });
+    }
+    /*
+    * gets tab by index
+    * @param1 {Number} index
+    * @param2 {function(Tab)} callback
+    */
+    getTab(index, callback = null) {
+        this.getTabs(function (tabs) {
+            if (callback != null) {
+                callback(createTabClass(tabs[index]));
+            }
+        });
+    }
+    /*
+    * gets current tab attached to extension
+    * @param1 {function(Tab)} callback
+    */
+    getCurrentTab(callback = null) {
+        ipcRenderer.sendToHost('getcurrenttab');
+        ipcRenderer.on('getcurrenttab', function(e, tab) {
+            if (callback != null) {
+                callback(createTabClass(tab));
+            }
+        });
+    }
+}
+
+class Wexond {
+    constructor() {
+        this.tabs = new Tabs();
+    }
+}
+
+/*
+* creates class for tab object
+* @param1 {Object} tab
+* @return {Tab}
+*/
+function createTabClass(tab) {
+    var tabReturn = new Tab();
+    tabReturn.background = tab.background;
+    tabReturn.foreground = tab.foreground;
+    tabReturn.selected = tab.selected;
+    tabReturn.favicon = tab.favicon;
+    tabReturn.title = tab.title;
+    tabReturn.index = tab.index;
+
+    return tabReturn;
+}
+/*
+* converts Tab class to IPC friendly object
+* @param1 {Tab} tab
+* @return {Object}
+*/
+function prepareIPCTab(tab) {
+    var tabReturn = {
+        background: tab.background,
+        foreground: tab.foreground,
+        title: tab.title,
+        favicon: tab.favicon,
+        selected: tab.selected,
+        index: tab.index
+    };
+
+    return tabReturn;
+}
+
+global.wexond = new Wexond();
 
 ipcRenderer.on('dispose', function() {
     global.webview.dispose();

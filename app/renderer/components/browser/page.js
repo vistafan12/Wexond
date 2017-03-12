@@ -3,7 +3,6 @@ import React from 'react';
 import Bar from './bar.js';
 import Suggestions from './suggestions.js';
 import Storage from '../../../classes/storage.js';
-import Extensions from '../../../classes/extensions.js';
 import Colors from '../../../classes/colors.js';
 import MDMenu from '../menu/menu.js';
 import Snackbar from '../materialdesign/snackbar.js';
@@ -19,7 +18,6 @@ export default class Page extends React.Component {
             y: 0
         };
         this.getTab = null;
-        this.extensions = null;
         this.menuItems = [];
         this.imageToSave = '';
         this.linkToOpen = '';
@@ -50,8 +48,6 @@ export default class Page extends React.Component {
         this.select = this.props.select;
 
         this.props.getApp().addTab(pageObj);
-        this.extensions = new Extensions(this);
-        this.loadExtensions();
 
         this.resize();
         window.addEventListener('resize', this.onResize);
@@ -416,17 +412,6 @@ export default class Page extends React.Component {
         if (this.getBar().getSearchInput().value == '') {
             this.getBar().getSearchInput().focus();
         }
-    }
-    /*
-    * loads only extensions that are related to current page
-    */
-    loadExtensions = () => {
-        var t = this;
-        this.extensions.deleteExtensions();
-        //this.getMenu().removeExtensions();
-        this.extensions.loadExtensions(function(data) {
-            t.extensions.addExtensionToMenu(data, t.getMenu());
-        });
     }
     /*
     * reloads only extensions that are related to current page
