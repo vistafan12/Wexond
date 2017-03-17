@@ -1,3 +1,3 @@
 @echo off
-start cmd /k npm run browser
+npm run browser
 start cmd /k npm run applets

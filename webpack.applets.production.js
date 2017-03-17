@@ -4,8 +4,8 @@ const webpack = require('webpack');
 module.exports = {
     devtool: "cheap-module-source-map",
     entry: {
-        history: './app/renderer/components/history/history.js',
-        newtab: './app/renderer/components/newtab/newtab.js'
+        history: './app/pages/history/history.js',
+        newtab: './app/pages/newtab/newtab.js'
     },
     node: {
         __dirname: false,
@@ -13,7 +13,7 @@ module.exports = {
     },
 
     output: {
-        path: path.join(__dirname, 'app/renderer/public/build'),
+        path: path.join(__dirname, 'app/resources/dist'),
         filename: '[name].bundle.js'
     },
 

@@ -5,8 +5,7 @@ module.exports = {
     target: "electron",
     devtool: "eval-source-map",
     entry: {
-        entry: './app/renderer/entry.js',
-        main: './app/main/main.js'
+        entry: './app/entry.js'
     },
     node: {
         __dirname: false,
@@ -14,20 +13,20 @@ module.exports = {
     },
 
     output: {
-        path: path.join(__dirname, 'build'),
+        path: path.join(__dirname, 'dist'),
         filename: "[name].bundle.js"
     },
 
     devServer: {
         contentBase: './',
-        publicPath: 'http://localhost:8080/build/'
+        publicPath: 'http://localhost:8080/dist/'
     },
 
     module: {
         rules: [
             {
                 test: /\.css$/,
-                include: path.resolve(__dirname, "app/renderer/public"),
+                include: path.resolve(__dirname, "app/resources"),
                 use: ['style-loader', 'css-loader']
             }, {
                 test: /(\.js$|\.jsx$)/,
