@@ -1,9 +1,9 @@
-//import animation easing
-import {Expo} from 'gsap';
-//electron's stuff and things :)
-const {remote, clipboard} = require('electron');
+//electron's stuff and things
+var {remote, clipboard} = require('electron');
 const {Menu, MenuItem} = remote;
 const app = remote.app;
+const {BrowserWindow} = remote;
+const currentWindow = BrowserWindow.getFocusedWindow();
 //global paths to browser's storage
 const appData = app.getPath('userData');
 const userData = appData + '/userdata';
@@ -16,7 +16,7 @@ const fs = require('fs');
 //animations
 var tabsAnimationsData = {
     animationDuration: 0.3,
-    animationEasing: Expo.easeOut,
+    animationEasing: null,
     hoverTransparency: 0.1
 };
 //tabs

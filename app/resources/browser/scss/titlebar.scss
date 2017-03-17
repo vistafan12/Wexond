@@ -1,0 +1,68 @@
+$height: 32px;
+$control-icon-height: 12px;
+
+@mixin center-horizontally($isRelative: false) {
+    @if $isRelative {
+        position: relative;
+    }
+    @else if {
+        position: absolute;
+    }
+
+    left: 50%;
+    transform: translateX(-50%);
+}
+@mixin center-vertically($isRelative: false) {
+    @if $isRelative {
+        position: relative;
+    }
+    @else if {
+        position: absolute;
+    }
+
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.titlebar {
+    position: relative;
+    width: 100%;
+    height: 32px;
+    background-color: #E0E0E0;
+    -webkit-app-region: drag;
+}
+
+.titlebar-controls {
+    height: 100%;
+    margin-left: 8px;
+    -webkit-app-region: no-drag;
+    float: right;
+}
+
+.titlebar-control {
+    background-image: url(../img/controls/close.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: $control-icon-height $control-icon-height;
+    height: $height;
+    width: 38px;
+    float: right;
+    margin-right: 2px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 1;
+        transition: opacity 0.2s;
+    }
+
+    &:first-child {
+        margin-right: 4px;
+    }
+
+    &:last-child {
+        margin-left: 4px;
+    }
+}
+
+.border-bottom {}

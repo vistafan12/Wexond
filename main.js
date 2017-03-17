@@ -37,6 +37,7 @@ function createWindow() {
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
+
     mainWindow.on('unresponsive', function () {});
 
     if (process.env.ENV == 'dev') {

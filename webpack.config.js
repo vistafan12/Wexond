@@ -25,11 +25,37 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                include: path.resolve(__dirname, "app/resources"),
-                use: ['style-loader', 'css-loader']
-            }, {
-                test: /(\.js$|\.jsx$)/,
+                test: /\.(scss)$/,
+                include: path.resolve(__dirname, 'app/resources'),
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(png|gif|jpg)$/,
+                include: path.resolve(__dirname, 'app/resources'),
+                use: [
+                    {
+                        loader: "url-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.(js|jsx)$/,
                 include: path.resolve(__dirname, "app"),
                 use: [{
                     loader: 'babel-loader',

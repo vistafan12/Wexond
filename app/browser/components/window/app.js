@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 //import TabBar from '../tabs/tabbar';
 //import Page from './page';
 import Titlebar from './titlebar';
-require('../../global');
+
+import '../../../resources/browser/scss/app.scss';
 
 export default class App extends React.Component {
     constructor() {
@@ -56,30 +57,30 @@ export default class App extends React.Component {
     * closes window
     */
     close() {
-        remote.getCurrentWindow().close();
+        currentWindow.close();
     }
     /*
     * maximizes / restores window
     */
     maximizeOrRestore() {
-        if (remote.getCurrentWindow().isMaximized()) {
+        if (currentWindow.isMaximized()) {
             //restore window
-            remote.getCurrentWindow().unmaximize();
+            currentWindow.unmaximize();
         } else {
             //maximize window
-            remote.getCurrentWindow().maximize();
+            currentWindow.maximize();
         }
     }
     /*
     * minimizes / restores window
     */
     minimizeOrRestore() {
-        if (remote.getCurrentWindow().isMinimized()) {
+        if (currentWindow.isMinimized()) {
             //restore window
-            remote.getCurrentWindow().restore();
+            currentWindow.restore();
         } else {
             //minimize window
-            remote.getCurrentWindow().minimize();
+            currentWindow.minimize();
         }
     }
     /*
