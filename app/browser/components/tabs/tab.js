@@ -14,7 +14,6 @@ export default class Tab extends React.Component {
             width: 0,
             backgroundColor: 'transparent',
             zIndex: 1,
-            showLeftBorder: false,
             title: 'New tab'
         }
         this.getPage = null;
@@ -114,12 +113,8 @@ export default class Tab extends React.Component {
             backgroundColor: this.state.backgroundColor,
             zIndex: this.state.zIndex
         }
-        var borderLeftStyle = {
-            display: (this.showLeftBorder) ? 'block' : 'none',
-            left: -1
-        };
         var borderRightStyle = {
-            right: 0
+            right: -1
         };
         var draggablePosition = {
             x: this.state.left,
@@ -129,7 +124,6 @@ export default class Tab extends React.Component {
         return (
             <Draggable bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
                 <div ref="tab" className="tab" style={tabStyle}>
-                    <div className="tab-border" style={borderLeftStyle}></div>
                     <div className="tab-title">{this.state.title}</div>
                     <div className="tab-border" style={borderRightStyle}></div>
                 </div>

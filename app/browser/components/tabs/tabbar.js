@@ -100,7 +100,7 @@ export default class TabBar extends React.Component {
 
         for (var i = 0; i < tabs.length; i++) {
             lefts.push(a);
-            a += this.actualTabWidth;
+            a += this.actualTabWidth + 1;
         }
 
         return {tabPositions: lefts, addButtonPosition: a};
