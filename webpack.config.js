@@ -46,7 +46,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|gif|jpg)$/,
+                test: /\.(png|gif|jpg|woff2|tff)$/,
                 include: path.resolve(__dirname, 'app/resources'),
                 use: [
                     {

@@ -3,6 +3,21 @@
     height: 100%;
     background-color: white;
     position: absolute;
-    border-right: 1px solid rgba(0,0,0,0.2);
-    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.tab-title {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    font-size: 14px;
+}
+
+.tab-border {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: calc(100% - 8px);
+    background-color: rgba(0,0,0,0.2);
 }

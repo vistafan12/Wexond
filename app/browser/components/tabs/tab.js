@@ -15,12 +15,10 @@ export default class Tab extends React.Component {
             backgroundColor: 'transparent',
             zIndex: 1,
             showLeftBorder: false,
-            dragDisabled: false
+            title: 'New tab'
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
-        this.xChange = 0;
-        this.xStart = 0;
     }
     /*
     lifecycle
@@ -47,21 +45,11 @@ export default class Tab extends React.Component {
     onDragStop = () => {
         this.props.getTabBar().setPositions();
         this.props.getTabBar().setState({addButtonVisibility: 'block'});
-        this.xStart = 0;
-        this.xChange = 0;
     }
     /*
     * @param1 {Object} e
     */
     onDrag = (e) => {
-        this.xChange = e.x - this.xStart;
-        console.log(this.xChange);
-        if (this.xChange > 10) {
-            this.setDraggablePosition(e.pageX);
-        } else {
-            e.preventDefault();
-            this.setDraggablePosition(this.xStart);
-        }
         this.props.getTabBar().setState({addButtonVisibility: 'none'});
         this.reorderTabs(e.pageX);
     }
@@ -77,7 +65,6 @@ export default class Tab extends React.Component {
         this.setState({zIndex: 2});
         //this event works the same as onMouseDown event
         this.props.getTabBar().selectTab(this);
-        this.xStart = e.pageX;
     }
 
     onPageInitialized = () => {
@@ -127,21 +114,24 @@ export default class Tab extends React.Component {
             backgroundColor: this.state.backgroundColor,
             zIndex: this.state.zIndex
         }
-        var draggableStyle = {
+        var borderLeftStyle = {
+            display: (this.showLeftBorder) ? 'block' : 'none',
+            left: -1
+        };
+        var borderRightStyle = {
+            right: 0
+        };
+        var draggablePosition = {
             x: this.state.left,
             y: 0
         }
 
-        if (this.state.showLeftBorder) {
-            tabStyle.borderLeft = '1px solid rgba(0,0,0,0.2)';
-        } else {
-            tabStyle.borderLeft = 'none';
-        }
-
         return (
-            <Draggable bounds="parent" axis="x" position={draggableStyle} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
+            <Draggable bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
                 <div ref="tab" className="tab" style={tabStyle}>
-
+                    <div className="tab-border" style={borderLeftStyle}></div>
+                    <div className="tab-title">{this.state.title}</div>
+                    <div className="tab-border" style={borderRightStyle}></div>
                 </div>
             </Draggable>
         );
