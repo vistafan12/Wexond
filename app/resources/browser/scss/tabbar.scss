@@ -1,0 +1,24 @@
+$tabbar-add-icon-width: 22px;
+
+.tabbar {
+    display: flex;
+    height: 100%;
+}
+
+.tabbar-add {
+    background-image: url(../img/tabbar/add.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tabbar-add-icon-width $tabbar-add-icon-width;
+    width: $tabbar-add-icon-width + 12px;
+    transition: opacity 0.2s;
+    height: 100%;
+    opacity: 0.6;
+    -webkit-app-region: no-drag;
+    position: absolute;
+
+    &:hover {
+        transition: opacity 0.2s;
+        opacity: 1;
+    }
+}

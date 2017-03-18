@@ -1,5 +1,5 @@
 $height: 32px;
-$control-icon-height: 12px;
+$control-icon-height: 11px;
 
 @mixin center-horizontally($isRelative: false) {
     @if $isRelative {
@@ -37,6 +37,7 @@ $control-icon-height: 12px;
     margin-left: 8px;
     -webkit-app-region: no-drag;
     float: right;
+    display: flex;
 }
 
 .titlebar-control {
@@ -47,7 +48,6 @@ $control-icon-height: 12px;
     height: $height;
     width: 38px;
     float: right;
-    margin-right: 2px;
     opacity: 0.6;
     transition: opacity 0.2s;
 
@@ -56,11 +56,11 @@ $control-icon-height: 12px;
         transition: opacity 0.2s;
     }
 
-    &:first-child {
+    &:last-child {
         margin-right: 4px;
     }
 
-    &:last-child {
+    &:first-child {
         margin-left: 4px;
     }
 }

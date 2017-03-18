@@ -2,8 +2,7 @@
 var {remote, clipboard} = require('electron');
 const {Menu, MenuItem} = remote;
 const app = remote.app;
-const {BrowserWindow} = remote;
-const currentWindow = BrowserWindow.getFocusedWindow();
+const currentWindow = remote.getCurrentWindow();
 //global paths to browser's storage
 const appData = app.getPath('userData');
 const userData = appData + '/userdata';

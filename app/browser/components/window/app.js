@@ -1,7 +1,6 @@
-'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import TabBar from '../tabs/tabbar';
+import TabBar from '../tabs/tabbar';
 //import Page from './page';
 import Titlebar from './titlebar';
 
@@ -11,13 +10,8 @@ export default class App extends React.Component {
     constructor() {
         super();
         //global properties
-        this.defaultOptions = {
-            url: 'wexond://newtab/',
-            select: true
-        };
         this.state = {
-            pagesToCreate: [],
-            tabsToCreate: []
+            pagesToCreate: []
         };
     }
     /*
@@ -42,16 +36,19 @@ export default class App extends React.Component {
                 }
             } catch (err) {}
         }*/
-        var t = this;
+        var self = this;
         /*if (remote.getGlobal('start').file != false) {
             _url = "file:///" + remote.getGlobal('start').file;
         }*/
         document.addEventListener('keyup', function(e) {
             //CTRL + T
             if (e.ctrlKey && e.keyCode == 84) {
-                t.addTab();
+                //eslf.addTab();
             }
         }, false);
+        setTimeout(function() {
+            self.refs.tabbar.addTab();
+        }, 1);
     }
     /*
     * closes window
@@ -84,16 +81,6 @@ export default class App extends React.Component {
         }
     }
     /*
-    * adds tab to render queue
-    * @param1 {Function} getPage
-    */
-    addTab = (options = this.defaultOptions) => {
-        this.setState((p) => {
-            p.tabsToCreate.push(options);
-            return {tabsToCreate: p.tabsToCreate};
-        });
-    }
-    /*
     * adds page to render queue
     * @param1 {function} getTabFunction
     */
@@ -110,34 +97,13 @@ export default class App extends React.Component {
     getApp = () => {
         return this;
     }
-    /*
-    * gets titlebar
-    * @return {Titlebar}
-    */
-    getTitlebar = () => {
-        return this.refs.titlebar;
-    }
-    /*
-    * gets tabbar
-    * @return {TabBar}
-    */
-    getTabBar = () => {
-        return this.refs.tabbar;
-    }
-    /*
-    * returns array of tabs to create
-    * @return {Array}
-    */
-    getTabsToCreate = () => {
-        return this.state.tabsToCreate;
-    }
 
     render() {
         var t = this;
         /*return (
             <div>
                 <Titlebar getApp={this.getApp} ref="titlebar">
-                    <TabBar getApp={this.props.getApp} ref="tabbar"></TabBar>
+
                 </Titlebar>
                 {
                     this.state.tabsToCreate.map(function(object, i) {
@@ -149,7 +115,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <Titlebar getApp={this.getApp} ref="titlebar">
-
+                    <TabBar getApp={this.props.getApp} ref="tabbar"></TabBar>
                 </Titlebar>
             </div>
         )

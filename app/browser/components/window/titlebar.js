@@ -1,4 +1,3 @@
-'use babel';
 import React from 'react';
 import Colors from '../../../helpers/colors';
 require('../../../resources/browser/scss/titlebar.scss');
@@ -72,14 +71,12 @@ export default class Titlebar extends React.Component {
                     display: visibility
                 }} className="titlebar">
                     <div className="titlebar-controls">
-                        <div className="titlebar-control" style={closeStyle} onClick={this.props.getApp().close}></div>
-                        <div className="titlebar-control" style={maximizeStyle} onClick={this.props.getApp().maximizeOrRestore}></div>
                         <div className="titlebar-control" style={minimizeStyle} onClick={this.props.getApp().minimizeOrRestore}></div>
+                        <div className="titlebar-control" style={maximizeStyle} onClick={this.props.getApp().maximizeOrRestore}></div>
+                        <div className="titlebar-control" style={closeStyle} onClick={this.props.getApp().close}></div>
                     </div>
 
                     {this.props.children}
-
-                    <div className="border-bottom"></div>
                 </div>
             </div>
         );
