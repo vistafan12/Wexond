@@ -15,7 +15,8 @@ export default class TabBar extends React.Component {
         };
         this.state = {
             tabsToCreate: [],
-            addButtonLeft: 0
+            addButtonLeft: 0,
+            addButtonVisibility: 'block'
         }
         this.maxTabWidth = 190;
         this.actualTabWidth = this.maxTabWidth;
@@ -34,9 +35,11 @@ export default class TabBar extends React.Component {
     }
     _selectTab = (tab) => {
         tab.setState({backgroundColor: tab.backgroundColor});
+        tab.getPage().setState({visible: true});
     }
     _deSelectTab = (tab) => {
         tab.setState({backgroundColor: '#E0E0E0'});
+        tab.getPage().setState({visible: false});
     }
     /*
     * adds tab to render queue
@@ -118,11 +121,75 @@ export default class TabBar extends React.Component {
             }
         }
 
-        console.log(tabWidthTemp);
-
         this.actualTabWidth = tabWidthTemp;
 
         return tabWidthTemp;
+    }
+    /*
+    * gets tab from mouse point
+    * @param1 {Tab} callingTab
+    * @param2 {Number} cursorX
+    * @return {Tab}
+    */
+    getTabFromMousePoint = (callingTab, xPos) => {
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i] != callingTab) {
+                if (this.contains(tabs[i], xPos)) {
+                    if (!tabs[i].locked) {
+                        return tabs[i];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    /*
+    * checks if {Tab}.refs.tab contains mouse x position
+    * @param1 {Tab} tabToCheck
+    * @param2 {Number} cursorX
+    * @return {Boolean}
+    */
+    contains = (tabToCheck, xPos) => {
+        var rect = tabToCheck.refs.tab.getBoundingClientRect();
+
+        if (xPos >= rect.left && xPos <= rect.right) {
+            return true;
+        }
+        return false;
+    }
+    /*
+    * replaces tabs
+    * @param1 {Number} firstIndex
+    * @param2 {Number} secondIndex
+    * @param3 {Tab} firstTab
+    * @param4 {Tab} secondTab
+    */
+    replaceTabs = (firstIndex, secondIndex, firstTab, secondTab) => {
+        tabs[firstIndex] = secondTab;
+        tabs[secondIndex] = firstTab;
+        this.changePos(secondTab);
+
+        if (tabs.indexOf(firstTab) === 0) {
+            firstTab.setState({showLeftBorder: false});
+        } else {
+            firstTab.setState({showLeftBorder: true});
+        }
+    }
+    /*
+   * changes position of tab to its place
+   * @param1 {Tab} callingTab
+   */
+   changePos = (callingTab) => {
+       var self = this;
+       var data = this.getPositions();
+       var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
+       callingTab.setState({left: newTabPos});
+
+       if (newTabPos === 0) {
+           callingTab.setState({showLeftBorder: false});
+       } else {
+           callingTab.setState({showLeftBorder: true});
+       }
     }
     /*
     * gets TabBar
@@ -131,19 +198,27 @@ export default class TabBar extends React.Component {
     getTabBar = () => {
         return this;
     }
+    /*
+    * gets add tab button
+    * @return {DOMElement}
+    */
+    getAddButton = () => {
+        return this.refs.addButton;
+    }
 
     render() {
         var self = this;
 
         var addButtonStyle = {
-            left: this.state.addButtonLeft
+            left: this.state.addButtonLeft,
+            display: this.state.addButtonVisibility
         };
 
         return (
             <div className="tabbar" ref="tabbar">
                 {
                     this.state.tabsToCreate.map((object, i) => {
-                        return <Tab getTabBar={self.getTabBar} key={i} data={object}></Tab>;
+                        return <Tab getApp={self.props.getApp} getTabBar={self.getTabBar} key={i} data={object}></Tab>;
                     })
                 }
                 <div className="tabbar-add" ref="addButton" style={addButtonStyle} onClick={()=> this.addTab()}></div>

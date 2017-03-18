@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TabBar from '../tabs/tabbar';
-//import Page from './page';
+import Page from '../tabs/page';
 import Titlebar from './titlebar';
 
 import '../../../resources/browser/scss/app.scss';
@@ -99,24 +99,18 @@ export default class App extends React.Component {
     }
 
     render() {
-        var t = this;
-        /*return (
-            <div>
-                <Titlebar getApp={this.getApp} ref="titlebar">
+        var self = this;
 
-                </Titlebar>
-                {
-                    this.state.tabsToCreate.map(function(object, i) {
-                        return <Tab ref={(tab) => tabs.push(tab)} key={i} data={object}></Tab>;
-                    })
-                }
-            </div>
-        );*/
         return (
             <div>
                 <Titlebar getApp={this.getApp} ref="titlebar">
-                    <TabBar getApp={this.props.getApp} ref="tabbar"></TabBar>
+                    <TabBar getApp={this.getApp} ref="tabbar"></TabBar>
                 </Titlebar>
+                {
+                    self.state.pagesToCreate.map((object, i) => {
+                        return <Page key={i} getTab={object} getApp={self.getApp}></Page>
+                    })
+                }
             </div>
         )
     }
