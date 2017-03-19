@@ -1,29 +1,6 @@
 $height: 32px;
 $control-icon-height: 11px;
 
-@mixin center-horizontally($isRelative: false) {
-    @if $isRelative {
-        position: relative;
-    }
-    @else if {
-        position: absolute;
-    }
-
-    left: 50%;
-    transform: translateX(-50%);
-}
-@mixin center-vertically($isRelative: false) {
-    @if $isRelative {
-        position: relative;
-    }
-    @else if {
-        position: absolute;
-    }
-
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .titlebar {
     position: relative;
     width: 100%;

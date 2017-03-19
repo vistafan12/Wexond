@@ -20,10 +20,32 @@ export default class TabBar extends React.Component {
         }
         this.maxTabWidth = 190;
         this.actualTabWidth = this.maxTabWidth;
+        this.lastSelectedTab = null;
+        this.timer = {
+            time: 0,
+            canReset: false
+        }
     }
-    componentDidMount() {
 
+    componentDidMount() {
+        var self = this;
+        this.timer.timer = setInterval(function() {
+            if (self.timer.time >= 3) {
+                if (self.timer.canReset) {
+                    self.setWidths();
+                    self.setPositions();
+                    self.timer.canReset = false;
+                }
+                self.timer.time = 0;
+            }
+            self.timer.time += 1;
+        }, 1000);
     }
+
+    /*
+    * selects tab and deselects others
+    * @param1 {Tab} tab
+    */
     selectTab = (tab) => {
         for (var i = 0; i < tabs.length; i++) {
             if (tabs[i] === tab) {
@@ -33,13 +55,26 @@ export default class TabBar extends React.Component {
             }
         }
     }
+    /*
+    * selects tab
+    * @param1 {Tab} tab
+    */
     _selectTab = (tab) => {
         tab.setState({backgroundColor: tab.backgroundColor});
         tab.getPage().setState({visible: true});
+        tab.selected = true;
     }
+    /*
+    * deselects tab
+    * @param1 {Tab} tab
+    */
     _deSelectTab = (tab) => {
+        if (tab.selected) {
+            this.lastSelectedTab = tab;
+        }
         tab.setState({backgroundColor: '#E0E0E0'});
         tab.getPage().setState({visible: false});
+        tab.selected = false;
     }
     /*
     * adds tab to render queue
@@ -50,6 +85,49 @@ export default class TabBar extends React.Component {
             p.tabsToCreate.push(options);
             return {tabsToCreate: p.tabsToCreate};
         });
+    }
+    /*
+    * closes tab
+    * @param1 {Tab} tab
+    */
+    closeTab = (tab) => {
+        if (this.lastSelectedTab == tab) {
+            this.lastSelectedTab = null;
+        }
+
+        tab.getPage().setState({render: false});
+        tab.setState({render: false});
+
+        this.timer.canReset = true;
+
+        var index = tabs.indexOf(tab);
+        var nextTab = tabs[index + 1];
+        var prevTab = tabs[index - 1];
+        tabs.splice(index, 1);
+
+        if (nextTab != null) {
+            this.selectTab(nextTab);
+        } else {
+            if (this.lastSelectedTab != null) {
+                this.selectTab(this.lastSelectedTab);
+            } else {
+                if (prevTab != null) {
+                    this.selectTab(prevTab);
+                } else {
+                    if (tabs[0] != null) {
+                        this.selectTab(tabs[0]);
+                    }
+                }
+            }
+        }
+
+        if (index == tabs.length) {
+            this.setWidths();
+            this.setPositions();
+        }
+
+        this.timer.time = 0;
+        this.setPositions();
     }
     /*
     * sets positions for tabs and add button

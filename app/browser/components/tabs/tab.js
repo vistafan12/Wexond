@@ -14,10 +14,12 @@ export default class Tab extends React.Component {
             width: 0,
             backgroundColor: 'transparent',
             zIndex: 1,
-            title: 'New tab'
+            title: 'New tab',
+            render: true
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
+        this.selected = false;
     }
     /*
     lifecycle
@@ -71,6 +73,10 @@ export default class Tab extends React.Component {
             this.props.getTabBar().selectTab(this);
         }
     }
+
+    onCloseClick = () => {
+        this.props.getTabBar().closeTab(this);
+    }
     /*
     * updates default position for draggable
     * @param1 {Number} mouseX
@@ -121,13 +127,17 @@ export default class Tab extends React.Component {
             y: 0
         }
 
-        return (
-            <Draggable bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
-                <div ref="tab" className="tab" style={tabStyle}>
-                    <div className="tab-title">{this.state.title}</div>
-                    <div className="tab-border" style={borderRightStyle}></div>
-                </div>
-            </Draggable>
-        );
+        if (this.state.render) {
+            return (
+                <Draggable bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
+                    <div ref="tab" className="tab" style={tabStyle}>
+                        <div className="tab-title">{this.state.title}</div>
+                        <div className="tab-border" style={borderRightStyle}></div>
+                        <div className="tab-close" onClick={this.onCloseClick}></div>
+                    </div>
+                </Draggable>
+            );
+        }
+        return null;
     }
 }

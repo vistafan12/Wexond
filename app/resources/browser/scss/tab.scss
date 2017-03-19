@@ -1,3 +1,15 @@
+@mixin center-vertically($isRelative: false) {
+    @if $isRelative {
+        position: relative;
+    }
+    @else if {
+        position: absolute;
+    }
+
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .tab {
     -webkit-app-region: no-drag;
     height: 100%;
@@ -6,18 +18,32 @@
 }
 
 .tab-title {
-    position: absolute;
-    top: 50%;
+    @include center-vertically;
     left: 16px;
-    transform: translateY(-50%);
     font-size: 14px;
 }
 
 .tab-border {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    @include center-vertically;
     width: 1px;
     height: calc(100% - 8px);
     background-color: rgba(0,0,0,0.2);
+}
+
+.tab-close {
+    @include center-vertically;
+    right: 8px;
+    background-image: url(../img/tabbar/close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    width: 20px;
+    height: 20px;
+    transition: 0.2s opacity;
+    opacity: 0.6;
+
+    &:hover {
+        transition: 0.2s opacity;
+        opacity: 1;
+    }
 }
