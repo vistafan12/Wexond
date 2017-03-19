@@ -18,13 +18,13 @@ export default class TabBar extends React.Component {
             addButtonLeft: 0,
             addButtonVisibility: 'block'
         }
-        this.maxTabWidth = 190;
-        this.actualTabWidth = this.maxTabWidth;
         this.lastSelectedTab = null;
         this.timer = {
             time: 0,
             canReset: false
         }
+        this.nextPinnedTabIndex = 0;
+        this.widths = [];
     }
 
     componentDidMount() {
@@ -157,13 +157,14 @@ export default class TabBar extends React.Component {
     * @param1 {Boolean} animation
     */
     setWidths = (animation = false) => {
-        var tempWidth = this.getWidths();
+        var widths = this.getWidths(1);
 
         for (var i = 0; i < tabs.length; i++) {
             if (animation) {
                 //TODO: animate tab width
             } else {
-                tabs[i].setState({width: tempWidth});
+                tabs[i].setState({width: widths[i]});
+                tabs[i].width = widths[i];
             }
         }
     }
@@ -178,7 +179,7 @@ export default class TabBar extends React.Component {
 
         for (var i = 0; i < tabs.length; i++) {
             lefts.push(a);
-            a += this.actualTabWidth + 1;
+            a += tabs[i].width + 1;
         }
 
         return {tabPositions: lefts, addButtonPosition: a};
@@ -187,21 +188,37 @@ export default class TabBar extends React.Component {
     * calculates widths for all tabs
     * @return {Number}
     */
-    getWidths = () => {
+    getWidths = (margin = 0) => {
         var tabbarWidth = this.refs.tabbar.clientWidth;
         var addButtonWidth = this.refs.addButton.offsetWidth;
-        var tabWidthTemp = 0;
+        var tabWidthsTemp = [];
+        var tabWidths = [];
+        var pinnedTabsLength = 0;
 
         for (var i = 0; i < tabs.length; i++) {
-            var tabWidthTemp = (tabbarWidth - addButtonWidth - 2) / tabs.length;
-            if (tabWidthTemp > this.maxTabWidth) {
-                tabWidthTemp = this.maxTabWidth;
+            if (tabs[i].pinned) {
+                tabWidthsTemp.push({id: i, width: tabsData.pinnedTabWidth});
+                pinnedTabsLength += 1;
             }
         }
 
-        this.actualTabWidth = tabWidthTemp;
+        for (var i = 0; i < tabs.length; i++) {
+            if (!tabs[i].pinned) {
+                var margins = tabs.length * margin;
+                var pinnedTabsWidth = (pinnedTabsLength * tabsData.pinnedTabWidth);
+                var tabWidthTemp = (tabbarWidth - addButtonWidth - margins - pinnedTabsWidth) / (tabs.length - pinnedTabsLength);
+                if (tabWidthTemp > tabsData.maxTabWidth) {
+                    tabWidthTemp = tabsData.maxTabWidth;
+                }
+                tabWidthsTemp.push({id: i, width: tabWidthTemp});
+            }
+        }
 
-        return tabWidthTemp;
+        for (var i = 0; i < tabWidthsTemp.length; i++) {
+            tabWidths[tabWidthsTemp[i].id] = tabWidthsTemp[i].width;
+        }
+
+        return tabWidths;
     }
     /*
     * gets tab from mouse point
@@ -239,13 +256,17 @@ export default class TabBar extends React.Component {
     * replaces tabs
     * @param1 {Number} firstIndex
     * @param2 {Number} secondIndex
-    * @param3 {Tab} firstTab
-    * @param4 {Tab} secondTab
+    * @param3 {Boolean} changePos (optional)
     */
-    replaceTabs = (firstIndex, secondIndex, firstTab, secondTab) => {
+    replaceTabs = (firstIndex, secondIndex, changePos = true) => {
+        var firstTab = tabs[firstIndex];
+        var secondTab = tabs[secondIndex];
         tabs[firstIndex] = secondTab;
         tabs[secondIndex] = firstTab;
-        this.changePos(secondTab);
+
+        if (changePos) {
+            this.changePos(secondTab);
+        }
 
         if (tabs.indexOf(firstTab) === 0) {
             firstTab.setState({showLeftBorder: false});

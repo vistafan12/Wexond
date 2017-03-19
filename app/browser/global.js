@@ -20,6 +20,10 @@ var tabsAnimationsData = {
 };
 //tabs
 var tabs = [];
+const tabsData = {
+    pinnedTabWidth: 32,
+    maxTabWidth: 190
+}
 
 function checkFiles() {
     //check if directory called userdata exists

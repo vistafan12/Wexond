@@ -15,11 +15,15 @@ export default class Tab extends React.Component {
             backgroundColor: 'transparent',
             zIndex: 1,
             title: 'New tab',
-            render: true
+            render: true,
+            showTitle: true,
+            showClose: true
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
         this.selected = false;
+        this.pinned = false;
+        this.width = 0;
     }
     /*
     lifecycle
@@ -64,7 +68,9 @@ export default class Tab extends React.Component {
         }
         //set currently dragging tab's z index to greater than others
         this.setState({zIndex: 2});
-        //this event works the same as onMouseDown event
+    }
+
+    onMouseDown = () => {
         this.props.getTabBar().selectTab(this);
     }
 
@@ -76,6 +82,30 @@ export default class Tab extends React.Component {
 
     onCloseClick = () => {
         this.props.getTabBar().closeTab(this);
+    }
+
+    onDoubleClick = () => {
+        if (!this.pinned) {
+            this.setState({showTitle: false, showClose: false, isDraggingDisabled: true});
+        } else {
+            this.setState({showTitle: true, showClose: true, isDraggingDisabled: false});
+        }
+        this.pinned = !this.pinned;
+        var pinnedTabs = [];
+        for (var x = 0; x < tabs.length; x++) {
+            if (tabs[x].pinned) {
+                pinnedTabs.push(tabs[x]);
+            }
+        }
+        for (var x = tabs.length - 1; x >= 0; x--) {
+            for (var y = pinnedTabs.length - 1; y >= 0; y--) {
+                if (!tabs[x].pinned) {
+                    this.props.getTabBar().replaceTabs(x, tabs.indexOf(pinnedTabs[y]));
+                }
+            }
+        }
+        this.props.getTabBar().setWidths();
+        this.props.getTabBar().setPositions();
     }
     /*
     * updates default position for draggable
@@ -98,11 +128,13 @@ export default class Tab extends React.Component {
     * @param1 {Number} cursorX
     */
     reorderTabs = (cursorX) => {
-        var overTab = this.props.getTabBar().getTabFromMousePoint(this, cursorX);
-        if (overTab != null) {
-            var indexTab = tabs.indexOf(this);
-            var indexOverTab = tabs.indexOf(overTab);
-            this.props.getTabBar().replaceTabs(indexTab, indexOverTab, this, overTab);
+        if (!this.pinned) {
+            var overTab = this.props.getTabBar().getTabFromMousePoint(this, cursorX);
+            if (overTab != null && !overTab.pinned) {
+                var indexTab = tabs.indexOf(this);
+                var indexOverTab = tabs.indexOf(overTab);
+                this.props.getTabBar().replaceTabs(indexTab, indexOverTab);
+            }
         }
     }
     /*
@@ -125,15 +157,21 @@ export default class Tab extends React.Component {
         var draggablePosition = {
             x: this.state.left,
             y: 0
-        }
+        };
+        var titleStyle = {
+            display: (this.state.showTitle) ? 'block' : 'none'
+        };
+        var closeStyle = {
+            display: (this.state.showClose) ? 'block' : 'none'
+        };
 
         if (this.state.render) {
             return (
-                <Draggable bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
-                    <div ref="tab" className="tab" style={tabStyle}>
-                        <div className="tab-title">{this.state.title}</div>
+                <Draggable onMouseDown={this.onMouseDown} bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
+                    <div onDoubleClick={this.onDoubleClick} ref="tab" className="tab" style={tabStyle}>
+                        <div className="tab-title" style={titleStyle}>{this.state.title}</div>
                         <div className="tab-border" style={borderRightStyle}></div>
-                        <div className="tab-close" onClick={this.onCloseClick}></div>
+                        <div className="tab-close" style={closeStyle} onClick={this.onCloseClick}></div>
                     </div>
                 </Draggable>
             );
