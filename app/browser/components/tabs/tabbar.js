@@ -1,6 +1,7 @@
+'use babel';
 import React from 'react';
 import Tab from './tab';
-import {TweenMax, CSSPlugin} from "gsap";
+import {Motion, spring} from 'react-motion';
 
 import '../../../resources/browser/scss/tabbar.scss';
 
@@ -16,7 +17,7 @@ export default class TabBar extends React.Component {
         this.state = {
             tabsToCreate: [],
             addButtonLeft: 0,
-            addButtonVisibility: 'block'
+            isAddButtonVisible: true
         }
         this.lastSelectedTab = null;
         this.timer = {
@@ -24,7 +25,6 @@ export default class TabBar extends React.Component {
             canReset: false
         }
         this.nextPinnedTabIndex = 0;
-        this.widths = [];
     }
 
     componentDidMount() {
@@ -96,7 +96,6 @@ export default class TabBar extends React.Component {
         }
 
         tab.getPage().setState({render: false});
-        tab.setState({render: false});
 
         this.timer.canReset = true;
 
@@ -124,6 +123,23 @@ export default class TabBar extends React.Component {
         if (index == tabs.length) {
             this.setWidths();
             this.setPositions();
+
+            if (tab.width < 190) {
+                tab.setState({render: false});
+            } else {
+                closeAnim();
+            }
+        }  else {
+            closeAnim();
+        }
+
+        function closeAnim() {
+            tab.setState({width: spring(0, tabsAnimationsData.closeTabSpring)});
+
+            var timeout = setTimeout(function() {
+                tab.setState({render: false});
+                clearTimeout(timeout);
+            }, 300);
         }
 
         this.timer.time = 0;
@@ -134,38 +150,34 @@ export default class TabBar extends React.Component {
     * @param1 {Boolean} animateTabs (optional)
     * @param2 {Boolean} animateAddButton (optional)
     */
-    setPositions = (animateTabs = false, animateAddButton = false) => {
+    setPositions = (animateTabs = true, animateAddButton = true) => {
         var data = this.getPositions();
         var lefts = data.tabPositions;
         var addLeft = data.addButtonPosition;
 
         for (var i = 0; i < tabs.length; i++) {
-            if (animateTabs) {
-                //TODO: animate tab position
-            } else {
-                tabs[i].setState({left: lefts[i]});
-            }
+            tabs[i].setState({
+                left: spring(lefts[i], tabsAnimationsData.setPositionsSpring)
+            });
         }
-        if (animateAddButton) {
-            //TODO: animate add tab button position
-        } else {
-            this.setState({addButtonLeft: addLeft});
-        }
+        this.setState({addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)});
     }
     /*
     * sets widths for all tabs
     * @param1 {Boolean} animation
     */
-    setWidths = (animation = false) => {
+    setWidths = (animation = true) => {
         var widths = this.getWidths(1);
 
         for (var i = 0; i < tabs.length; i++) {
             if (animation) {
-                //TODO: animate tab width
+                tabs[i].setState({
+                    width: spring(widths[i], tabsAnimationsData.setWidthsSpring)
+                });
             } else {
                 tabs[i].setState({width: widths[i]});
-                tabs[i].width = widths[i];
             }
+            tabs[i].width = widths[i];
         }
     }
     /*
@@ -190,7 +202,7 @@ export default class TabBar extends React.Component {
     */
     getWidths = (margin = 0) => {
         var tabbarWidth = this.refs.tabbar.clientWidth;
-        var addButtonWidth = this.refs.addButton.offsetWidth;
+        var addButtonWidth = this.addButton.offsetWidth;
         var tabWidthsTemp = [];
         var tabWidths = [];
         var pinnedTabsLength = 0;
@@ -245,7 +257,7 @@ export default class TabBar extends React.Component {
     * @return {Boolean}
     */
     contains = (tabToCheck, xPos) => {
-        var rect = tabToCheck.refs.tab.getBoundingClientRect();
+        var rect = tabToCheck.tab.getBoundingClientRect();
 
         if (xPos >= rect.left && xPos <= rect.right) {
             return true;
@@ -278,17 +290,17 @@ export default class TabBar extends React.Component {
    * changes position of tab to its place
    * @param1 {Tab} callingTab
    */
-   changePos = (callingTab) => {
-       var self = this;
-       var data = this.getPositions();
-       var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
-       callingTab.setState({left: newTabPos});
+    changePos = (callingTab) => {
+        var self = this;
+        var data = this.getPositions();
+        var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
+        callingTab.setState({left: newTabPos});
 
-       if (newTabPos === 0) {
-           callingTab.setState({showLeftBorder: false});
-       } else {
-           callingTab.setState({showLeftBorder: true});
-       }
+        if (newTabPos === 0) {
+            callingTab.setState({showLeftBorder: false});
+        } else {
+            callingTab.setState({showLeftBorder: true});
+        }
     }
     /*
     * gets TabBar
@@ -308,19 +320,21 @@ export default class TabBar extends React.Component {
     render() {
         var self = this;
 
-        var addButtonStyle = {
-            left: this.state.addButtonLeft,
-            display: this.state.addButtonVisibility
-        };
-
         return (
             <div className="tabbar" ref="tabbar">
-                {
-                    this.state.tabsToCreate.map((object, i) => {
-                        return <Tab getApp={self.props.getApp} getTabBar={self.getTabBar} key={i} data={object}></Tab>;
-                    })
-                }
-                <div className="tabbar-add" ref="addButton" style={addButtonStyle} onClick={()=> this.addTab()}></div>
+                {this.state.tabsToCreate.map((object, i) => {
+                    return <Tab getApp={self.props.getApp} getTabBar={self.getTabBar} key={i} data={object}></Tab>;
+                })}
+                <Motion style={{
+                    x: this.state.addButtonLeft
+                }}>
+                    {value => <div className="tabbar-add" ref={(addButton) => this.addButton = addButton} style={{
+                        display: (this.state.isAddButtonVisible)
+                            ? 'block'
+                            : 'none',
+                        left: value.x
+                    }} onClick={() => this.addTab()}></div>}
+                </Motion>
             </div>
         );
     }

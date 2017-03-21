@@ -1,7 +1,8 @@
+'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import Draggable from 'react-draggable';
+import {Motion, spring} from 'react-motion';
 
 import '../../../resources/browser/scss/tab.scss';
 
@@ -13,17 +14,18 @@ export default class Tab extends React.Component {
             left: 0,
             width: 0,
             backgroundColor: 'transparent',
-            zIndex: 1,
+            zIndex: 2,
             title: 'New tab',
             render: true,
-            showTitle: true,
-            showClose: true
+            isTitleVisible: true,
+            isCloseVisible: true
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
         this.selected = false;
         this.pinned = false;
         this.width = 0;
+        this.tab = null;
     }
     /*
     lifecycle
@@ -39,35 +41,15 @@ export default class Tab extends React.Component {
             this.setState({showLeftBorder: true});
         }
 
-        this.props.getTabBar().setWidths();
-        this.props.getTabBar().setPositions();
+        var positions = this.props.getTabBar().getPositions().tabPositions;
+        this.setState({
+            left: positions[tabs.indexOf(this)]
+        }, function() {
+            this.props.getTabBar().setWidths();
+            this.props.getTabBar().setPositions();
+        });
 
         this.props.getApp().addPage(self.getTab);
-    }
-    /*
-    events
-    */
-    onDragStop = () => {
-        this.props.getTabBar().setPositions();
-        this.props.getTabBar().setState({addButtonVisibility: 'block'});
-    }
-    /*
-    * @param1 {Object} e
-    */
-    onDrag = (e) => {
-        this.props.getTabBar().setState({addButtonVisibility: 'none'});
-        this.reorderTabs(e.pageX);
-    }
-
-    onDragStart = (e) => {
-        //set others tabs z index to smaller
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i] != this) {
-                tabs[i].setState({zIndex: 1});
-            }
-        }
-        //set currently dragging tab's z index to greater than others
-        this.setState({zIndex: 2});
     }
 
     onMouseDown = () => {
@@ -86,9 +68,13 @@ export default class Tab extends React.Component {
 
     onDoubleClick = () => {
         if (!this.pinned) {
-            this.setState({showTitle: false, showClose: false, isDraggingDisabled: true});
+            this.setState({
+                isTitleVisible: false, isCloseVisible: false/* disable dragging */
+            });
         } else {
-            this.setState({showTitle: true, showClose: true, isDraggingDisabled: false});
+            this.setState({
+                isTitleVisible: true, isCloseVisible: true/* disable dragging */
+            });
         }
         this.pinned = !this.pinned;
         var pinnedTabs = [];
@@ -106,22 +92,6 @@ export default class Tab extends React.Component {
         }
         this.props.getTabBar().setWidths();
         this.props.getTabBar().setPositions();
-    }
-    /*
-    * updates default position for draggable
-    * @param1 {Number} mouseX
-    */
-    setDraggablePosition = (mouseX) => {
-        var draggablePosition = this.getDraggablePosition(mouseX);
-        this.setState({left: mouseX - draggablePosition});
-    }
-    /*
-    * gets draggable position
-    * @param1 {Number} mouseX
-    * @return {Number}
-    */
-    getDraggablePosition = (mouseX) => {
-        return mouseX - this.refs.tab.getBoundingClientRect().left;
     }
     /*
     * reorders tabs
@@ -147,33 +117,46 @@ export default class Tab extends React.Component {
 
     render() {
         var tabStyle = {
-            width: this.state.width,
             backgroundColor: this.state.backgroundColor,
             zIndex: this.state.zIndex
         }
         var borderRightStyle = {
             right: -1
         };
-        var draggablePosition = {
-            x: this.state.left,
-            y: 0
-        };
         var titleStyle = {
-            display: (this.state.showTitle) ? 'block' : 'none'
+            display: (this.state.isTitleVisible)
+                ? 'block'
+                : 'none'
         };
         var closeStyle = {
-            display: (this.state.showClose) ? 'block' : 'none'
+            display: (this.state.isCloseVisible)
+                ? 'block'
+                : 'none'
+        };
+        var tabHandlers = {
+            onMouseDown: this.onMouseDown,
+            onDoubleClick: this.onDoubleClick
         };
 
         if (this.state.render) {
             return (
-                <Draggable onMouseDown={this.onMouseDown} bounds="parent" axis="x" position={draggablePosition} onStop={this.onDragStop} onStart={this.onDragStart} onDrag={this.onDrag}>
-                    <div onDoubleClick={this.onDoubleClick} ref="tab" className="tab" style={tabStyle}>
-                        <div className="tab-title" style={titleStyle}>{this.state.title}</div>
+                <Motion style={{
+                    x: this.state.left,
+                    width: this.state.width
+                }}>
+                    {value => <div {...tabHandlers} ref={(tab) => this.tab = tab} className="tab" style={{
+                        width: value.width,
+                        backgroundColor: tabStyle.backgroundColor,
+                        zIndex: tabStyle.zIndex,
+                        left: value.x
+                    }}>
+                        <div className="tab-mask">
+                            <div className="tab-title" style={titleStyle}>{this.state.title}</div>
+                            <div className="tab-close" style={closeStyle} onClick={this.onCloseClick}></div>
+                        </div>
                         <div className="tab-border" style={borderRightStyle}></div>
-                        <div className="tab-close" style={closeStyle} onClick={this.onCloseClick}></div>
-                    </div>
-                </Draggable>
+                    </div>}
+                </Motion>
             );
         }
         return null;

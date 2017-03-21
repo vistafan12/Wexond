@@ -48,9 +48,7 @@ export default class Page extends React.Component {
 
         if (this.state.render) {
             return (
-                <div className="page" style={pageStyle}>
-
-                </div>
+                <div className="page" style={pageStyle}></div>
             );
         }
         return null;

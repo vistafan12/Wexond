@@ -22,8 +22,8 @@
     "node-dir": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-draggable": "^2.2.3",
-    "react-tween-state": "latest"
+    "react-draggable": "latest",
+    "react-motion": "latest"
   },
   "devDependencies": {
     "asar": "latest",

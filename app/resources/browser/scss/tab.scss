@@ -17,10 +17,21 @@
     position: absolute;
 }
 
+.tab-mask {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
 .tab-title {
     @include center-vertically;
     left: 16px;
     font-size: 14px;
+    white-space: nowrap;
+    max-width: calc(100% - 48px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tab-border {

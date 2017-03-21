@@ -14,9 +14,11 @@ const nodeDir = require('node-dir');
 const fs = require('fs');
 //animations
 var tabsAnimationsData = {
-    animationDuration: 0.3,
-    animationEasing: null,
-    hoverTransparency: 0.1
+    hoverTransparency: 0.1,
+    closeTabSpring: durationToSpring(0.3),
+    addTabSpring: durationToSpring(0.3),
+    setPositionsSpring: durationToSpring(0.3),
+    setWidthsSpring: durationToSpring(0.3)
 };
 //tabs
 var tabs = [];
@@ -42,6 +44,19 @@ function checkFiles() {
     if (!fs.existsSync(bookmarksDataPath)) {
         fs.writeFile(bookmarksDataPath, '{"bookmarks":[]}');
     }
+}
+
+function durationToSpring(w, o = 0) {
+    const s = o <= 0
+        ? 1 - o
+        : 1 / Math.sqrt(1 + Math.pow(2 * Math.PI / Math.log(1 / (o * o)), 2));
+
+    const ks = (2 * Math.PI / w) / Math.max(Math.sqrt(1 - s * s), 0.5);
+    const c = 2 * ks * s;
+    return {
+        stiffness: ks * ks,
+        damping: c
+    };
 }
 
 if (process.env.ENV == 'dev') {
