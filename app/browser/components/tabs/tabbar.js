@@ -40,8 +40,16 @@ export default class TabBar extends React.Component {
             }
             self.timer.time += 1;
         }, 1000);
-    }
 
+        window.addEventListener('resize', this.onResize);
+    }
+    /*
+    events
+    */
+    onResize = () => {
+        this.setWidths();
+        this.setPositions();
+    }
     /*
     * selects tab and deselects others
     * @param1 {Tab} tab
@@ -60,9 +68,12 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _selectTab = (tab) => {
-        tab.setState({backgroundColor: tab.backgroundColor});
+        tab.setState({backgroundColor: tab.backgroundColor, selected: true});
         tab.getPage().setState({visible: true});
         tab.selected = true;
+        if (tabs[tabs.indexOf(tab) - 1] != null) {
+            tabs[tabs.indexOf(tab) - 1].setState({isRightBorderVisible: true});
+        }
     }
     /*
     * deselects tab
@@ -72,9 +83,12 @@ export default class TabBar extends React.Component {
         if (tab.selected) {
             this.lastSelectedTab = tab;
         }
-        tab.setState({backgroundColor: '#E0E0E0'});
+        tab.setState({backgroundColor: '#E0E0E0', selected: false});
         tab.getPage().setState({visible: false});
         tab.selected = false;
+        if (tabs[tabs.indexOf(tab) - 1] != null) {
+            tabs[tabs.indexOf(tab) - 1].setState({isRightBorderVisible: false});
+        }
     }
     /*
     * adds tab to render queue
@@ -156,11 +170,15 @@ export default class TabBar extends React.Component {
         var addLeft = data.addButtonPosition;
 
         for (var i = 0; i < tabs.length; i++) {
-            tabs[i].setState({
-                left: spring(lefts[i], tabsAnimationsData.setPositionsSpring)
-            });
+            if (animateTabs) {
+                tabs[i].setState({
+                    left: spring(lefts[i], tabsAnimationsData.setPositionsSpring)
+                });
+            }
         }
-        this.setState({addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)});
+        if (animateAddButton) {
+            this.setState({addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)});
+        }
     }
     /*
     * sets widths for all tabs

@@ -41,6 +41,13 @@
     background-color: rgba(0,0,0,0.2);
 }
 
+.tab-border2 {
+    @include center-vertically;
+    width: 1px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.2);
+}
+
 .tab-close {
     @include center-vertically;
     right: 8px;

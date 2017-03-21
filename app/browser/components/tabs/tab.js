@@ -18,7 +18,9 @@ export default class Tab extends React.Component {
             title: 'New tab',
             render: true,
             isTitleVisible: true,
-            isCloseVisible: true
+            isCloseVisible: true,
+            selected: false,
+            isRightBorderVisible: true
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
@@ -118,10 +120,19 @@ export default class Tab extends React.Component {
     render() {
         var tabStyle = {
             backgroundColor: this.state.backgroundColor,
-            zIndex: this.state.zIndex
+            zIndex: this.state.zIndex,
+            borderRight: (this.state.selected) ? '1px solid rgba(0,0,0,0.2)' : 'none'
         }
         var borderRightStyle = {
-            right: -1
+            right: -1,
+            display: (this.state.selected || this.state.isRightBorderVisible) ? 'none' : 'block'
+        };
+        var borderRight2Style = {
+            display: (this.state.selected) ? 'block' : 'none',
+            right: 0
+        };
+        var borderLeftStyle = {
+            display: (this.state.selected && tabs.indexOf(this) !== 0) ? 'block' : 'none'
         };
         var titleStyle = {
             display: (this.state.isTitleVisible)
@@ -155,6 +166,8 @@ export default class Tab extends React.Component {
                             <div className="tab-close" style={closeStyle} onClick={this.onCloseClick}></div>
                         </div>
                         <div className="tab-border" style={borderRightStyle}></div>
+                        <div className="tab-border2" style={borderLeftStyle}></div>
+                        <div className="tab-border2" style={borderRight2Style}></div>
                     </div>}
                 </Motion>
             );
