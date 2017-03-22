@@ -1,4 +1,3 @@
-'use babel';
 import React from 'react';
 import Tab from './tab';
 import {Motion, spring} from 'react-motion';
@@ -25,6 +24,7 @@ export default class TabBar extends React.Component {
             canReset: false
         }
         this.nextPinnedTabIndex = 0;
+        this.dragData = {};
     }
 
     componentDidMount() {
@@ -42,12 +42,28 @@ export default class TabBar extends React.Component {
         }, 1000);
 
         window.addEventListener('resize', this.onResize);
+        window.addEventListener('mousemove', this.onMouseMove);
+        window.addEventListener('mouseup', this.onMouseUp);
     }
     /*
     events
     */
     onResize = () => {
         this.setWidths();
+        this.setPositions();
+    }
+
+    onMouseMove = (e) => {
+        if (this.dragData.canDrag) {
+            this.dragData.tab.setState({
+                left: this.dragData.tabX + e.clientX - this.dragData.mouseClickX
+            });
+            this.dragData.tab.reorderTabs(e.clientX);
+        }
+    }
+
+    onMouseUp = () => {
+        this.dragData.canDrag = false;
         this.setPositions();
     }
     /*
@@ -294,14 +310,14 @@ export default class TabBar extends React.Component {
         tabs[firstIndex] = secondTab;
         tabs[secondIndex] = firstTab;
 
-        if (changePos) {
-            this.changePos(secondTab);
-        }
-
         if (tabs.indexOf(firstTab) === 0) {
             firstTab.setState({showLeftBorder: false});
         } else {
             firstTab.setState({showLeftBorder: true});
+        }
+
+        if (changePos) {
+            this.changePos(secondTab);
         }
     }
     /*
@@ -312,7 +328,7 @@ export default class TabBar extends React.Component {
         var self = this;
         var data = this.getPositions();
         var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
-        callingTab.setState({left: newTabPos});
+        callingTab.setState({left: spring(newTabPos, tabsAnimationsData.setPositionsSpring)});
 
         if (newTabPos === 0) {
             callingTab.setState({showLeftBorder: false});

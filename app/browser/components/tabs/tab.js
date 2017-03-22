@@ -1,7 +1,5 @@
-'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Draggable from 'react-draggable';
 import {Motion, spring} from 'react-motion';
 
 import '../../../resources/browser/scss/tab.scss';
@@ -54,8 +52,22 @@ export default class Tab extends React.Component {
         this.props.getApp().addPage(self.getTab);
     }
 
-    onMouseDown = () => {
+    onMouseDown = (e) => {
         this.props.getTabBar().selectTab(this);
+        this.props.getTabBar().dragData = {
+            tabX: e.currentTarget.offsetLeft,
+            mouseClickX: e.clientX,
+            canDrag: true,
+            tab: this
+        };
+        //set others tabs z index to smaller
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i] != this) {
+                tabs[i].setState({zIndex: 1});
+            }
+        }
+        //set currently dragging tab's z index to greater than others
+        this.setState({zIndex: 2});
     }
 
     onPageInitialized = () => {
@@ -79,19 +91,18 @@ export default class Tab extends React.Component {
             });
         }
         this.pinned = !this.pinned;
-        var pinnedTabs = [];
-        for (var x = 0; x < tabs.length; x++) {
-            if (tabs[x].pinned) {
-                pinnedTabs.push(tabs[x]);
+        var tempTabs = [];
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].pinned) {
+                tempTabs.push(tabs[i]);
             }
         }
-        for (var x = tabs.length - 1; x >= 0; x--) {
-            for (var y = pinnedTabs.length - 1; y >= 0; y--) {
-                if (!tabs[x].pinned) {
-                    this.props.getTabBar().replaceTabs(x, tabs.indexOf(pinnedTabs[y]));
-                }
+        for (var i = 0; i < tabs.length; i++) {
+            if (!tabs[i].pinned) {
+                tempTabs.push(tabs[i]);
             }
         }
+        tabs = tempTabs;
         this.props.getTabBar().setWidths();
         this.props.getTabBar().setPositions();
     }
@@ -121,18 +132,30 @@ export default class Tab extends React.Component {
         var tabStyle = {
             backgroundColor: this.state.backgroundColor,
             zIndex: this.state.zIndex,
-            borderRight: (this.state.selected) ? '1px solid rgba(0,0,0,0.2)' : 'none'
+            borderRight: (this.state.selected)
+                ? '1px solid rgba(0,0,0,0.2)'
+                : 'none'
         }
+        var tabHandlers = {
+            onMouseDown: this.onMouseDown,
+            onDoubleClick: this.onDoubleClick
+        };
         var borderRightStyle = {
             right: -1,
-            display: (this.state.selected || this.state.isRightBorderVisible) ? 'none' : 'block'
+            display: (this.state.selected || this.state.isRightBorderVisible)
+                ? 'none'
+                : 'block'
         };
         var borderRight2Style = {
-            display: (this.state.selected) ? 'block' : 'none',
+            display: (this.state.selected)
+                ? 'block'
+                : 'none',
             right: 0
         };
         var borderLeftStyle = {
-            display: (this.state.selected && tabs.indexOf(this) !== 0) ? 'block' : 'none'
+            display: (this.state.selected && tabs.indexOf(this) !== 0)
+                ? 'block'
+                : 'none'
         };
         var titleStyle = {
             display: (this.state.isTitleVisible)
@@ -143,10 +166,6 @@ export default class Tab extends React.Component {
             display: (this.state.isCloseVisible)
                 ? 'block'
                 : 'none'
-        };
-        var tabHandlers = {
-            onMouseDown: this.onMouseDown,
-            onDoubleClick: this.onDoubleClick
         };
 
         if (this.state.render) {
