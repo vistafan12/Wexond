@@ -22,7 +22,6 @@
     "node-dir": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-draggable": "latest",
     "react-motion": "latest"
   },
   "devDependencies": {
