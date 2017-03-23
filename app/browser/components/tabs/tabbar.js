@@ -18,7 +18,6 @@ export default class TabBar extends React.Component {
             addButtonLeft: 0,
             isAddButtonVisible: true
         }
-        this.lastSelectedTab = null;
         this.timer = {
             time: 0,
             canReset: false
@@ -96,9 +95,6 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _deSelectTab = (tab) => {
-        if (tab.selected) {
-            this.lastSelectedTab = tab;
-        }
         tab.setState({backgroundColor: '#E0E0E0', selected: false});
         tab.getPage().setState({visible: false});
         tab.selected = false;
@@ -137,15 +133,11 @@ export default class TabBar extends React.Component {
         if (nextTab != null) {
             this.selectTab(nextTab);
         } else {
-            if (this.lastSelectedTab != null) {
-                this.selectTab(this.lastSelectedTab);
+            if (prevTab != null) {
+                this.selectTab(prevTab);
             } else {
-                if (prevTab != null) {
-                    this.selectTab(prevTab);
-                } else {
-                    if (tabs[0] != null) {
-                        this.selectTab(tabs[0]);
-                    }
+                if (tabs[0] != null) {
+                    this.selectTab(tabs[0]);
                 }
             }
         }
@@ -328,7 +320,11 @@ export default class TabBar extends React.Component {
         var self = this;
         var data = this.getPositions();
         var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
+        callingTab.locked = true;
         callingTab.setState({left: spring(newTabPos, tabsAnimationsData.setPositionsSpring)});
+        setTimeout(function() {
+            callingTab.locked = false;
+        }, 200);
 
         if (newTabPos === 0) {
             callingTab.setState({showLeftBorder: false});

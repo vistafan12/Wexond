@@ -26,6 +26,7 @@ export default class Tab extends React.Component {
         this.pinned = false;
         this.width = 0;
         this.tab = null;
+        this.locked = false;
     }
     /*
     lifecycle
