@@ -22,7 +22,7 @@ export default class Tab extends React.Component {
             animateColor: false
         }
         this.getPage = null;
-        this.backgroundColor = '#fff';
+        this.selectedBackgroundColor = '#fff';
         this.selected = false;
         this.pinned = false;
         this.width = 0;
@@ -60,7 +60,7 @@ export default class Tab extends React.Component {
         this.props.getTabBar().dragData = {
             tabX: e.currentTarget.offsetLeft,
             mouseClickX: e.clientX,
-            canDrag: true,
+            canDrag: (!this.pinned) ? true : false,
             tab: this
         };
     }
@@ -69,7 +69,12 @@ export default class Tab extends React.Component {
         if (!this.selected) {
             var rgba = shadeColor(this.state.backgroundColor, 0.05);
             this.mouseLeaveBgColor = this.state.backgroundColor;
-            this.setState({backgroundColor: rgba, animateColor: true});
+            this.setState(
+                {
+                    backgroundColor: rgba,
+                    animateColor: true
+                }
+            );
             if (!this.pinned) {
                 this.setState({isCloseVisible: true});
             }
@@ -79,7 +84,13 @@ export default class Tab extends React.Component {
     onMouseLeave = () => {
         var self = this;
         if (!this.selected) {
-            this.setState({backgroundColor: this.mouseLeaveBgColor, animateColor: true, isCloseVisible: false});
+            this.setState(
+                {
+                    backgroundColor: this.mouseLeaveBgColor,
+                    animateColor: true,
+                    isCloseVisible: false
+                }
+            );
             setTimeout(function() {
                 self.setState({animateColor: false});
             }, 200);
@@ -93,17 +104,21 @@ export default class Tab extends React.Component {
     }
 
     onCloseClick = () => {
-        this.props.getTabBar().closeTab(this);
+        if (this.state.isCloseVisible) {
+            this.props.getTabBar().closeTab(this);
+        }
     }
 
     onDoubleClick = () => {
         if (!this.pinned) {
             this.setState({
-                isTitleVisible: false, isCloseVisible: false/* disable dragging */
+                isTitleVisible: false,
+                isCloseVisible: false
             });
         } else {
             this.setState({
-                isTitleVisible: true, isCloseVisible: true/* disable dragging */
+                isTitleVisible: true,
+                isCloseVisible: true
             });
         }
         this.pinned = !this.pinned;
@@ -175,27 +190,14 @@ export default class Tab extends React.Component {
         var titleStyle = {
             display: (this.state.isTitleVisible)
                 ? 'block'
-                : 'none'
+                : 'none',
+            maxWidth: (this.state.isCloseVisible) ? 'calc(100% - 48px)' : 'calc(100% - 28px)'
         };
         var closeStyle = {
             opacity: (this.state.isCloseVisible)
                 ? 1
                 : 0
         };
-
-        if (!this.state.isCloseVisible) {
-            setTimeout(function() {
-                closeStyle = {
-                    opacity: closeStyle.opacity,
-                    display: 'none'
-                }
-            }, 200);
-        } else {
-            closeStyle = {
-                opacity: closeStyle.opacity,
-                display: 'block'
-            }
-        }
 
         if (this.state.render) {
             return (

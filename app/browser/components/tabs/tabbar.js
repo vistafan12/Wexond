@@ -65,6 +65,9 @@ export default class TabBar extends React.Component {
                 if (tabs.indexOf(this.dragData.tab) === tabs.length - 1) {
                     this.setState({isAddButtonVisible: false});
                 }
+                if (tabs[tabs.indexOf(this.dragData.tab) - 1] != null) {
+                    tabs[tabs.indexOf(this.dragData.tab) - 1].setState({isRightBorderVisible: true});
+                }
             }
         }
     }
@@ -73,6 +76,9 @@ export default class TabBar extends React.Component {
         this.dragData.canDrag = false;
         this.setState({isAddButtonVisible: true});
         this.setPositions();
+        if (tabs[tabs.indexOf(this.dragData.tab) - 1] != null) {
+            tabs[tabs.indexOf(this.dragData.tab) - 1].setState({isRightBorderVisible: false});
+        }
     }
     /*
     * selects tab and deselects others
@@ -92,7 +98,15 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _selectTab = (tab) => {
-        tab.setState({backgroundColor: tab.backgroundColor, selected: true, zIndex: 3, animateColor: false, isCloseVisible: true});
+        tab.setState(
+            {
+                backgroundColor: tab.selectedBackgroundColor,
+                selected: true,
+                zIndex: 3,
+                animateColor: false,
+                isCloseVisible: (!tab.pinned) ? true : false
+            }
+        );
         tab.getPage().setState({visible: true});
         tab.selected = true;
         this.updateTabs();
@@ -102,7 +116,15 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _deSelectTab = (tab) => {
-        tab.setState({backgroundColor: '#E0E0E0', selected: false, zIndex: 1, animateColor: false, isCloseVisible: false});
+        tab.setState(
+            {
+                backgroundColor: '#E0E0E0',
+                selected: false,
+                zIndex: 1,
+                animateColor: false,
+                isCloseVisible: false
+            }
+        );
         tab.getPage().setState({visible: false});
         tab.selected = false;
         this.updateTabs();
@@ -173,12 +195,14 @@ export default class TabBar extends React.Component {
             } else {
                 closeAnim();
             }
-        }  else {
+        } else {
             closeAnim();
         }
 
         function closeAnim() {
-            tab.setState({width: spring(0, tabsAnimationsData.closeTabSpring)});
+            tab.setState({
+                width: spring(0, tabsAnimationsData.closeTabSpring)
+            });
 
             var timeout = setTimeout(function() {
                 tab.setState({render: false});
@@ -207,7 +231,9 @@ export default class TabBar extends React.Component {
             }
         }
         if (animateAddButton) {
-            this.setState({addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)});
+            this.setState({
+                addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)
+            });
         }
         this.updateTabs();
     }
@@ -345,7 +371,9 @@ export default class TabBar extends React.Component {
         var data = this.getPositions();
         var newTabPos = data.tabPositions[tabs.indexOf(callingTab)];
         callingTab.locked = true;
-        callingTab.setState({left: spring(newTabPos, tabsAnimationsData.setPositionsSpring)});
+        callingTab.setState({
+            left: spring(newTabPos, tabsAnimationsData.setPositionsSpring)
+        });
         setTimeout(function() {
             callingTab.locked = false;
         }, 200);
