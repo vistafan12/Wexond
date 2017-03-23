@@ -19,7 +19,7 @@ export default class Tab extends React.Component {
             isCloseVisible: true,
             selected: false,
             isRightBorderVisible: true,
-            animateColor: false
+            animateBackgroundColor: false
         }
         this.getPage = null;
         this.selectedBackgroundColor = '#fff';
@@ -72,7 +72,7 @@ export default class Tab extends React.Component {
             this.setState(
                 {
                     backgroundColor: rgba,
-                    animateColor: true
+                    animateBackgroundColor: true
                 }
             );
             if (!this.pinned) {
@@ -87,12 +87,12 @@ export default class Tab extends React.Component {
             this.setState(
                 {
                     backgroundColor: this.mouseLeaveBgColor,
-                    animateColor: true,
+                    animateBackgroundColor: true,
                     isCloseVisible: false
                 }
             );
             setTimeout(function() {
-                self.setState({animateColor: false});
+                self.setState({animateBackgroundColor: false});
             }, 200);
         }
     }
@@ -210,7 +210,7 @@ export default class Tab extends React.Component {
                         backgroundColor: this.state.backgroundColor,
                         zIndex: this.state.zIndex,
                         left: value.x,
-                        transition: (this.state.animateColor) ? '0.2s background-color' : 'none'
+                        transition: (this.state.animateBackgroundColor) ? '0.2s background-color' : 'none'
                     }}>
                         <div className="tab-mask">
                             <div className="tab-title" style={titleStyle}>{this.state.title}</div>

@@ -56,7 +56,7 @@ export default class TabBar extends React.Component {
 
     onMouseMove = (e) => {
         var mouseDeltaX = e.pageX - this.dragData.mouseClickX;
-        if (Math.abs(mouseDeltaX) > 15) {
+        if (Math.abs(mouseDeltaX) > 10) {
             if (this.dragData.canDrag) {
                 this.dragData.tab.setState({
                     left: this.dragData.tabX + e.clientX - this.dragData.mouseClickX
@@ -103,7 +103,7 @@ export default class TabBar extends React.Component {
                 backgroundColor: tab.selectedBackgroundColor,
                 selected: true,
                 zIndex: 3,
-                animateColor: false,
+                animateBackgroundColor: false,
                 isCloseVisible: (!tab.pinned) ? true : false
             }
         );
@@ -121,7 +121,7 @@ export default class TabBar extends React.Component {
                 backgroundColor: '#E0E0E0',
                 selected: false,
                 zIndex: 1,
-                animateColor: false,
+                animateBackgroundColor: false,
                 isCloseVisible: false
             }
         );
@@ -165,9 +165,8 @@ export default class TabBar extends React.Component {
             this.lastSelectedTab = null;
         }
 
-        tab.getPage().setState({render: false});
-
         this.timer.canReset = true;
+        tab.getPage().setState({render: false});
 
         var index = tabs.indexOf(tab);
         var nextTab = tabs[index + 1];
@@ -204,9 +203,8 @@ export default class TabBar extends React.Component {
                 width: spring(0, tabsAnimationsData.closeTabSpring)
             });
 
-            var timeout = setTimeout(function() {
+            setTimeout(function() {
                 tab.setState({render: false});
-                clearTimeout(timeout);
             }, 300);
         }
 
