@@ -92,7 +92,7 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _selectTab = (tab) => {
-        tab.setState({backgroundColor: tab.backgroundColor, selected: true, zIndex: 3});
+        tab.setState({backgroundColor: tab.backgroundColor, selected: true, zIndex: 3, animateColor: false, isCloseVisible: true});
         tab.getPage().setState({visible: true});
         tab.selected = true;
         this.updateTabs();
@@ -102,7 +102,7 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _deSelectTab = (tab) => {
-        tab.setState({backgroundColor: '#E0E0E0', selected: false, zIndex: 1});
+        tab.setState({backgroundColor: '#E0E0E0', selected: false, zIndex: 1, animateColor: false, isCloseVisible: false});
         tab.getPage().setState({visible: false});
         tab.selected = false;
         this.updateTabs();

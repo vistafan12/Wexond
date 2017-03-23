@@ -18,7 +18,8 @@ export default class Tab extends React.Component {
             isTitleVisible: true,
             isCloseVisible: true,
             selected: false,
-            isRightBorderVisible: true
+            isRightBorderVisible: true,
+            animateColor: false
         }
         this.getPage = null;
         this.backgroundColor = '#fff';
@@ -27,6 +28,7 @@ export default class Tab extends React.Component {
         this.width = 0;
         this.tab = null;
         this.locked = false;
+        this.mouseLeaveBgColor = null;
     }
     /*
     lifecycle
@@ -61,6 +63,27 @@ export default class Tab extends React.Component {
             canDrag: true,
             tab: this
         };
+    }
+
+    onMouseEnter = () => {
+        if (!this.selected) {
+            var rgba = shadeColor(this.state.backgroundColor, 0.05);
+            this.mouseLeaveBgColor = this.state.backgroundColor;
+            this.setState({backgroundColor: rgba, animateColor: true});
+            if (!this.pinned) {
+                this.setState({isCloseVisible: true});
+            }
+        }
+    }
+
+    onMouseLeave = () => {
+        var self = this;
+        if (!this.selected) {
+            this.setState({backgroundColor: this.mouseLeaveBgColor, animateColor: true, isCloseVisible: false});
+            setTimeout(function() {
+                self.setState({animateColor: false});
+            }, 200);
+        }
     }
 
     onPageInitialized = () => {
@@ -122,13 +145,12 @@ export default class Tab extends React.Component {
     }
 
     render() {
-        var tabStyle = {
-            backgroundColor: this.state.backgroundColor,
-            zIndex: this.state.zIndex
-        }
+        var self = this;
         var tabHandlers = {
             onMouseDown: this.onMouseDown,
-            onDoubleClick: this.onDoubleClick
+            onDoubleClick: this.onDoubleClick,
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave
         };
         var borderRightStyle = {
             right: -1,
@@ -156,26 +178,43 @@ export default class Tab extends React.Component {
                 : 'none'
         };
         var closeStyle = {
-            display: (this.state.isCloseVisible)
-                ? 'block'
-                : 'none'
+            opacity: (this.state.isCloseVisible)
+                ? 1
+                : 0
         };
+
+        if (!this.state.isCloseVisible) {
+            setTimeout(function() {
+                closeStyle = {
+                    opacity: closeStyle.opacity,
+                    display: 'none'
+                }
+            }, 200);
+        } else {
+            closeStyle = {
+                opacity: closeStyle.opacity,
+                display: 'block'
+            }
+        }
 
         if (this.state.render) {
             return (
                 <Motion style={{
                     x: this.state.left,
-                    width: this.state.width
+                    width: this.state.width,
                 }}>
                     {value => <div {...tabHandlers} ref={(tab) => this.tab = tab} className="tab" style={{
                         width: value.width,
-                        backgroundColor: tabStyle.backgroundColor,
-                        zIndex: tabStyle.zIndex,
-                        left: value.x
+                        backgroundColor: this.state.backgroundColor,
+                        zIndex: this.state.zIndex,
+                        left: value.x,
+                        transition: (this.state.animateColor) ? '0.2s background-color' : 'none'
                     }}>
                         <div className="tab-mask">
                             <div className="tab-title" style={titleStyle}>{this.state.title}</div>
-                            <div className="tab-close" style={closeStyle} onClick={this.onCloseClick}></div>
+                            <div className="tab-close-container" style={closeStyle}>
+                                <div className="tab-close" onClick={this.onCloseClick}></div>
+                            </div>
                         </div>
                         <div className="tab-border" style={borderRightStyle}></div>
                         <div className="tab-border2" style={borderLeftStyle}></div>
