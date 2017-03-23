@@ -16,7 +16,9 @@ export default class TabBar extends React.Component {
         this.state = {
             tabsToCreate: [],
             addButtonLeft: 0,
-            isAddButtonVisible: true
+            isAddButtonVisible: true,
+            borderColor: 'rgba(0,0,0,0.2)',
+            tabbarBorderColor: 'rgba(0,0,0,0.1)'
         }
         this.timer = {
             time: 0,
@@ -53,16 +55,23 @@ export default class TabBar extends React.Component {
     }
 
     onMouseMove = (e) => {
-        if (this.dragData.canDrag) {
-            this.dragData.tab.setState({
-                left: this.dragData.tabX + e.clientX - this.dragData.mouseClickX
-            });
-            this.dragData.tab.reorderTabs(e.clientX);
+        var mouseDeltaX = e.pageX - this.dragData.mouseClickX;
+        if (Math.abs(mouseDeltaX) > 15) {
+            if (this.dragData.canDrag) {
+                this.dragData.tab.setState({
+                    left: this.dragData.tabX + e.clientX - this.dragData.mouseClickX
+                });
+                this.dragData.tab.reorderTabs(e.clientX);
+                if (tabs.indexOf(this.dragData.tab) === tabs.length - 1) {
+                    this.setState({isAddButtonVisible: false});
+                }
+            }
         }
     }
 
     onMouseUp = () => {
         this.dragData.canDrag = false;
+        this.setState({isAddButtonVisible: true});
         this.setPositions();
     }
     /*
@@ -83,23 +92,36 @@ export default class TabBar extends React.Component {
     * @param1 {Tab} tab
     */
     _selectTab = (tab) => {
-        tab.setState({backgroundColor: tab.backgroundColor, selected: true});
+        tab.setState({backgroundColor: tab.backgroundColor, selected: true, zIndex: 3});
         tab.getPage().setState({visible: true});
         tab.selected = true;
-        if (tabs[tabs.indexOf(tab) - 1] != null) {
-            tabs[tabs.indexOf(tab) - 1].setState({isRightBorderVisible: true});
-        }
+        this.updateTabs();
     }
     /*
     * deselects tab
     * @param1 {Tab} tab
     */
     _deSelectTab = (tab) => {
-        tab.setState({backgroundColor: '#E0E0E0', selected: false});
+        tab.setState({backgroundColor: '#E0E0E0', selected: false, zIndex: 1});
         tab.getPage().setState({visible: false});
         tab.selected = false;
-        if (tabs[tabs.indexOf(tab) - 1] != null) {
-            tabs[tabs.indexOf(tab) - 1].setState({isRightBorderVisible: false});
+        this.updateTabs();
+    }
+    /*
+    * updates tabs' state (borders etc.)
+    */
+    updateTabs = () => {
+        for (var i = 0; i < tabs.length; i++) {
+            if (!tabs[i].selected) {
+                tabs[i].setState({isRightBorderVisible: true});
+            }
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].selected) {
+                if (tabs[i - 1] != null) {
+                    tabs[i - 1].setState({isRightBorderVisible: false});
+                }
+            }
         }
     }
     /*
@@ -187,6 +209,7 @@ export default class TabBar extends React.Component {
         if (animateAddButton) {
             this.setState({addButtonLeft: spring(addLeft, tabsAnimationsData.setPositionsSpring)});
         }
+        this.updateTabs();
     }
     /*
     * sets widths for all tabs
@@ -205,6 +228,7 @@ export default class TabBar extends React.Component {
             }
             tabs[i].width = widths[i];
         }
+        this.updateTabs();
     }
     /*
     * calculates positions for all tabs and add button
@@ -326,6 +350,8 @@ export default class TabBar extends React.Component {
             callingTab.locked = false;
         }, 200);
 
+        this.updateTabs();
+
         if (newTabPos === 0) {
             callingTab.setState({showLeftBorder: false});
         } else {
@@ -350,6 +376,10 @@ export default class TabBar extends React.Component {
     render() {
         var self = this;
 
+        var tabbarBorderStyle = {
+            backgroundColor: this.state.tabbarBorderColor
+        }
+
         return (
             <div className="tabbar" ref="tabbar">
                 {this.state.tabsToCreate.map((object, i) => {
@@ -365,6 +395,7 @@ export default class TabBar extends React.Component {
                         left: value.x
                     }} onClick={() => this.addTab()}></div>}
                 </Motion>
+                <div className="tabbar-border" style={tabbarBorderStyle}></div>
             </div>
         );
     }

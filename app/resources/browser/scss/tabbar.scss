@@ -22,3 +22,11 @@ $tabbar-add-icon-width: 22px;
         opacity: 1;
     }
 }
+
+.tabbar-border {
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    z-index: 2;
+}

@@ -12,7 +12,7 @@ export default class Tab extends React.Component {
             left: 0,
             width: 0,
             backgroundColor: 'transparent',
-            zIndex: 2,
+            zIndex: 1,
             title: 'New tab',
             render: true,
             isTitleVisible: true,
@@ -61,14 +61,6 @@ export default class Tab extends React.Component {
             canDrag: true,
             tab: this
         };
-        //set others tabs z index to smaller
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i] != this) {
-                tabs[i].setState({zIndex: 1});
-            }
-        }
-        //set currently dragging tab's z index to greater than others
-        this.setState({zIndex: 2});
     }
 
     onPageInitialized = () => {
@@ -132,10 +124,7 @@ export default class Tab extends React.Component {
     render() {
         var tabStyle = {
             backgroundColor: this.state.backgroundColor,
-            zIndex: this.state.zIndex,
-            borderRight: (this.state.selected)
-                ? '1px solid rgba(0,0,0,0.2)'
-                : 'none'
+            zIndex: this.state.zIndex
         }
         var tabHandlers = {
             onMouseDown: this.onMouseDown,
@@ -143,20 +132,23 @@ export default class Tab extends React.Component {
         };
         var borderRightStyle = {
             right: -1,
-            display: (this.state.selected || this.state.isRightBorderVisible)
+            display: (this.state.selected || !this.state.isRightBorderVisible)
                 ? 'none'
-                : 'block'
+                : 'block',
+            backgroundColor: this.props.getTabBar().state.borderColor
         };
         var borderRight2Style = {
             display: (this.state.selected)
                 ? 'block'
                 : 'none',
-            right: 0
+            right: 0,
+            backgroundColor: this.props.getTabBar().state.borderColor
         };
         var borderLeftStyle = {
             display: (this.state.selected && tabs.indexOf(this) !== 0)
                 ? 'block'
-                : 'none'
+                : 'none',
+            backgroundColor: this.props.getTabBar().state.borderColor
         };
         var titleStyle = {
             display: (this.state.isTitleVisible)
