@@ -24,3 +24,5 @@ npm run applets
 npm start
 ```
 or on Windows you can run compile.bat and start.bat.
+
+Made by Sential and xNerhu22
