@@ -11,7 +11,8 @@ export default class Page extends React.Component {
         //global properties
         this.state = {
             render: true,
-            visible: false
+            visible: false,
+            webviewHeight: 0
         };
         this.getTab = null;
         checkFiles();
@@ -22,6 +23,13 @@ export default class Page extends React.Component {
     componentDidMount() {
         this.props.getTab().getPage = this.getPage;
         this.props.getTab().onPageInitialized();
+        this.resize();
+    }
+    /*
+    * resizes contents of page
+    */
+    resize = () => {
+        this.setState({webviewHeight: window.innerHeight - 32});
     }
     /*
     * gets page
@@ -30,11 +38,22 @@ export default class Page extends React.Component {
     getPage = () => {
         return this;
     }
+    /*
+    * gets webview
+    * @return {<webview>}
+    */
+    getWebView = () => {
+        return this.refs.webview;
+    }
 
     render() {
         var self = this;
 
         var pageStyle = {};
+
+        var webviewStyle = {
+            height: this.state.webviewHeight
+        };
 
         if (this.state.visible) {
             pageStyle.opacity = 1;
@@ -48,7 +67,9 @@ export default class Page extends React.Component {
 
         if (this.state.render) {
             return (
-                <div className="page" style={pageStyle}></div>
+                <div className="page" style={pageStyle}>
+                    <webview className="page-webview" style={webviewStyle} src="http://google.pl" ref="webview"></webview>
+                </div>
             );
         }
         return null;

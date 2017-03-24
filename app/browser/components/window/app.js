@@ -18,37 +18,24 @@ export default class App extends React.Component {
     lifecycle
     */
     componentDidMount() {
-        /*var _args = remote.getGlobal('start').args;
-        for (var i = 0; i < _args.length; i++) {
-            _args[i] = _args[i].replace(/\\/g, "/");
-            try {
-                var isdir = fs.lstatSync(_args[i]).isFile();
-                if (isdir) {
-                    //get file type
-                    var _type = _args[i].split('.').pop();
-                    if (_type != "exe") {
-                        if (_args[i] != "build/main.bundle.js") {
-                            if (_args[i] != null || _args[i] != undefined) {
-                                remote.getGlobal('start').file = _args[i];
-                            }
-                        }
-                    }
-                }
-            } catch (err) {}
-        }*/
         var self = this;
-        /*if (remote.getGlobal('start').file != false) {
-            _url = "file:///" + remote.getGlobal('start').file;
-        }*/
-        document.addEventListener('keyup', function(e) {
-            //CTRL + T
-            if (e.ctrlKey && e.keyCode == 84) {
-                //eslf.addTab();
-            }
-        }, false);
         setTimeout(function() {
             self.refs.tabbar.addTab();
         }, 1);
+
+        document.addEventListener('keyup', function(e) {
+            //CTRL + T
+            if (e.ctrlKey && e.keyCode == 84) {
+                self.getTabBar().addTab();
+            }
+        }, false);
+        window.addEventListener('resize', function() {
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].selected) {
+                    tabs[i].getPage().resize();
+                }
+            }
+        });
     }
     /*
     * closes window
@@ -96,6 +83,13 @@ export default class App extends React.Component {
     */
     getApp = () => {
         return this;
+    }
+    /*
+    * gets tabbar
+    * @return {TabBar}
+    */
+    getTabBar = () => {
+        return this.refs.tabbar;
     }
 
     render() {
