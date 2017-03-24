@@ -1,5 +1,6 @@
 //electron's stuff and things
-var {remote, clipboard} = require('electron');
+const {remote, clipboard} = require('electron');
+const BrowserWindow = remote.BrowserWindow;
 const {Menu, MenuItem} = remote;
 const app = remote.app;
 const currentWindow = remote.getCurrentWindow();

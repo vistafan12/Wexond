@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <style>
+            body {
+                padding: 16px;
+            }
+            #app {
+                background-color: white;
+                width: 100%;
+                height: 100%;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            }
+        </style>
+        <div id="app">
+
+        </div>
+        <script>
+            if (process.env.ENV != 'dev') {
+                require('../../../../dist/menuEntry.bundle.js');
+            } else {
+                loadScripts(['http://localhost:8080/dist/menuEntry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
+            }
+        </script>
+    </body>
+</html>

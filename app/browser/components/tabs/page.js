@@ -1,4 +1,3 @@
-'use babel';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -21,9 +20,16 @@ export default class Page extends React.Component {
     * lifecycle
     */
     componentDidMount() {
+        var self = this;
         this.props.getTab().getPage = this.getPage;
         this.props.getTab().onPageInitialized();
         this.resize();
+
+        this.getWebView().addEventListener('ipc-message', function(e) {
+            if (e.channel === 'webview:mouse-left-button') {
+                //self.props.getApp().getBrowserMenu().hide();
+            }
+        });
     }
     /*
     * resizes contents of page
@@ -68,7 +74,7 @@ export default class Page extends React.Component {
         if (this.state.render) {
             return (
                 <div className="page" style={pageStyle}>
-                    <webview className="page-webview" style={webviewStyle} src="http://google.pl" ref="webview"></webview>
+                    <webview preload="../webview-preload/global.js" className="page-webview" style={webviewStyle} src="http://google.pl" ref="webview"></webview>
                 </div>
             );
         }

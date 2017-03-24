@@ -19,6 +19,26 @@ export default class App extends React.Component {
     */
     componentDidMount() {
         var self = this;
+        var browserMenu = new BrowserWindow(
+            {
+                width: 300,
+                height: 400,
+                frame: false,
+                resizable: false,
+                transparent: true,
+                child: currentWindow,
+                thickFrame: false
+            }
+        );
+        if (process.env.ENV == 'dev') {
+            browserMenu.webContents.openDevTools();
+        }
+        browserMenu.hide();
+        browserMenu.loadURL('file://' + __dirname + '/menu/index.html');
+        browserMenu.on('blur', function() {
+            browserMenu.hide();
+        });
+
         setTimeout(function() {
             self.refs.tabbar.addTab();
         }, 1);
@@ -34,6 +54,13 @@ export default class App extends React.Component {
                 if (tabs[i].selected) {
                     tabs[i].getPage().resize();
                 }
+            }
+        });
+
+        window.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'WEBVIEW') {
+                browserMenu.setPosition(e.pageX, e.pageY + browserMenu.getBounds().height / 2);
+                browserMenu.show();
             }
         });
     }
@@ -90,6 +117,13 @@ export default class App extends React.Component {
     */
     getTabBar = () => {
         return this.refs.tabbar;
+    }
+    /*
+    * gets browser menu
+    * @return {BrowserMenu}
+    */
+    getBrowserMenu = () => {
+        return this.refs.menu;
     }
 
     render() {
