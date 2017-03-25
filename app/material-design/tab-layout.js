@@ -1,5 +1,6 @@
 import React from 'react';
 import {Motion, spring} from 'react-motion';
+import ReactDOM from 'react-dom';
 
 import '../resources/material-design/scss/tab-layout.scss';
 
@@ -11,7 +12,7 @@ export default class TabLayout extends React.Component {
             tabs: [],
             width: 0,
             dividerLeft: 0,
-            dividerWidth: 0,
+            dividerWidth: 0
         }
 
         this.tabs = [];
@@ -19,6 +20,25 @@ export default class TabLayout extends React.Component {
 
     componentDidMount() {
         this.setState({width: this.refs.tabLayout.offsetWidth});
+
+        if (this.props.onSelect != null) {
+            ReactDOM.findDOMNode(this).addEventListener('selected', this.props.onSelect);
+        }
+    }
+    /*
+    * selects and deselects tabs
+    */
+    selectTab = (tab) => {
+        for (var i = 0; i < this.tabs.length; i++) {
+            if (this.tabs[i] != tab) {
+                this.tabs[i].deselect();
+            }
+        }
+        tab.select();
+        var event = document.createEvent('Event');
+        event.initEvent('selected', true, true);
+        event.page = tab.props.data.page;
+        ReactDOM.findDOMNode(this).dispatchEvent(event);
     }
     /*
     * gets tab layout
@@ -59,30 +79,29 @@ export default class TabLayout extends React.Component {
 class Tab extends React.Component {
     constructor() {
         super();
-
         this.state = {
-            color: '#000'
+            color: '#fff'
         }
     }
 
     componentDidMount() {
+        this.setState({color: this.props.defaultColor});
         this.props.getTabLayout().tabs.push(this);
     }
     /*
     events
     */
     onClick = () => {
-        for (var i = 0; i < this.props.getTabLayout().tabs.length; i++) {
-            this.props.getTabLayout().tabs[i].deselect();
-        }
-        this.select();
+        this.props.getTabLayout().selectTab(this);
     }
     /*
     * deselects tab
     */
     deselect = () => {
-        this.setState({color: '#000'});
-
+        this.setState({color: this.props.defaultColor});
+        if (this.props.data.page != null) {
+            this.props.data.page.style.display = 'none';
+        }
     }
     /*
     * selects tab
@@ -95,6 +114,9 @@ class Tab extends React.Component {
                 dividerLeft: spring(this.refs.tab.offsetLeft, menuAnimationData.tabsDividerSpring)
             }
         );
+        if (this.props.data.page != null) {
+            this.props.data.page.style.display = 'block';
+        }
     }
 
     render() {
@@ -113,5 +135,6 @@ class Tab extends React.Component {
 }
 
 TabLayout.defaultProps = {
-    color: '#03A9F4'
+    color: '#fff',
+    defaultColor: 'rgba(255, 255, 255, 0.7)'
 }

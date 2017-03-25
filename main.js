@@ -49,7 +49,7 @@ function createWindow() {
     browserMenu = new BrowserWindow(
         {
             width: 300,
-            height: 500,
+            height: 700,
             frame: false,
             resizable: false,
             transparent: true,
@@ -65,7 +65,7 @@ function createWindow() {
     browserMenu.setIgnoreMouseEvents(true);
 
     browserMenu.on('blur', function() {
-        //browserMenu.send('browser-menu:hide-animation');
+        browserMenu.send('browser-menu:hide-animation');
     });
     browserMenu.once('ready-to-show', () => {
         browserMenu.show();

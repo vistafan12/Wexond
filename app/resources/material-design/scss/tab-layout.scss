@@ -2,6 +2,7 @@
     width: 100%;
     height: 48px;
     position: relative;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .tab {
@@ -17,7 +18,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 14px;
+    font-size: 13.5px;
     transition: 0.2s color;
 }
 

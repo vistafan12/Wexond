@@ -40,20 +40,7 @@ export default class App extends React.Component {
 
         window.addEventListener('contextmenu', function(e) {
             if (e.target.tagName === 'WEBVIEW') {
-                var x = e.screenX - 4;
-                var y = e.screenY - 24;
-
-                var browserMenu = currentWindow.getChildWindows()[0];
-
-                if (e.screenX + browserMenu.getBounds().width >= window.screen.availWidth) {
-                    x = e.screenX - browserMenu.getBounds().width + 8;
-                }
-                if (e.screenY + browserMenu.getBounds().height >= window.screen.availHeight) {
-                    y = e.screenY - browserMenu.getBounds().height + 28;
-                }
-
-                browserMenu.setPosition(x, y);
-                browserMenu.send('browser-menu:show-animation');
+                currentWindow.getChildWindows()[0].send('browser-menu:show-animation', e.screenX, e.screenY);
             }
         });
     }
