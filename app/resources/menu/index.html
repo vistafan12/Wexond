@@ -11,7 +11,7 @@
         <script src="js/global.js"></script>
         <script>
             if (process.env.ENV != 'dev') {
-                require('../../../../dist/menuEntry.bundle.js');
+                require('../../../dist/menuEntry.bundle.js');
             } else {
                 loadScripts(['http://localhost:8080/dist/menuEntry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
             }

@@ -14,7 +14,7 @@
     <script src="../browser/global.js"></script>
     <script>
         if (process.env.ENV != 'dev') {
-            require('../../../dist/browserEntry.bundle.js');
+            require('../../dist/browserEntry.bundle.js');
         } else {
             loadScripts(['http://localhost:8080/dist/browserEntry.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
         }

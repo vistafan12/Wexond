@@ -32,7 +32,16 @@ process.on('uncaughtException', function (error) {
 * prepares browser window
 */
 function createWindow() {
-    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430, show: false});
+    mainWindow = new BrowserWindow(
+        {
+            width: 900,
+            height: 700,
+            frame: false,
+            minWidth: 300,
+            minHeight: 430,
+            show: false
+        }
+    );
     mainWindow.loadURL('file://' + __dirname + '/app/resources/index.html');
     mainWindow.setMenu(null);
 

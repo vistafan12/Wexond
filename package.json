@@ -6,9 +6,9 @@
   "repository": "Nersent/Wexond",
   "scripts": {
     "start": "cross-env ENV=dev electron main.js",
-    "applets": "webpack --config webpack.applets.js && webpack-dev-server --hot --inline --config webpack.applets.js --port 8181",
-    "browser": "webpack && webpack-dev-server --hot --inline --port 8080",
-    "build-package": "webpack --config webpack.config.production.js && webpack --config webpack.applets.production.js",
+    "applets": "webpack --config webpack.config.applets.js && webpack-dev-server --hot --inline --config webpack.config.applets.js --port 8181",
+    "browser": "webpack --config webpack.config.browser.js && webpack-dev-server --config webpack.config.browser.js --hot --inline --port 8080",
+    "build-package": "webpack --config webpack.config.browser.production.js",
     "all": "npm run build-package && electron-packager . --all Wexond --overwrite",
     "win32": "npm run build-package && electron-packager . --platform=win32 --arch=x86 Wexond --overwrite",
     "win64": "npm run build-package && electron-packager . --platform=win32 --arch=x64 Wexond --overwrite",
