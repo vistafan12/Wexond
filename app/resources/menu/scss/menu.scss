@@ -1,5 +1,16 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(../../global/fonts/Roboto-Regular.woff2) format('woff2');
+}
+
 body {
     overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 .menu {
@@ -7,4 +18,47 @@ body {
     width: 100%;
     height: calc(100vh - 60px);
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.icon {
+    background-image: url(../../browser/img/bar/back.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 26px;
+    width: 26px;
+    margin-left: 16px;
+    position: relative;
+    float: left;
+    opacity: 0.6;
+    transition: 0.2s opacity;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.icons {
+    position: relative;
+    height: 48px;
+}
+
+.border-bottom {
+    height: 1px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 0;
+}
+
+.menu-tabbar {
+    height: 48px;
+    width: 100%;
+}
+
+.menu-tab {
+    width: calc(100% / 3);
+    float: left;
 }

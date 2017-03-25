@@ -65,7 +65,7 @@ function createWindow() {
     browserMenu.setIgnoreMouseEvents(true);
 
     browserMenu.on('blur', function() {
-        browserMenu.send('browser-menu:hide-animation');
+        //browserMenu.send('browser-menu:hide-animation');
     });
     browserMenu.once('ready-to-show', () => {
         browserMenu.show();
