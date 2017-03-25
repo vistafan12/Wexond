@@ -1,5 +1,5 @@
 //electron's stuff and things
-const {remote, clipboard} = require('electron');
+const {remote, clipboard, ipcRenderer} = require('electron');
 const BrowserWindow = remote.BrowserWindow;
 const {Menu, MenuItem} = remote;
 const app = remote.app;

@@ -19,25 +19,6 @@ export default class App extends React.Component {
     */
     componentDidMount() {
         var self = this;
-        var browserMenu = new BrowserWindow(
-            {
-                width: 300,
-                height: 400,
-                frame: false,
-                resizable: false,
-                transparent: true,
-                child: currentWindow,
-                thickFrame: false
-            }
-        );
-        if (process.env.ENV == 'dev') {
-            browserMenu.webContents.openDevTools();
-        }
-        browserMenu.hide();
-        browserMenu.loadURL('file://' + __dirname + '/menu/index.html');
-        browserMenu.on('blur', function() {
-            browserMenu.hide();
-        });
 
         setTimeout(function() {
             self.refs.tabbar.addTab();
@@ -59,8 +40,20 @@ export default class App extends React.Component {
 
         window.addEventListener('contextmenu', function(e) {
             if (e.target.tagName === 'WEBVIEW') {
-                browserMenu.setPosition(e.pageX, e.pageY + browserMenu.getBounds().height / 2);
-                browserMenu.show();
+                var x = e.screenX - 4;
+                var y = e.screenY - 24;
+
+                var browserMenu = currentWindow.getChildWindows()[0];
+
+                if (e.screenX + browserMenu.getBounds().width >= window.screen.availWidth) {
+                    x = e.screenX - browserMenu.getBounds().width + 8;
+                }
+                if (e.screenY + browserMenu.getBounds().height >= window.screen.availHeight) {
+                    y = e.screenY - browserMenu.getBounds().height + 28;
+                }
+
+                browserMenu.setPosition(x, y);
+                browserMenu.send('browser-menu:show-animation');
             }
         });
     }

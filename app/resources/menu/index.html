@@ -4,21 +4,32 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <style>
-            body {
-                padding: 16px;
-            }
-            #app {
-                background-color: white;
-                width: 100%;
-                height: 100%;
-                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-            }
-        </style>
         <div id="app">
 
         </div>
+        <script src="../global/js/helpers/dom.js"></script>
         <script>
+            function durationToSpring(w, o = 0) {
+                const s = o <= 0
+                    ? 1 - o
+                    : 1 / Math.sqrt(1 + Math.pow(2 * Math.PI / Math.log(1 / (o * o)), 2));
+
+                const ks = (2 * Math.PI / w) / Math.max(Math.sqrt(1 - s * s), 0.5);
+                const c = 2 * ks * s;
+                return {
+                    stiffness: ks * ks,
+                    damping: c
+                };
+            }
+
+            const ipcRenderer = require('electron').ipcRenderer;
+            const remote = require('electron').remote;
+
+            const menuAnimationData = {
+                opacitySpring: durationToSpring(0.4),
+                topSpring: durationToSpring(0.4)
+            };
+
             if (process.env.ENV != 'dev') {
                 require('../../../../dist/menuEntry.bundle.js');
             } else {

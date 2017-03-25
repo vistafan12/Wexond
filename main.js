@@ -7,6 +7,8 @@ const protocolName = 'wexond';
 
 let mainWindow;
 
+let browserMenu;
+
 /*
 global events
 */
@@ -30,7 +32,7 @@ process.on('uncaughtException', function (error) {
 * prepares browser window
 */
 function createWindow() {
-    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430});
+    mainWindow = new BrowserWindow({width: 900, height: 700, frame: false, minWidth: 300, minHeight: 430, show: false});
     mainWindow.loadURL('file://' + __dirname + '/app/resources/index.html');
     mainWindow.setMenu(null);
 
@@ -40,8 +42,38 @@ function createWindow() {
 
     mainWindow.on('unresponsive', function () {});
 
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    });
+
+    browserMenu = new BrowserWindow(
+        {
+            width: 300,
+            height: 500,
+            frame: false,
+            resizable: false,
+            transparent: true,
+            parent: mainWindow,
+            thickFrame: false,
+            skipTaskbar: true,
+            alwaysOnTop: true,
+            show: false
+        }
+    );
+    browserMenu.loadURL('file://' + __dirname + '/app/resources/menu/index.html');
+
+    browserMenu.setIgnoreMouseEvents(true);
+
+    browserMenu.on('blur', function() {
+        browserMenu.send('browser-menu:hide-animation');
+    });
+    browserMenu.once('ready-to-show', () => {
+        browserMenu.show();
+    });
+
     if (process.env.ENV == 'dev') {
         mainWindow.webContents.openDevTools();
+        browserMenu.webContents.openDevTools();
     }
 }
 
@@ -74,6 +106,8 @@ global.start = {
     file: false,
     env: process.env.ENV
 };
+
+
 
 /*
     HKEY_CLASSES_ROOT

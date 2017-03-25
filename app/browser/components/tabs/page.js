@@ -27,7 +27,7 @@ export default class Page extends React.Component {
 
         this.getWebView().addEventListener('ipc-message', function(e) {
             if (e.channel === 'webview:mouse-left-button') {
-                //self.props.getApp().getBrowserMenu().hide();
+                
             }
         });
     }
