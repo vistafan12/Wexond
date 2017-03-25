@@ -111,10 +111,15 @@ export default class BrowserMenu extends React.Component {
             height = 90 - 8;
         }
         this.setState({height: spring(height, menuAnimationData.menuHeightSpring)});
-
-        if (remote.getCurrentWindow().getPosition()[1] + height > window.screen.availHeight) {
-
-            remote.getCurrentWindow().setPosition(remote.getCurrentWindow().getPosition()[0], remote.getCurrentWindow().getPosition()[1] - 128 + (window.screen.availHeight - (remote.getCurrentWindow().getPosition()[1] + height)));
+        var y = remote.getCurrentWindow().getPosition()[1];
+        var x = remote.getCurrentWindow().getPosition()[0];
+        var screenHeight = window.screen.availHeight;
+        if (y + height > screenHeight) {
+            var yFromDown = y + height;
+            var outOfScreenPart = yFromDown - screenHeight;
+            var t = screenHeight - e.screenY;
+            var newY = y - outOfScreenPart - 128;
+            remote.getCurrentWindow().setPosition(x, newY);
         }
     }
 
