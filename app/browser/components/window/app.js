@@ -32,9 +32,7 @@ export default class App extends React.Component {
         }, false);
         window.addEventListener('resize', function() {
             for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].selected) {
-                    tabs[i].getPage().resize();
-                }
+                tabs[i].getPage().resize();
             }
         });
 
