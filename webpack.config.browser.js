@@ -6,7 +6,7 @@ module.exports = {
     devtool: "eval-source-map",
     entry: {
         browserEntry: './app/browser/browser-entry.js',
-        menuEntry: './app/menu/menu-entry.js'
+        menuEntry: './app/browser-menu/menu-entry.js'
     },
     node: {
         __dirname: false,

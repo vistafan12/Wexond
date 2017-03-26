@@ -69,7 +69,7 @@ function createWindow() {
             show: false
         }
     );
-    browserMenu.loadURL('file://' + __dirname + '/app/resources/menu/index.html');
+    browserMenu.loadURL('file://' + __dirname + '/app/resources/browser-menu/index.html');
 
     browserMenu.setIgnoreMouseEvents(true);
 

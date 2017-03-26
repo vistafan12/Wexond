@@ -42,6 +42,28 @@ export default class App extends React.Component {
                 currentWindow.getChildWindows()[0].send('browser-menu:show-animation', e.screenX, e.screenY);
             }
         });
+
+        ipcRenderer.on('webview:back', function() {
+            var tab = self.getSelectedTab();
+            var webview = tab.getPage().getWebView();
+            if (webview.canGoBack()) {
+              webview.goBack();
+              currentWindow.getChildWindows()[0].send('webview:can-go-back', webview.canGoBack());
+            }
+        });
+        ipcRenderer.on('webview:forward', function() {
+          var tab = self.getSelectedTab();
+          var webview = tab.getPage().getWebView();
+          if (webview.canGoForward()) {
+            webview.goForward();
+            currentWindow.getChildWindows()[0].send('webview:can-go-forward', webview.canGoForward());
+          }
+        });
+        ipcRenderer.on('webview:reload', function() {
+          var tab = self.getSelectedTab();
+          var webview = tab.getPage().getWebView();
+          webview.reload();
+        });
     }
     /*
     * closes window
@@ -110,6 +132,17 @@ export default class App extends React.Component {
     */
     getBar = () => {
         return this.refs.bar;
+    }
+    /*
+    * gets selected tab
+    * @return {Tab}
+    */
+    getSelectedTab = () => {
+      for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].selected) {
+          return tabs[i];
+        }
+      }
     }
 
     render() {

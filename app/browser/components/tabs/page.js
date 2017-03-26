@@ -27,9 +27,14 @@ export default class Page extends React.Component {
 
         this.getWebView().addEventListener('ipc-message', function(e) {
             if (e.channel === 'webview:mouse-left-button') {
-                
+
             }
         });
+
+        this.getWebView().addEventListener('did-start-loading', function() {
+          currentWindow.getChildWindows()[0].send('webview:can-go-back', self.getWebView().canGoBack());
+          currentWindow.getChildWindows()[0].send('webview:can-go-forward', self.getWebView().canGoForward());
+        })
     }
     /*
     * resizes contents of page

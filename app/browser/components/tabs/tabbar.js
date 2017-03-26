@@ -109,6 +109,10 @@ export default class TabBar extends React.Component {
         );
         tab.getPage().setState({visible: true});
         tab.selected = true;
+        if (tab.getPage().getWebView().getWebContents() != null) {
+          currentWindow.getChildWindows()[0].send('webview:can-go-back', tab.getPage().getWebView().canGoBack());
+          currentWindow.getChildWindows()[0].send('webview:can-go-forward', tab.getPage().getWebView().canGoForward());
+        }
         this.updateTabs();
     }
     /*

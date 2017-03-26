@@ -61,7 +61,7 @@ body {
     background-size: 24px 24px;
     height: 100%;
     width: 48px;
-    margin-left: 18px;
+    margin-left: 8px;
     position: relative;
     float: left;
     opacity: 0.6;
@@ -96,4 +96,9 @@ body {
 .menu-tab {
     width: calc(100% / 3);
     float: left;
+}
+
+.disabled-icon {
+  pointer-events: none;
+  opacity: 0.4;
 }
