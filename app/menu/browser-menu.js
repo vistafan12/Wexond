@@ -53,15 +53,13 @@ export default class BrowserMenu extends React.Component {
         })
     }
     setPosition = () => {
-        var height = 500;
-
         var x = this.mouseX - 7;
         var y = this.mouseY - 39;
 
         if (this.mouseX + this.menu.offsetWidth >= window.screen.availWidth) {
             x = this.mouseX - this.menu.offsetWidth - 8;
         }
-        if (this.mouseY + height >= window.screen.availHeight) {
+        if (this.mouseY + this.menu.offsetHeight >= window.screen.availHeight) {
             y = this.mouseY -  this.menu.offsetHeight - 40;
         }
 
