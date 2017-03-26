@@ -123,7 +123,7 @@ export default class BrowserMenu extends React.Component {
         var screenHeight = window.screen.availHeight;
 
         if (yFromDown > screenHeight) {
-            remote.getCurrentWindow().setPosition(x, screenHeight - height - 128);
+            remote.getCurrentWindow().setPosition(x, screenHeight - height - 80);
         }
     }
 
