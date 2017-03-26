@@ -32,7 +32,6 @@ export default class Suggestions extends React.Component {
     */
     show = () => {
         this.refs.suggestionsWindow.css('display', 'block');
-        this.props.getPage().getBar().openedMenu = true;
         this.props.getPage().getBar().refs.bar.css('display', 'block');
         TweenMax.to(this.props.getPage().getBar().refs.bar, 0.2, {
             css: {

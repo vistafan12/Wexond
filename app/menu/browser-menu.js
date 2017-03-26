@@ -53,14 +53,21 @@ export default class BrowserMenu extends React.Component {
         })
     }
     setPosition = () => {
+        var screenHeight = window.screen.availHeight;
+        var screenWidth = window.screen.availWidth;
+        var height = this.menu.offsetHeight;
         var x = this.mouseX - 7;
         var y = this.mouseY - 39;
 
-        if (this.mouseX + this.menu.offsetWidth >= window.screen.availWidth) {
+        if (this.mouseX + this.menu.offsetWidth >= screenWidth) {
             x = this.mouseX - this.menu.offsetWidth - 8;
         }
-        if (this.mouseY + this.menu.offsetHeight >= window.screen.availHeight) {
-            y = this.mouseY -  this.menu.offsetHeight - 40;
+        if (this.mouseY + height >= screenHeight) {
+            y = this.mouseY - height - 40;
+        }
+
+        if (y < 0) {
+            y = 32;
         }
 
         remote.getCurrentWindow().setPosition(x, y);
@@ -109,15 +116,14 @@ export default class BrowserMenu extends React.Component {
             height = 90 - 8;
         }
         this.setState({height: spring(height, menuAnimationData.menuHeightSpring)});
+
         var y = remote.getCurrentWindow().getPosition()[1];
         var x = remote.getCurrentWindow().getPosition()[0];
+        var yFromDown = y + height;
         var screenHeight = window.screen.availHeight;
-        if (y + height > screenHeight) {
-            var yFromDown = y + height;
-            var outOfScreenPart = yFromDown - screenHeight;
-            var t = screenHeight - e.screenY;
-            var newY = y - outOfScreenPart - 128;
-            remote.getCurrentWindow().setPosition(x, newY);
+
+        if (yFromDown > screenHeight) {
+            remote.getCurrentWindow().setPosition(x, screenHeight - height - 128);
         }
     }
 

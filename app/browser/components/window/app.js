@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import TabBar from '../tabs/tabbar';
 import Page from '../tabs/page';
 import Titlebar from './titlebar';
+import Bar from '../navbar/bar';
 
 import '../../../resources/browser/scss/app.scss';
 
@@ -103,10 +104,16 @@ export default class App extends React.Component {
     getBrowserMenu = () => {
         return this.refs.menu;
     }
+    /*
+    * gets bar
+    * @return {Bar}
+    */
+    getBar = () => {
+        return this.refs.bar;
+    }
 
     render() {
         var self = this;
-
         return (
             <div>
                 <Titlebar getApp={this.getApp} ref="titlebar">
@@ -117,6 +124,7 @@ export default class App extends React.Component {
                         return <Page key={i} getTab={object} getApp={self.getApp}></Page>
                     })
                 }
+                <Bar ref="bar"></Bar>
             </div>
         )
     }

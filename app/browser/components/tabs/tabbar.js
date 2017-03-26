@@ -407,7 +407,7 @@ export default class TabBar extends React.Component {
         }
 
         return (
-            <div className="tabbar" ref="tabbar">
+            <div style={this.props.style} className="tabbar" ref="tabbar">
                 {this.state.tabsToCreate.map((object, i) => {
                     return <Tab getApp={self.props.getApp} getTabBar={self.getTabBar} key={i} data={object}></Tab>;
                 })}

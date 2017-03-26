@@ -110,6 +110,28 @@ export default class Tab extends React.Component {
     }
 
     onDoubleClick = () => {
+        if (this.selected) {
+            this.props.getApp().getBar().show();
+        }
+    }
+    /*
+    * reorders tabs
+    * @param1 {Number} cursorX
+    */
+    reorderTabs = (cursorX) => {
+        if (!this.pinned) {
+            var overTab = this.props.getTabBar().getTabFromMousePoint(this, cursorX);
+            if (overTab != null && !overTab.pinned) {
+                var indexTab = tabs.indexOf(this);
+                var indexOverTab = tabs.indexOf(overTab);
+                this.props.getTabBar().replaceTabs(indexTab, indexOverTab);
+            }
+        }
+    }
+    /*
+    * pins tab
+    */
+    pin = () => {
         if (!this.pinned) {
             this.setState({
                 isTitleVisible: false,
@@ -136,20 +158,6 @@ export default class Tab extends React.Component {
         tabs = tempTabs;
         this.props.getTabBar().setWidths();
         this.props.getTabBar().setPositions();
-    }
-    /*
-    * reorders tabs
-    * @param1 {Number} cursorX
-    */
-    reorderTabs = (cursorX) => {
-        if (!this.pinned) {
-            var overTab = this.props.getTabBar().getTabFromMousePoint(this, cursorX);
-            if (overTab != null && !overTab.pinned) {
-                var indexTab = tabs.indexOf(this);
-                var indexOverTab = tabs.indexOf(overTab);
-                this.props.getTabBar().replaceTabs(indexTab, indexOverTab);
-            }
-        }
     }
     /*
     * gets tab
