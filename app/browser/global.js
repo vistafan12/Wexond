@@ -21,6 +21,10 @@ var tabsAnimationsData = {
     setPositionsSpring: durationToSpring(0.3),
     setWidthsSpring: durationToSpring(0.3)
 };
+var barAnimationsData = {
+  opacitySpring: durationToSpring(0.3),
+  topSpring: durationToSpring(0.3)
+};
 //tabs
 var tabs = [];
 const tabsData = {
