@@ -212,13 +212,24 @@ export default class Tab extends React.Component {
         : 'none',
       backgroundColor: this.props.getTabBar().state.borderColor
     }
+
+    var titleMaxWidth = 0;
+    if (this.state.isCloseVisible) {
+      titleMaxWidth += 36
+    } else {
+      titleMaxWidth += 16
+    }
+    if (this.state.favicon === '' && !this.state.loading) {
+      titleMaxWidth += 16
+    } else {
+      titleMaxWidth += 32
+    }
+
     var titleStyle = {
       display: (this.state.isTitleVisible)
         ? 'block'
         : 'none',
-      maxWidth: (this.state.isCloseVisible)
-        ? 'calc(100% - 48px)'
-        : 'calc(100% - 28px)',
+      maxWidth: `calc(100% - ${titleMaxWidth}px)`,
       left: (this.state.favicon === '' && !this.state.loading)
         ? 8
         : 32
