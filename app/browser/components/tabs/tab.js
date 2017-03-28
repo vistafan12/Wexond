@@ -218,7 +218,7 @@ export default class Tab extends React.Component {
 
     var titleMaxWidth = 0;
     if (this.state.isCloseVisible) {
-      titleMaxWidth += 36
+      titleMaxWidth += 32
     } else {
       titleMaxWidth += 16
     }
@@ -234,7 +234,7 @@ export default class Tab extends React.Component {
         : 'none',
       maxWidth: `calc(100% - ${titleMaxWidth}px)`,
       left: (this.state.favicon === '' && !this.state.loading)
-        ? 8
+        ? 12
         : 32
     }
     var faviconStyle = {
