@@ -31,12 +31,7 @@ export default class Network {
   * @return {Boolean}
   */
   static isURL (string) {
-    var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
-    '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
-    '((\d{1,3}\.){3}\d{1,3}))'+ // ipv4 address
-    '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
-    '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
-    '(\#[-a-z\d_]*)?$','i');
-    return regexp.test(pattern)
+    var pattern = /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/
+    return pattern.test(string)
   }
 }

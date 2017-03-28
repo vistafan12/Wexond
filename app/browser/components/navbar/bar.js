@@ -7,7 +7,7 @@ import '../../../resources/browser/scss/bar.scss'
 import '../../../resources/browser/scss/suggestions.scss'
 
 export default class Bar extends React.Component {
-  constructor () {
+  constructor() {
     super()
 
     this.state = {
@@ -34,7 +34,7 @@ export default class Bar extends React.Component {
     this.isSuggestionsVisible = false
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.body.addEventListener('mousemove', this.onMouseMove)
   }
 
@@ -91,13 +91,36 @@ export default class Bar extends React.Component {
     if (key !== 8 && key !== 13 && key !== 17 && key !== 18 && key !== 16 && key !== 9 && key !== 20 && key !== 46 && key !== 32) {
       this.canSuggest = true
     }
-    // arrow key up
-    if (e.keyCode === 38) {
+    // arrow up
+    if (key === 38) {
       e.preventDefault()
     }
-    // arrow key down
-    if (e.keyCode === 40) {
+    // arrow down
+    if (key === 40) {
       e.preventDefault()
+    }
+    // enter
+    if (key === 13) {
+      for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].selected) {
+          var webview = tabs[i].getPage().getWebView()
+          if (!e.currentTarget.value.startsWith('wexond://')) {
+            if (Network.isURL(e.currentTarget.value)) {
+              webview.loadURL(e.currentTarget.value)
+            } else {
+              if (Network.isURL('http://' + e.currentTarget.value)) {
+                webview.loadURL('http://' + e.currentTarget.value)
+              } else {
+                webview.loadURL('https://www.google.com/search?q=' + e.currentTarget.value)
+              }
+            }
+          } else {
+            webview.loadURL(e.currentTarget.value)
+          }
+        }
+      }
+      this.hide();
+      this.hideSuggestions();
     }
     e.currentTarget.focus()
   }
@@ -366,7 +389,7 @@ export default class Bar extends React.Component {
     }
   }
 
-  render () {
+  render() {
     var hintStyle = {
       display: (this.state.isHintVisible)
         ? 'block'
@@ -393,9 +416,11 @@ export default class Bar extends React.Component {
               ? 'block'
               : 'none'
           }} className='bar'>
-            <div className='bar-search-icon' />
+            <div className='bar-search-icon'/>
             <div style={hintStyle} className='bar-hint'>Search</div>
-            <input ref={(t) => { this.input = t }} {...inputEvents} className='bar-input' />
+            <input ref={(t) => {
+              this.input = t
+            }} {...inputEvents} className='bar-input'/>
           </div>
           <div onClick={this.onSuggestionsClick} className='suggestions' style={{
             opacity: value.suggestionsOpacity,
@@ -404,7 +429,7 @@ export default class Bar extends React.Component {
               : 'none'
           }}>
             {this.state.suggestionsToCreate.map((object, i) => {
-              return <Suggestion key={i} data={object} />
+              return <Suggestion key={i} data={object}/>
             })}
           </div>
         </div>}

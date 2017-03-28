@@ -4,6 +4,7 @@ const BrowserWindow = remote.BrowserWindow
 const {Menu, MenuItem} = remote
 const app = remote.app
 const currentWindow = remote.getCurrentWindow()
+const path = require('path')
 // global paths to browser's storage
 const appData = app.getPath('userData')
 const userData = appData + '/userdata'
