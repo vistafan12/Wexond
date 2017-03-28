@@ -27,6 +27,7 @@
   "devDependencies": {
     "asar": "latest",
     "babel-core": "latest",
+    "babel-eslint": "^7.2.1",
     "babel-loader": "latest",
     "babel-plugin-transform-class-properties": "latest",
     "babel-preset-stage-0": "latest",
@@ -38,9 +39,13 @@
     "style-loader": "latest",
     "url-loader": "latest",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "standard": "latest"
   },
   "peerDependencies": {
     "sass-loader": "latest"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   }
 }

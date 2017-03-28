@@ -1,9 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-  target: "electron",
-  devtool: "eval-source-map",
+  target: 'electron',
+  devtool: 'eval-source-map',
   entry: {
     browserEntry: './app/browser/browser-entry.js',
     menuEntry: './app/browser-menu/menu-entry.js'
@@ -15,7 +15,7 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].bundle.js"
+    filename: '[name].bundle.js'
   },
 
   devServer: {
@@ -30,14 +30,14 @@ module.exports = {
         include: path.resolve(__dirname, 'app/resources'),
         use: [
           {
-            loader: "style-loader"
+            loader: 'style-loader'
           }, {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               sourceMap: true
             }
           }, {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
               sourceMap: true
             }
@@ -48,12 +48,12 @@ module.exports = {
         include: path.resolve(__dirname, 'app/resources'),
         use: [
           {
-            loader: "url-loader"
+            loader: 'url-loader'
           }
         ]
       }, {
         test: /\.(js|jsx)$/,
-        include: path.resolve(__dirname, "app"),
+        include: path.resolve(__dirname, 'app'),
         use: [
           {
             loader: 'babel-loader',

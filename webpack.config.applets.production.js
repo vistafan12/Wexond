@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-  devtool: "cheap-module-eval-source-map",
+  devtool: 'cheap-module-eval-source-map',
   entry: {
     history: './app/pages/history/history.js',
     newtab: './app/pages/newtab/newtab.js'
@@ -53,14 +53,14 @@ module.exports = {
         include: path.resolve(__dirname, 'app/resources'),
         use: [
           {
-            loader: "style-loader"
+            loader: 'style-loader'
           }, {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               sourceMap: true
             }
           }, {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
               sourceMap: true
             }
