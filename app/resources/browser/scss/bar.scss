@@ -1,3 +1,8 @@
+@mixin center-vertically() {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .bar {
     position: absolute;
     z-index: 4;
@@ -17,19 +22,33 @@
   height: 19px;
   position: relative;
   left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
   background-image: url(../img/bar/search.png);
   background-position: center;
   background-size: 100% 100%;
   opacity: 0.6;
+  @include center-vertically;
 }
 
 .bar-hint {
-  font-size: 14px;
+  font-size: 15px;
   opacity: 0.6;
   position: absolute;
   left: 42px;
-  top: 50%;
-  transform: translateY(-50%);
+  @include center-vertically;
+}
+
+.bar-input {
+  position: absolute;
+  left: 42px;
+  @include center-vertically;
+  background: transparent;
+  margin-top: -1px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #03A9F4;
+  text-shadow: 0px 0px 0px  rgba(0, 0, 0, 0.8);
+  -webkit-text-fill-color: transparent;
+  height: 100%;
+  width: calc(100% - 64px);
 }

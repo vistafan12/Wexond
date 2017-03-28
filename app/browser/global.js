@@ -23,7 +23,8 @@ var tabsAnimationsData = {
 };
 var barAnimationsData = {
   opacitySpring: durationToSpring(0.3),
-  topSpring: durationToSpring(0.3)
+  topSpring: durationToSpring(0.3),
+  suggestionsOpacitySpring: durationToSpring(0.3)
 };
 //tabs
 var tabs = [];

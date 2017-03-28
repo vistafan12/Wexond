@@ -52,7 +52,7 @@ export default class Tab extends React.Component {
             this.props.getTabBar().setPositions();
         });
 
-        this.props.getApp().addPage(self.getTab);
+        this.props.getApp().addPage(this.getTab);
     }
 
     onMouseDown = (e) => {
