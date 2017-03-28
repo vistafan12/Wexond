@@ -58,6 +58,10 @@ export default class Bar extends React.Component {
           }
           suggestions.push(object)
         }
+        if (self.canSuggest) {
+          self.autoComplete(data[0].url)
+          self.canSuggest = false
+        }
       }
 
       self.getSearchSuggestions(self.input, function (data, error) {
