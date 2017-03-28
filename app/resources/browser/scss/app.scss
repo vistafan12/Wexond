@@ -2,16 +2,16 @@
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto'), local('Roboto-Regular'), url(../../global/fonts/Roboto-Regular.woff2) format('woff2');
+  src: local('Roboto'), local('Roboto-Regular'), url("../../global/fonts/Roboto-Regular.woff2") format('woff2');
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    -webkit-user-select: none;
-    cursor: default;
-    overflow: hidden;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
 }

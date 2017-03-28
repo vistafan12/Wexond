@@ -2,44 +2,44 @@ $height: 32px;
 $control-icon-height: 11px;
 
 .titlebar {
-    position: relative;
-    width: 100%;
-    height: 32px;
-    background-color: #E0E0E0;
-    -webkit-app-region: drag;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  background-color: #E0E0E0;
+  -webkit-app-region: drag;
 }
 
 .titlebar-controls {
-    height: 100%;
-    margin-left: 8px;
-    -webkit-app-region: no-drag;
-    float: right;
-    display: flex;
+  height: 100%;
+  margin-left: 8px;
+  -webkit-app-region: no-drag;
+  float: right;
+  display: flex;
 }
 
 .titlebar-control {
-    background-image: url(../img/controls/close.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: $control-icon-height $control-icon-height;
-    height: $height;
-    width: 38px;
-    float: right;
-    opacity: 0.6;
+  background-image: url("../img/controls/close.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: $control-icon-height $control-icon-height;
+  height: $height;
+  width: 38px;
+  float: right;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
     transition: opacity 0.2s;
+  }
 
-    &:hover {
-        opacity: 1;
-        transition: opacity 0.2s;
-    }
+  &:last-child {
+    margin-right: 4px;
+  }
 
-    &:last-child {
-        margin-right: 4px;
-    }
-
-    &:first-child {
-        margin-left: 4px;
-    }
+  &:first-child {
+    margin-left: 4px;
+  }
 }
 
 .border-bottom {}

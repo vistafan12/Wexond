@@ -1,20 +1,20 @@
 @mixin center-vertically() {
-    top: 50%;
-    transform: translateY(-50%);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .bar {
-    position: absolute;
-    z-index: 4;
-    top: 42px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    height: 36px;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  position: absolute;
+  z-index: 4;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  height: 36px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .bar-search-icon {
@@ -22,7 +22,7 @@
   height: 19px;
   position: relative;
   left: 12px;
-  background-image: url(../img/bar/search.png);
+  background-image: url("../img/bar/search.png");
   background-position: center;
   background-size: 100% 100%;
   opacity: 0.6;
@@ -47,7 +47,7 @@
   outline: none;
   font-size: 15px;
   color: #03A9F4;
-  text-shadow: 0px 0px 0px  rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
   -webkit-text-fill-color: transparent;
   height: 100%;
   width: calc(100% - 64px);

@@ -21,7 +21,7 @@ export default class App extends React.Component {
   componentDidMount() {
     var self = this;
 
-    setTimeout(function() {
+    setTimeout(function () {
       self.refs.tabbar.addTab();
     }, 1);
 
@@ -31,7 +31,7 @@ export default class App extends React.Component {
 
     // communicate with BrowserMenu
 
-    ipcRenderer.on('webview:back', function() {
+    ipcRenderer.on('webview:back', function () {
       var tab = self.getSelectedTab();
       var webview = tab.getPage().getWebView();
       if (webview.canGoBack()) {
@@ -39,7 +39,7 @@ export default class App extends React.Component {
         currentWindow.getChildWindows()[0].send('webview:can-go-back', webview.canGoBack());
       }
     });
-    ipcRenderer.on('webview:forward', function() {
+    ipcRenderer.on('webview:forward', function () {
       var tab = self.getSelectedTab();
       var webview = tab.getPage().getWebView();
       if (webview.canGoForward()) {
@@ -47,7 +47,7 @@ export default class App extends React.Component {
         currentWindow.getChildWindows()[0].send('webview:can-go-forward', webview.canGoForward());
       }
     });
-    ipcRenderer.on('webview:reload', function() {
+    ipcRenderer.on('webview:reload', function () {
       var tab = self.getSelectedTab();
       var webview = tab.getPage().getWebView();
       webview.reload();

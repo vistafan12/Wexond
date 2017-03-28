@@ -50,7 +50,7 @@ export default class Tab extends React.Component {
     var positions = this.props.getTabBar().getPositions().tabPositions;
     this.setState({
       left: positions[tabs.indexOf(this)]
-    }, function() {
+    }, function () {
       this.props.getTabBar().setWidths();
       this.props.getTabBar().setPositions();
     });
@@ -89,7 +89,7 @@ export default class Tab extends React.Component {
     var self = this;
     if (!this.selected) {
       this.setState({backgroundColor: this.mouseLeaveBgColor, animateBackgroundColor: true, isCloseVisible: false});
-      setTimeout(function() {
+      setTimeout(function () {
         self.setState({animateBackgroundColor: false});
       }, 200);
     }
@@ -112,7 +112,7 @@ export default class Tab extends React.Component {
       this.props.getApp().getBar().show();
     }
   }
-  
+
   /*
     * reorders tabs
     * @param1 {Number} cursorX
@@ -179,15 +179,7 @@ export default class Tab extends React.Component {
     * deselects tab
     */
   deselect = () => {
-    this.setState(
-      {
-        backgroundColor: '#E0E0E0',
-        selected: false,
-        zIndex: 1,
-        animateBackgroundColor: false,
-        isCloseVisible: false
-      }
-    );
+    this.setState({backgroundColor: '#E0E0E0', selected: false, zIndex: 1, animateBackgroundColor: false, isCloseVisible: false});
     this.getPage().setState({visible: false});
     this.selected = false;
     this.props.getTabBar().updateTabs();

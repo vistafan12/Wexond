@@ -48,7 +48,7 @@ export default class Bar extends React.Component {
 
     var suggestions = [];
 
-    this.getHistorySuggestions(this.input, function(data, error) {
+    this.getHistorySuggestions(this.input, function (data, error) {
       if (!error) {
         for (var i = 0; i < data.length; i++) {
           var object = {
@@ -60,7 +60,7 @@ export default class Bar extends React.Component {
         }
       }
 
-      self.getSearchSuggestions(self.input, function(data, error) {
+      self.getSearchSuggestions(self.input, function (data, error) {
         if (!error) {
           for (var i = 0; i < data.length; i++) {
             var object = {
@@ -154,7 +154,7 @@ export default class Bar extends React.Component {
     var self = this;
     var inputText = input.value.slice(0, input.selectionStart) + input.value.slice(input.selectionEnd);
     var suggestions = [];
-    Network.requestUrl("http://google.com/complete/search?client=chrome&q=" + inputText, function(data, error) {
+    Network.requestUrl("http://google.com/complete/search?client=chrome&q=" + inputText, function (data, error) {
       if (error) {
         if (callback != null) {
           callback(null, error);
@@ -182,7 +182,7 @@ export default class Bar extends React.Component {
         }
 
         // sort array by length
-        suggestions.sort(function(a, b) {
+        suggestions.sort(function (a, b) {
           return a.length - b.length;
         });
 
@@ -221,7 +221,7 @@ export default class Bar extends React.Component {
     var suggestions = [];
     var inputText = input.value.slice(0, input.selectionStart) + input.value.slice(input.selectionEnd);
 
-    Network.requestUrl(historyPath, function(data, error) {
+    Network.requestUrl(historyPath, function (data, error) {
       if (error) {
         if (callback != null) {
           callback(null, error);
@@ -272,7 +272,7 @@ export default class Bar extends React.Component {
           }
 
           // sort array by length
-          suggestions.sort(function(a, b) {
+          suggestions.sort(function (a, b) {
             return a.url.length - b.url.length;
           });
         }
@@ -354,7 +354,7 @@ export default class Bar extends React.Component {
   * @param1 {DOMElement} input
   * @param2 {String} text - text to autocomplete
   */
-  autoComplete(text) {
+  autoComplete = (text) => {
     var inputText = this.input.value;
     if (text != null || text != "") {
       if (text.toLowerCase().startsWith(inputText.toLowerCase())) {

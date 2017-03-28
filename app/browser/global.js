@@ -15,11 +15,11 @@ const nodeDir = require('node-dir');
 const fs = require('fs');
 //animations
 var tabsAnimationsData = {
-    hoverTransparency: 0.1,
-    closeTabSpring: durationToSpring(0.3),
-    addTabSpring: durationToSpring(0.3),
-    setPositionsSpring: durationToSpring(0.3),
-    setWidthsSpring: durationToSpring(0.3)
+  hoverTransparency: 0.1,
+  closeTabSpring: durationToSpring(0.3),
+  addTabSpring: durationToSpring(0.3),
+  setPositionsSpring: durationToSpring(0.3),
+  setWidthsSpring: durationToSpring(0.3)
 };
 var barAnimationsData = {
   opacitySpring: durationToSpring(0.3),
@@ -29,44 +29,44 @@ var barAnimationsData = {
 //tabs
 var tabs = [];
 const tabsData = {
-    pinnedTabWidth: 32,
-    maxTabWidth: 190
+  pinnedTabWidth: 32,
+  maxTabWidth: 190
 }
 
 function checkFiles() {
-    //check if directory called userdata exists
-    if (!fs.existsSync(userData)) {
-        fs.mkdir(userData);
-    }
-    //check if directory called extensions exists
-    if (!fs.existsSync(extensionsPath)) {
-        fs.mkdir(extensionsPath);
-    }
-    //check if file called history.json exists
-    if (!fs.existsSync(historyPath)) {
-        fs.writeFile(historyPath, '{"history":[]}');
-    }
-    //check if file called bookmarks.json exists
-    if (!fs.existsSync(bookmarksDataPath)) {
-        fs.writeFile(bookmarksDataPath, '{"bookmarks":[]}');
-    }
+  //check if directory called userdata exists
+  if (!fs.existsSync(userData)) {
+    fs.mkdir(userData);
+  }
+  //check if directory called extensions exists
+  if (!fs.existsSync(extensionsPath)) {
+    fs.mkdir(extensionsPath);
+  }
+  //check if file called history.json exists
+  if (!fs.existsSync(historyPath)) {
+    fs.writeFile(historyPath, '{"history":[]}');
+  }
+  //check if file called bookmarks.json exists
+  if (!fs.existsSync(bookmarksDataPath)) {
+    fs.writeFile(bookmarksDataPath, '{"bookmarks":[]}');
+  }
 }
 
 function durationToSpring(w, o = 0) {
-    const s = o <= 0
-        ? 1 - o
-        : 1 / Math.sqrt(1 + Math.pow(2 * Math.PI / Math.log(1 / (o * o)), 2));
+  const s = o <= 0
+    ? 1 - o
+    : 1 / Math.sqrt(1 + Math.pow(2 * Math.PI / Math.log(1 / (o * o)), 2));
 
-    const ks = (2 * Math.PI / w) / Math.max(Math.sqrt(1 - s * s), 0.5);
-    const c = 2 * ks * s;
-    return {
-        stiffness: ks * ks,
-        damping: c
-    };
+  const ks = (2 * Math.PI / w) / Math.max(Math.sqrt(1 - s * s), 0.5);
+  const c = 2 * ks * s;
+  return {
+    stiffness: ks * ks,
+    damping: c
+  };
 }
 
 if (process.env.ENV == 'dev') {
-    remote.getCurrentWindow().webContents.openDevTools();
+  remote.getCurrentWindow().webContents.openDevTools();
 }
 
 console.log('Electron version: ' + process.versions.electron);

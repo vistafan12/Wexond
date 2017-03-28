@@ -1,7 +1,17 @@
 {
-  "indent_size": 2,
-  "indent_char": " ",
-  "other": " ",
-  "indent_level": 0,
-  "indent_with_tabs": false
+  "js": {
+    "indent_size": 2,
+    "space_before_conditional": true,
+    "space_after_anon_function": true,
+    "jslint_happy": true
+  },
+  "html": {
+    "brace_style": "collapse",
+    "indent_scripts": "normal",
+    "indent_size": 2,
+    "indent_inner_html": true
+  },
+  "css": {
+    "indent_size": 2
+  }
 }

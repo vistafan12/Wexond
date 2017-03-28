@@ -6,7 +6,7 @@ export default class Network {
   */
   static requestUrl(url, callback = null) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
         if (callback != null) {
           if (xmlHttp.statusText === 'OK') {
@@ -18,7 +18,7 @@ export default class Network {
       }
     };
 
-    xmlHttp.onerror = function(e) {
+    xmlHttp.onerror = function (e) {
       callback(xmlHttp.responseText, xmlHttp.statusText);
     };
 
@@ -31,8 +31,8 @@ export default class Network {
   * @return {Boolean}
   */
   //TODO: this function needs to improve
-  static isURL (string) {
-      var regexp = /[a-zA-Z-0-9]+\.[a-zA-Z-0-9]{2,3}/;
-      return regexp.test(string);
+  static isURL(string) {
+    var regexp = /[a-zA-Z-0-9]+\.[a-zA-Z-0-9]{2,3}/;
+    return regexp.test(string);
   }
 }

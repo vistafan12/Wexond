@@ -13,77 +13,73 @@ let browserMenu;
 global events
 */
 app.on('window-all-closed', () => {
-    if (process.platform != 'darwin') {
-        app.quit();
-    }
+  if (process.platform != 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', function () {
-    if (mainWindow === null) {
-        createWindow();
-    }
+  if (mainWindow === null) {
+    createWindow();
+  }
 });
 
 process.on('uncaughtException', function (error) {
-    console.log(error);
+  console.log(error);
 });
 
 /*
 * prepares browser window
 */
 function createWindow() {
-    mainWindow = new BrowserWindow(
-        {
-            width: 900,
-            height: 700,
-            frame: false,
-            minWidth: 300,
-            minHeight: 430,
-            show: false
-        }
-    );
-    mainWindow.loadURL('file://' + __dirname + '/app/resources/index.html');
-    mainWindow.setMenu(null);
+  mainWindow = new BrowserWindow({
+    width: 900,
+    height: 700,
+    frame: false,
+    minWidth: 300,
+    minHeight: 430,
+    show: false
+  });
+  mainWindow.loadURL('file://' + __dirname + '/app/resources/index.html');
+  mainWindow.setMenu(null);
 
-    mainWindow.on('closed', () => {
-        mainWindow = null;
-    });
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 
-    mainWindow.on('unresponsive', function () {});
+  mainWindow.on('unresponsive', function () {});
 
-    mainWindow.once('ready-to-show', () => {
-        mainWindow.show();
-    });
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
-    browserMenu = new BrowserWindow(
-        {
-            width: 300,
-            height: 700,
-            frame: false,
-            resizable: false,
-            transparent: true,
-            parent: mainWindow,
-            thickFrame: false,
-            skipTaskbar: true,
-            alwaysOnTop: true,
-            show: false
-        }
-    );
-    browserMenu.loadURL('file://' + __dirname + '/app/resources/browser-menu/index.html');
+  browserMenu = new BrowserWindow({
+    width: 300,
+    height: 700,
+    frame: false,
+    resizable: false,
+    transparent: true,
+    parent: mainWindow,
+    thickFrame: false,
+    skipTaskbar: true,
+    alwaysOnTop: true,
+    show: false
+  });
+  browserMenu.loadURL('file://' + __dirname + '/app/resources/browser-menu/index.html');
 
-    browserMenu.setIgnoreMouseEvents(true);
+  browserMenu.setIgnoreMouseEvents(true);
 
-    browserMenu.on('blur', function() {
-        browserMenu.send('browser-menu:hide-animation');
-    });
-    browserMenu.once('ready-to-show', () => {
-        browserMenu.show();
-    });
+  browserMenu.on('blur', function () {
+    browserMenu.send('browser-menu:hide-animation');
+  });
+  browserMenu.once('ready-to-show', () => {
+    browserMenu.show();
+  });
 
-    if (process.env.ENV == 'dev') {
-        mainWindow.webContents.openDevTools();
-        browserMenu.webContents.openDevTools();
-    }
+  if (process.env.ENV == 'dev') {
+    mainWindow.webContents.openDevTools();
+    browserMenu.webContents.openDevTools();
+  }
 }
 
 /*
@@ -91,32 +87,32 @@ function createWindow() {
 */
 protocol.registerStandardSchemes([protocolName]);
 app.on('ready', function () {
-    protocol.registerFileProtocol(protocolName, (request, callback) => {
-        var url = request.url.substr(protocolName.length + 3);
-        var lastChar = url.substr(url.length - 1);
-        var splitBySlash = url.split("/");
-        if (lastChar != "/") {
-            url = url.replace(splitBySlash[0], "");
-        }
-        if (lastChar == "/") {
-            url += "index.html";
-        }
-        callback({
-            path: path.normalize(`${__dirname}/../renderer/public/${url}`)
-        });
-    }, (error) => {
-        if (error) console.error('Failed to register protocol');
+  protocol.registerFileProtocol(protocolName, (request, callback) => {
+    var url = request.url.substr(protocolName.length + 3);
+    var lastChar = url.substr(url.length - 1);
+    var splitBySlash = url.split("/");
+    if (lastChar != "/") {
+      url = url.replace(splitBySlash[0], "");
+    }
+    if (lastChar == "/") {
+      url += "index.html";
+    }
+    callback({
+      path: path.normalize(`${__dirname}/../renderer/public/${url}`)
     });
-    createWindow();
+  }, (error) => {
+    if (error)
+      console.error('Failed to register protocol');
+    }
+  );
+  createWindow();
 });
 
 global.start = {
-    args: process.argv,
-    file: false,
-    env: process.env.ENV
+  args: process.argv,
+  file: false,
+  env: process.env.ENV
 };
-
-
 
 /*
     HKEY_CLASSES_ROOT

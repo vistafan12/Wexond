@@ -23,10 +23,12 @@ export default class Suggestion extends React.Component {
 
   render() {
     var content = (this.props.data.type === 'history')
-      ? (<div>
+      ? (
+        <div>
           <div className="suggestion-url">{this.state.url}</div>
           <div className="suggestion-title">{' — ' + this.state.title}</div>
-        </div>)
+        </div>
+      )
       : this.state.text;
 
     return (
