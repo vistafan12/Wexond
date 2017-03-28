@@ -160,11 +160,14 @@ export default class Tab extends React.Component {
     })
     this.getPage().setState({visible: true})
     this.selected = true
+    var bar = this.props.getApp().getBar()
+    bar.openedPanel = false
+    bar.hideSuggestions()
     if (this.getPage().getWebView().getWebContents() != null) {
       var browserMenu = currentWindow.getChildWindows()[0]
       browserMenu.send('webview:can-go-back', this.getPage().getWebView().canGoBack())
       browserMenu.send('webview:can-go-forward', this.getPage().getWebView().canGoForward())
-      this.props.getApp().getBar().setText(this.getPage().getWebView().getURL())
+      bar.setText(this.getPage().getWebView().getURL())
     }
     this.props.getTabBar().updateTabs()
   }
