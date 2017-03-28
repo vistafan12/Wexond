@@ -160,6 +160,45 @@ export default class Tab extends React.Component {
         this.props.getTabBar().setPositions();
     }
     /*
+    * selects tab
+    */
+    select = () => {
+        this.setState(
+            {
+                backgroundColor: this.selectedBackgroundColor,
+                selected: true,
+                zIndex: 3,
+                animateBackgroundColor: false,
+                isCloseVisible: (!this.pinned) ? true : false
+            }
+        );
+        this.getPage().setState({visible: true});
+        this.selected = true;
+        if (this.getPage().getWebView().getWebContents() != null) {
+          currentWindow.getChildWindows()[0].send('webview:can-go-back', this.getPage().getWebView().canGoBack());
+          currentWindow.getChildWindows()[0].send('webview:can-go-forward', this.getPage().getWebView().canGoForward());
+          this.props.getApp().getBar().setText(this.getPage().getWebView().getURL());
+        }
+        this.props.getTabBar().updateTabs();
+    }
+    /*
+    * deselects tab
+    */
+    deselect = () => {
+        this.setState(
+            {
+                backgroundColor: '#E0E0E0',
+                selected: false,
+                zIndex: 1,
+                animateBackgroundColor: false,
+                isCloseVisible: false
+            }
+        );
+        this.getPage().setState({visible: false});
+        this.selected = false;
+        this.props.getTabBar().updateTabs();
+    }
+    /*
     * gets tab
     * @return {Tab}
     */

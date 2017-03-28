@@ -87,52 +87,11 @@ export default class TabBar extends React.Component {
     selectTab = (tab) => {
         for (var i = 0; i < tabs.length; i++) {
             if (tabs[i] === tab) {
-                this._selectTab(tab);
+                tab.select();
             } else {
-                this._deSelectTab(tabs[i]);
+                tabs[i].deselect();
             }
         }
-    }
-    /*
-    * selects tab
-    * @param1 {Tab} tab
-    */
-    _selectTab = (tab) => {
-        tab.setState(
-            {
-                backgroundColor: tab.selectedBackgroundColor,
-                selected: true,
-                zIndex: 3,
-                animateBackgroundColor: false,
-                isCloseVisible: (!tab.pinned) ? true : false
-            }
-        );
-        tab.getPage().setState({visible: true});
-        tab.selected = true;
-        if (tab.getPage().getWebView().getWebContents() != null) {
-          currentWindow.getChildWindows()[0].send('webview:can-go-back', tab.getPage().getWebView().canGoBack());
-          currentWindow.getChildWindows()[0].send('webview:can-go-forward', tab.getPage().getWebView().canGoForward());
-          tab.props.getApp().getBar().setText(tab.getPage().getWebView().getURL());
-        }
-        this.updateTabs();
-    }
-    /*
-    * deselects tab
-    * @param1 {Tab} tab
-    */
-    _deSelectTab = (tab) => {
-        tab.setState(
-            {
-                backgroundColor: '#E0E0E0',
-                selected: false,
-                zIndex: 1,
-                animateBackgroundColor: false,
-                isCloseVisible: false
-            }
-        );
-        tab.getPage().setState({visible: false});
-        tab.selected = false;
-        this.updateTabs();
     }
     /*
     * updates tabs' state (borders etc.)
