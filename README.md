@@ -1,4 +1,7 @@
- <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
+[![Build Status](https://travis-ci.org/Nersent/Wexond.svg?branch=refactor)](https://travis-ci.org/Nersent/Wexond)
+[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com)
+
+[![Standard - JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 # Wexond
 Advanced web browser made in Electron and React.
