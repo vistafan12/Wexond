@@ -1,0 +1,36 @@
+@mixin center-vertically () {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.menu-item {
+  position: relative;
+  height: 36px;
+  width: 100%;
+  font-size: 14px;
+  transition: 0.1s background-color;
+
+  &:hover {
+    background-color: #F5F5F5;
+  }
+}
+
+.menu-item-title {
+  display: inline-block;
+  position: absolute;
+  @include center-vertically;
+  left: 57px;
+}
+
+.menu-item-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  @include center-vertically;
+  width: 21px;
+  height: 21px;
+  display: inline-block;
+  left: 16px;
+  opacity: 0.6;
+}

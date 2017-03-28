@@ -1,6 +1,7 @@
 import React from 'react'
 import {Motion, spring} from 'react-motion'
 import TabLayout from '../material-design/tab-layout'
+import BrowserMenuItem from './browser-menu-item'
 
 import '../resources/browser-menu/scss/menu.scss'
 
@@ -235,42 +236,19 @@ export default class BrowserMenu extends React.Component {
               <TabLayout onSelect={this.onSelect} ref={(t) => { this.tabLayout = t }} />
             </div>
             <div className='menu-items' ref={(t) => { this.menuItems = t }}>
-              <div className='menu-item'>
-                Fullscreen
-              </div>
-              <div className='menu-item'>
-                New window
-              </div>
-              <div className='menu-item'>
-                Privacy
-              </div>
+              <BrowserMenuItem icon="img/menu/fullscreen.png">Fullscreen</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/new-window.png">New window</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/privacy.png">Privacy</BrowserMenuItem>
               <div className='menu-separator' />
-              <div className='menu-item'>
-                History
-              </div>
-              <div className='menu-item'>
-                Bookmarks
-              </div>
-              <div className='menu-item'>
-                Downloads
-              </div>
+              <BrowserMenuItem icon="img/menu/history.png">History</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/bookmarks.png">Bookmarks</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/downloads.png">Downloads</BrowserMenuItem>
               <div className='menu-separator' />
-              <div className='menu-item'>
-                Find
-              </div>
-              <div className='menu-item'>
-                Print
-              </div>
-              <div className='menu-item'>
-                Take screenshot
-              </div>
+              <BrowserMenuItem icon="img/menu/find.png">Find</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/print.png">Print</BrowserMenuItem>
+              <BrowserMenuItem icon="img/menu/screenshot.png">Take screenshot</BrowserMenuItem>
               <div className='menu-separator' />
-              <div className='menu-item'>
-                Settings
-              </div>
-              <div className='menu-item'>
-                Help
-              </div>
+              <BrowserMenuItem icon="img/menu/settings.png">Settings</BrowserMenuItem>
             </div>
           </div>}
         </Motion>
