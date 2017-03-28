@@ -13,7 +13,7 @@ export default class Page extends React.Component {
       visible: false,
       webviewHeight: 0
     };
-    this.getTab = null;
+
     checkFiles();
   }
   /*
@@ -24,7 +24,6 @@ export default class Page extends React.Component {
     this.props.getTab().getPage = this.getPage;
     this.props.getTab().onPageInitialized();
     this.resize();
-    this.getTab = this.props.getTab;
 
     this.getWebView().addEventListener('ipc-message', function(e) {
       if (e.channel === 'webview:mouse-left-button') {
@@ -41,11 +40,19 @@ export default class Page extends React.Component {
     });
 
     this.getWebView().addEventListener('did-finish-load', function() {
-      if (self.getTab() != null && self.getTab().selected) {
+      if (self.props.getTab() != null && self.props.getTab().selected) {
         var bar = self.props.getApp().getBar();
         bar.setText(self.getWebView().getURL());
       }
-    })
+    });
+
+    this.getWebView().addEventListener('page-title-updated', function(e) {
+      self.props.getTab().setState({title: e.title});
+    });
+
+    this.getWebView().addEventListener('page-favicon-updated', function(e) {
+      self.props.getTab().setState({favicon: e.favicons[0]});
+    });
   }
   /*
     * resizes contents of page
