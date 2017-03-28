@@ -1,6 +1,7 @@
 import React from 'react';
 import {Motion, spring} from 'react-motion';
 import Suggestion from './suggestion';
+import Network from '../../../helpers/network';
 
 import '../../../resources/browser/scss/bar.scss';
 import '../../../resources/browser/scss/suggestions.scss';
@@ -34,17 +35,91 @@ export default class Bar extends React.Component {
   }
 
   componentDidMount() {
+    document.body.addEventListener('mousemove', this.onMouseMove);
+  }
+
+  /*
+  events
+  */
+  onChange = (e) => {
     var self = this;
 
-    document.body.addEventListener('mousemove', function(e) {
-      if (e.pageY > 120 && !self.locked && !self.openedPanel) {
-        self.hide();
+    this.updateBar(true);
+
+    var suggestions = [];
+
+    this.getHistorySuggestions(this.input, function(data, error) {
+      if (!error) {
+        for (var i = 0; i < data.length; i++) {
+          var object = {
+            type: 'history',
+            url: data[i].url,
+            title: data[i].title
+          };
+          suggestions.push(object);
+        }
       }
-      if (e.pageY <= 32) {
-        self.show();
-      }
+
+      self.getSearchSuggestions(self.input, function(data, error) {
+        if (!error) {
+          for (var i = 0; i < data.length; i++) {
+            var object = {
+              type: 'search',
+              text: data[i]
+            };
+            suggestions.push(object);
+          }
+        }
+
+        self.setState({suggestionsToCreate: []});
+        self.setState({suggestionsToCreate: suggestions});
+      });
     });
   }
+
+  onSuggestionsClick = () => {
+    this.hideSuggestions();
+  }
+
+  onKeyDown = (e) => {
+    var key = e.keyCode || e.charCode;
+    // blacklist: backspace, enter, ctrl, alt, shift, tab, caps lock, delete, space
+    if (key !== 8 && key !== 13 && key !== 17 && key !== 18 && key !== 16 && key !== 9 && key !== 20 && key !== 46 && key !== 32) {
+      this.canSuggest = true;
+    }
+    // arrow key up
+    if (e.keyCode === 38) {
+      e.preventDefault();
+    }
+    // arrow key down
+    if (e.keyCode === 40) {
+      e.preventDefault();
+    }
+    e.currentTarget.focus();
+  }
+
+  onRest = () => {
+    if (!this.isBarVisible) {
+      this.setState({isSuggestionsVisible: false, isBarVisible: false});
+    }
+    if (!this.isSuggestionsVisible) {
+      this.setState({isSuggestionsVisible: false});
+    }
+  }
+
+  onFocus = () => {
+    this.input.setSelectionRange(0, this.input.value.length)
+  }
+
+  onMouseMove = (e) => {
+    if (e.pageY > 120 && !this.locked && !this.openedPanel && this.shown) {
+      this.hide();
+    }
+    if (e.pageY <= 32 && !this.shown) {
+      this.show();
+    }
+  }
+
   /*
   * shows bar
   */
@@ -70,54 +145,6 @@ export default class Bar extends React.Component {
     this.shown = false;
     this.input.blur();
   }
-
-  /*
-  * hides suggestions
-  */
-  hideSuggestions = () => {
-    this.setState({
-      suggestionsOpacity: spring(0, barAnimationsData.suggestionsOpacitySpring)
-    });
-    this.isSuggestionsVisible = false;
-  }
-  /*
-  * shows suggestions
-  */
-  showSuggestions = () => {
-    this.setState({
-      suggestionsOpacity: spring(1, barAnimationsData.suggestionsOpacitySpring),
-      isSuggestionsVisible: true
-    });
-    this.isSuggestionsVisible = true;
-    this.openedPanel = true;
-    this.show();
-  }
-  /*
-  * sets text
-  * @param1 {String} text
-  */
-  setText = (text) => {
-    this.lastText = text;
-    this.input.value = text;
-    this.updateBar(false);
-  }
-  /*
-  * updates bar
-  * @param1 {Boolean} suggestions
-  */
-  updateBar = (suggestions) => {
-    if (this.input.value === '') {
-      this.setState({isHintVisible: true});
-      if (suggestions) {
-        this.hideSuggestions();
-      }
-    } else {
-      this.setState({isHintVisible: false});
-      if (this.shown && suggestions) {
-        this.showSuggestions();
-      }
-    }
-  }
   /*
   * gets suggestions from search engine
   * @param1 {DOMElement} input
@@ -127,7 +154,7 @@ export default class Bar extends React.Component {
     var self = this;
     var inputText = input.value.slice(0, input.selectionStart) + input.value.slice(input.selectionEnd);
     var suggestions = [];
-    requestUrl("http://google.com/complete/search?client=chrome&q=" + inputText, function(data, error) {
+    Network.requestUrl("http://google.com/complete/search?client=chrome&q=" + inputText, function(data, error) {
       if (error) {
         if (callback != null) {
           callback(null, error);
@@ -194,7 +221,7 @@ export default class Bar extends React.Component {
     var suggestions = [];
     var inputText = input.value.slice(0, input.selectionStart) + input.value.slice(input.selectionEnd);
 
-    requestUrl(historyPath, function(data, error) {
+    Network.requestUrl(historyPath, function(data, error) {
       if (error) {
         if (callback != null) {
           callback(null, error);
@@ -276,76 +303,65 @@ export default class Bar extends React.Component {
     });
   }
   /*
-  events
+  * hides suggestions
   */
-  onChange = (e) => {
-    var self = this;
-
-    this.updateBar(true);
-
-    var suggestions = [];
-
-    this.getHistorySuggestions(this.input, function(data, error) {
-      if (!error) {
-        for (var i = 0; i < data.length; i++) {
-          var object = {
-            type: 'history',
-            url: data[i].url,
-            title: data[i].title
-          };
-          suggestions.push(object);
-        }
-      }
-
-      self.getSearchSuggestions(self.input, function(data, error) {
-        if (!error) {
-          for (var i = 0; i < data.length; i++) {
-            var object = {
-              type: 'search',
-              text: data[i]
-            };
-            suggestions.push(object);
-          }
-        }
-
-        self.setState({suggestionsToCreate: []});
-        self.setState({suggestionsToCreate: suggestions});
-      });
+  hideSuggestions = () => {
+    this.setState({
+      suggestionsOpacity: spring(0, barAnimationsData.suggestionsOpacitySpring)
     });
+    this.isSuggestionsVisible = false;
   }
-
-  onSuggestionsClick = () => {
-    this.hideSuggestions();
+  /*
+  * shows suggestions
+  */
+  showSuggestions = () => {
+    this.setState({
+      suggestionsOpacity: spring(1, barAnimationsData.suggestionsOpacitySpring),
+      isSuggestionsVisible: true
+    });
+    this.isSuggestionsVisible = true;
+    this.openedPanel = true;
+    this.show();
   }
-
-  onKeyDown = (e) => {
-    var key = e.keyCode || e.charCode;
-    // blacklist: backspace, enter, ctrl, alt, shift, tab, caps lock, delete, space
-    if (key !== 8 && key !== 13 && key !== 17 && key !== 18 && key !== 16 && key !== 9 && key !== 20 && key !== 46 && key !== 32) {
-      this.canSuggest = true;
-    }
-    // arrow key up
-    if (e.keyCode === 38) {
-      e.preventDefault();
-    }
-    // arrow key down
-    if (e.keyCode === 40) {
-      e.preventDefault();
-    }
-    e.currentTarget.focus();
+  /*
+  * sets text
+  * @param1 {String} text
+  */
+  setText = (text) => {
+    this.lastText = text;
+    this.input.value = text;
+    this.updateBar(false);
   }
-
-  onRest = () => {
-    if (!this.isBarVisible) {
-      this.setState({isSuggestionsVisible: false, isBarVisible: false});
-    }
-    if (!this.isSuggestionsVisible) {
-      this.setState({isSuggestionsVisible: false});
+  /*
+  * updates bar
+  * @param1 {Boolean} suggestions
+  */
+  updateBar = (suggestions) => {
+    if (this.input.value === '') {
+      this.setState({isHintVisible: true});
+      if (suggestions) {
+        this.hideSuggestions();
+      }
+    } else {
+      this.setState({isHintVisible: false});
+      if (this.shown && suggestions) {
+        this.showSuggestions();
+      }
     }
   }
-
-  onFocus = () => {
-    this.input.setSelectionRange(0, this.input.value.length)
+  /*
+  * auto completes input with given text
+  * @param1 {DOMElement} input
+  * @param2 {String} text - text to autocomplete
+  */
+  autoComplete(text) {
+    var inputText = this.input.value;
+    if (text != null || text != "") {
+      if (text.toLowerCase().startsWith(inputText.toLowerCase())) {
+        this.input.value = text;
+        this.input.setSelectionRange(inputText.length, text.length);
+      }
+    }
   }
 
   render() {

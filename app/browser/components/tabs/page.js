@@ -20,40 +20,52 @@ export default class Page extends React.Component {
     * lifecycle
     */
   componentDidMount() {
-    var self = this;
     this.props.getTab().getPage = this.getPage;
     this.props.getTab().onPageInitialized();
     this.resize();
 
-    this.getWebView().addEventListener('ipc-message', function(e) {
-      if (e.channel === 'webview:mouse-left-button') {
-        var bar = self.props.getApp().getBar();
-        bar.openedPanel = false;
-        bar.hide();
-        bar.hideSuggestions();
-      }
-    });
+    // webview events
 
-    this.getWebView().addEventListener('did-start-loading', function() {
-      currentWindow.getChildWindows()[0].send('webview:can-go-back', self.getWebView().canGoBack());
-      currentWindow.getChildWindows()[0].send('webview:can-go-forward', self.getWebView().canGoForward());
-    });
-
-    this.getWebView().addEventListener('did-finish-load', function() {
-      if (self.props.getTab() != null && self.props.getTab().selected) {
-        var bar = self.props.getApp().getBar();
-        bar.setText(self.getWebView().getURL());
-      }
-    });
-
-    this.getWebView().addEventListener('page-title-updated', function(e) {
-      self.props.getTab().setState({title: e.title});
-    });
-
-    this.getWebView().addEventListener('page-favicon-updated', function(e) {
-      self.props.getTab().setState({favicon: e.favicons[0]});
-    });
+    this.getWebView().addEventListener('ipc-message', this.onIpcMessageWebView);
+    this.getWebView().addEventListener('did-start-loading', this.onDidStartLoadingWebView);
+    this.getWebView().addEventListener('did-finish-load', this.onDidFinishLoadWebView);
+    this.getWebView().addEventListener('page-title-updated', this.onPageTitleUpdatedWebView);
+    this.getWebView().addEventListener('page-favicon-updated', this.onPageFaviconUpdatedWebView);
   }
+
+  /*
+  events
+  */
+  onPageFaviconUpdatedWebView = (e) => {
+    self.props.getTab().setState({favicon: e.favicons[0]});
+  }
+
+  onPageTitleUpdatedWebView = (e) => {
+    this.props.getTab().setState({title: e.title});
+  }
+
+  onDidFinishLoadWebView = () => {
+    if (this.props.getTab() != null && this.props.getTab().selected) {
+      var bar = this.props.getApp().getBar();
+      bar.setText(this.getWebView().getURL());
+    }
+  }
+
+  onDidStartLoadingWebView = () => {
+    var browserMenu = currentWindow.getChildWindows()[0];
+    browserMenu.send('webview:can-go-back', this.getWebView().canGoBack());
+    browserMenu.send('webview:can-go-forward', this.getWebView().canGoForward());
+  }
+
+  onIpcMessageWebView = (e) => {
+    if (e.channel === 'webview:mouse-left-button') {
+      var bar = this.props.getApp().getBar();
+      bar.openedPanel = false;
+      bar.hide();
+      bar.hideSuggestions();
+    }
+  }
+
   /*
     * resizes contents of page
     */
@@ -78,8 +90,6 @@ export default class Page extends React.Component {
   }
 
   render() {
-    var self = this;
-
     var pageStyle = {};
 
     var webviewStyle = {
@@ -99,7 +109,7 @@ export default class Page extends React.Component {
     if (this.state.render) {
       return (
         <div className="page" style={pageStyle}>
-          <webview preload="../webview-preload/global.js" className="page-webview" style={webviewStyle} src="http://google.pl" ref="webview"></webview>
+          <webview preload="../webview-preload/global.js" className="page-webview" style={webviewStyle} src={this.props.getTab().props.data.url} ref="webview"></webview>
         </div>
       );
     }

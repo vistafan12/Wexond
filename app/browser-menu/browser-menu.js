@@ -32,6 +32,8 @@ export default class BrowserMenu extends React.Component {
     componentDidMount() {
         var self = this;
         var isFirstTime = true;
+        // communicate with main window
+
         ipcRenderer.on('browser-menu:show-animation', function(e, mouseX, mouseY) {
             self.mouseX = mouseX;
             self.mouseY = mouseY;
@@ -44,15 +46,19 @@ export default class BrowserMenu extends React.Component {
             }
             self.show();
         });
+
         ipcRenderer.on('browser-menu:hide-animation', function() {
             self.hide();
         });
+
         ipcRenderer.on('webview:can-go-back', function(e, can) {
           self.setState({canGoBack: can});
         });
+
         ipcRenderer.on('webview:can-go-forward', function(e, can) {
           self.setState({canGoForward: can});
         });
+
         window.addEventListener('click', this.hide);
 
         this.tabLayout.setState({
@@ -68,45 +74,7 @@ export default class BrowserMenu extends React.Component {
             ]
         })
     }
-    setPosition = () => {
-        var screenHeight = window.screen.availHeight;
-        var screenWidth = window.screen.availWidth;
-        var height = this.menu.offsetHeight;
-        var x = this.mouseX - 7;
-        var y = this.mouseY - 39;
 
-        if (this.mouseX + this.menu.offsetWidth >= screenWidth) {
-            x = this.mouseX - this.menu.offsetWidth - 8;
-        }
-        if (this.mouseY + height >= screenHeight) {
-            y = this.mouseY - height - 40;
-        }
-
-        remote.getCurrentWindow().setPosition(x, y);
-
-        this.fixPosition(height);
-    }
-    /*
-    * hides menu
-    */
-    hide = () => {
-        this.setState({
-            opacity: spring(0, menuAnimationData.opacitySpring),
-            top: spring(0, menuAnimationData.topSpring)
-        });
-        remote.getCurrentWindow().setIgnoreMouseEvents(true);
-    }
-    /*
-    * shows menu
-    */
-    show = () => {
-        remote.getCurrentWindow().setIgnoreMouseEvents(false);
-        remote.getCurrentWindow().focus();
-        this.setState({
-            opacity: spring(1, menuAnimationData.opacitySpring),
-            top: spring(40, menuAnimationData.topSpring)
-        });
-    }
     /*
     events
     */
@@ -162,6 +130,46 @@ export default class BrowserMenu extends React.Component {
         this.height = height;
     }
 
+    setPosition = () => {
+        var screenHeight = window.screen.availHeight;
+        var screenWidth = window.screen.availWidth;
+        var height = this.menu.offsetHeight;
+        var x = this.mouseX - 7;
+        var y = this.mouseY - 39;
+
+        if (this.mouseX + this.menu.offsetWidth >= screenWidth) {
+            x = this.mouseX - this.menu.offsetWidth - 8;
+        }
+        if (this.mouseY + height >= screenHeight) {
+            y = this.mouseY - height - 40;
+        }
+
+        remote.getCurrentWindow().setPosition(x, y);
+
+        this.fixPosition(height);
+    }
+    /*
+    * hides menu
+    */
+    hide = () => {
+        this.setState({
+            opacity: spring(0, menuAnimationData.opacitySpring),
+            top: spring(0, menuAnimationData.topSpring)
+        });
+        remote.getCurrentWindow().setIgnoreMouseEvents(true);
+    }
+    /*
+    * shows menu
+    */
+    show = () => {
+        remote.getCurrentWindow().setIgnoreMouseEvents(false);
+        remote.getCurrentWindow().focus();
+        this.setState({
+            opacity: spring(1, menuAnimationData.opacitySpring),
+            top: spring(40, menuAnimationData.topSpring)
+        });
+    }
+
     fixPosition = (height) => {
       var y = remote.getCurrentWindow().getPosition()[1];
       var x = remote.getCurrentWindow().getPosition()[0];
@@ -179,7 +187,7 @@ export default class BrowserMenu extends React.Component {
 
     render() {
       var expandStyle = {
-        backgroundImage: (this.state.isExpanded) ? 'url(../browser-menu/img/icons/up.png)' : 'url(../browser-menu/img/icons/down.png)'
+        backgroundImage: (this.state.isExpanded) ? 'url(img/icons/up.png)' : 'url(img/icons/down.png)'
       }
       var backClass = (this.state.canGoBack) ? 'icon' : 'icon disabled-icon';
       var forwardClass = (this.state.canGoForward) ? 'icon' : 'icon disabled-icon';
@@ -199,16 +207,16 @@ export default class BrowserMenu extends React.Component {
                         <div ref={(t) => this.menuToolbar = t} className="menu-toolbar">
                             <div className="icons">
                                 <div className={backClass} onClick={this.onBackClick} style={{
-                                    backgroundImage: 'url(../browser/img/bar/back.png)'
+                                    backgroundImage: 'url(img/icons/back.png)'
                                 }}></div>
                                 <div className={forwardClass} onClick={this.onForwardClick} style={{
-                                    backgroundImage: 'url(../browser/img/bar/forward.png)'
+                                    backgroundImage: 'url(img/icons/forward.png)'
                                 }}></div>
                                 <div className="icon" onClick={this.onRefreshClick} style={{
-                                    backgroundImage: 'url(../browser/img/bar/refresh.png)'
+                                    backgroundImage: 'url(img/icons/refresh.png)'
                                 }}></div>
                                 <div className="icon" onClick={this.onStarClick} style={{
-                                    backgroundImage: 'url(../browser/img/bar/star_empty.png)'
+                                    backgroundImage: 'url(img/icons/star_empty.png)'
                                 }}></div>
                                 <div className="icon" onClick={this.onExpandClick} style={expandStyle}></div>
                             </div>

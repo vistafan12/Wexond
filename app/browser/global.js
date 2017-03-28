@@ -69,4 +69,4 @@ if (process.env.ENV == 'dev') {
     remote.getCurrentWindow().webContents.openDevTools();
 }
 
-console.log(process.versions.electron);
+console.log('Electron version: ' + process.versions.electron);

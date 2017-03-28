@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Motion, spring} from 'react-motion';
+import Colors from '../../../helpers/colors';
 
 import '../../../resources/browser/scss/tab.scss';
 
@@ -57,6 +58,10 @@ export default class Tab extends React.Component {
     this.props.getApp().addPage(this.getTab);
   }
 
+  /*
+  events
+  */
+
   onMouseDown = (e) => {
     this.props.getTabBar().selectTab(this);
     this.props.getTabBar().dragData = {
@@ -71,7 +76,7 @@ export default class Tab extends React.Component {
 
   onMouseEnter = () => {
     if (!this.selected) {
-      var rgba = shadeColor(this.state.backgroundColor, 0.05);
+      var rgba = Colors.shadeColor(this.state.backgroundColor, 0.05);
       this.mouseLeaveBgColor = this.state.backgroundColor;
       this.setState({backgroundColor: rgba, animateBackgroundColor: true});
       if (!this.pinned) {
@@ -107,6 +112,7 @@ export default class Tab extends React.Component {
       this.props.getApp().getBar().show();
     }
   }
+  
   /*
     * reorders tabs
     * @param1 {Number} cursorX
@@ -162,8 +168,9 @@ export default class Tab extends React.Component {
     this.getPage().setState({visible: true});
     this.selected = true;
     if (this.getPage().getWebView().getWebContents() != null) {
-      currentWindow.getChildWindows()[0].send('webview:can-go-back', this.getPage().getWebView().canGoBack());
-      currentWindow.getChildWindows()[0].send('webview:can-go-forward', this.getPage().getWebView().canGoForward());
+      var browserMenu = currentWindow.getChildWindows()[0];
+      browserMenu.send('webview:can-go-back', this.getPage().getWebView().canGoBack());
+      browserMenu.send('webview:can-go-forward', this.getPage().getWebView().canGoForward());
       this.props.getApp().getBar().setText(this.getPage().getWebView().getURL());
     }
     this.props.getTabBar().updateTabs();
