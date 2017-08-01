@@ -1,4 +1,6 @@
 # Wexond
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/vistafan12/Wexond.svg)](https://greenkeeper.io/)
 Advanced web browser made in Electron and React.
 
 ## Screenshots
